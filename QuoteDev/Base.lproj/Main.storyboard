@@ -108,21 +108,21 @@
                                     <constraint firstAttribute="height" constant="80" id="oWW-jW-tpI"/>
                                 </constraints>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="myCell" id="2ze-2Z-GlQ">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="myCell" id="2ze-2Z-GlQ" customClass="CustomCommentTableViewCell" customModule="QuoteDev" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2ze-2Z-GlQ" id="LVk-rS-pDb">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="name1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1ek-ly-mTF" userLabel="name1">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="name1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1ek-ly-mTF" userLabel="name1">
                                                     <rect key="frame" x="16" y="-0.5" width="53.5" height="43.5"/>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="comment1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SKE-VT-Va0" userLabel="comment1">
-                                                    <rect key="frame" x="85.5" y="11" width="80" height="20.5"/>
+                                                    <rect key="frame" x="85.5" y="11" width="273.5" height="20.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -131,11 +131,16 @@
                                             <constraints>
                                                 <constraint firstItem="SKE-VT-Va0" firstAttribute="leading" secondItem="1ek-ly-mTF" secondAttribute="trailing" constant="16" id="2Vy-S6-Zok"/>
                                                 <constraint firstItem="SKE-VT-Va0" firstAttribute="centerY" secondItem="LVk-rS-pDb" secondAttribute="centerY" id="2p3-Zx-1hs"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="SKE-VT-Va0" secondAttribute="trailing" constant="8" id="4zO-nx-OIU"/>
                                                 <constraint firstItem="1ek-ly-mTF" firstAttribute="centerY" secondItem="LVk-rS-pDb" secondAttribute="centerY" id="5cf-mv-lIs"/>
                                                 <constraint firstItem="1ek-ly-mTF" firstAttribute="height" secondItem="LVk-rS-pDb" secondAttribute="height" id="Amx-jF-CXU"/>
                                                 <constraint firstItem="1ek-ly-mTF" firstAttribute="leading" secondItem="LVk-rS-pDb" secondAttribute="leadingMargin" constant="8" id="PtX-U6-Gpv"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="labelContent" destination="SKE-VT-Va0" id="VDr-QN-1Ip"/>
+                                            <outlet property="labelName" destination="1ek-ly-mTF" id="myd-2u-FEg"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>

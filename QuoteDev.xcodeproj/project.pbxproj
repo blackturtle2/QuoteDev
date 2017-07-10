@@ -48,6 +48,7 @@
 		FEA8DAB61F0E3A4E00ABA91C /* 8.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FEA8DAAC1F0E3A4E00ABA91C /* 8.jpg */; };
 		FEA8DAB71F0E3A4E00ABA91C /* 9.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FEA8DAAD1F0E3A4E00ABA91C /* 9.jpg */; };
 		FEA8DABA1F0E55CC00ABA91C /* DataCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEA8DAB91F0E55CC00ABA91C /* DataCenter.swift */; };
+		FEE8F5781F13B59000F39DA1 /* CustomCommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE8F5771F13B59000F39DA1 /* CustomCommentTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -107,6 +108,7 @@
 		FEA8DAAC1F0E3A4E00ABA91C /* 8.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 8.jpg; sourceTree = "<group>"; };
 		FEA8DAAD1F0E3A4E00ABA91C /* 9.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 9.jpg; sourceTree = "<group>"; };
 		FEA8DAB91F0E55CC00ABA91C /* DataCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataCenter.swift; sourceTree = "<group>"; };
+		FEE8F5771F13B59000F39DA1 /* CustomCommentTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCommentTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -195,6 +197,7 @@
 				FEA8DA881F0E2A8F00ABA91C /* AppDelegate.swift */,
 				FEA8DAB91F0E55CC00ABA91C /* DataCenter.swift */,
 				FEA8DA8A1F0E2A8F00ABA91C /* MainViewController.swift */,
+				FEE8F5771F13B59000F39DA1 /* CustomCommentTableViewCell.swift */,
 				FE842BE41F0EBC7200840BE1 /* CommentView */,
 				FE842BDB1F0EB36000840BE1 /* SettingView */,
 				FEA8DA8F1F0E2A8F00ABA91C /* Assets.xcassets */,
@@ -363,6 +366,7 @@
 			files = (
 				FE842BDA1F0EB35400840BE1 /* TimerView.swift in Sources */,
 				FE842BE11F0EBC6D00840BE1 /* AlertViewController.swift in Sources */,
+				FEE8F5781F13B59000F39DA1 /* CustomCommentTableViewCell.swift in Sources */,
 				FEA8DABA1F0E55CC00ABA91C /* DataCenter.swift in Sources */,
 				FEA8DA8B1F0E2A8F00ABA91C /* MainViewController.swift in Sources */,
 				FE842BD91F0EB35400840BE1 /* NotiTimerTableViewCell.swift in Sources */,

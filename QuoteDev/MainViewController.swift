@@ -17,20 +17,12 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet var buttonLikeNum:UIButton?
     @IBOutlet var buttonCommentNum:UIButton?
     
-//    @IBOutlet var labelCommentName1:UILabel?
-//    @IBOutlet var labelCommentContent1:UILabel?
-//    @IBOutlet var labelCommentName2:UILabel?
-//    @IBOutlet var labelCommentContent2:UILabel?
-    
     @IBOutlet var tableViewComment:UITableView!
-    
-//    var mainRootData = DataCenter.sharedInstance.rootData
     
     var randomNum = Int(arc4random_uniform(4))
     
     
-    // ** Lyfe Cycle ** //
-    
+    // MARK: Lyfe Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -45,11 +37,10 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     
-    
+    // MARK: Logic
     func loadData() {
         var secondRandomNumber = Int(arc4random_uniform(9))
         
@@ -66,11 +57,9 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         labelQuoteSpeaker?.text = "- \(DataCenter.sharedInstance.getQuoteSpeakerOf(index: secondRandomNumber)) -"
         
         let tempCommentData = DataCenter.sharedInstance.getCommentDataOf(index: secondRandomNumber)
-//        labelCommentName1?.text = tempCommentData.getDicOf(index: 0).nickName
-//        labelCommentContent1?.text = tempCommentData.getDicOf(index: 0).comment
-//        labelCommentName2?.text = tempCommentData.getDicOf(index: 1).nickName
-//        labelCommentContent2?.text = tempCommentData.getDicOf(index: 1).comment
         buttonCommentNum?.setTitle(String(tempCommentData._arrComment.count), for: .normal)
+        
+        tableViewComment.reloadData()
         
     }
     
@@ -114,8 +103,10 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let commentCell = tableView.dequeueReusableCell(withIdentifier: "myCell", for: indexPath)
+        let commentCell = tableView.dequeueReusableCell(withIdentifier: "myCell", for: indexPath) as! CustomCommentTableViewCell
         
+        commentCell.labelName?.text = DataCenter.sharedInstance.getCommentDataOf(index: randomNum).getDicOf(index: indexPath.row).nickName
+        commentCell.labelContent?.text = DataCenter.sharedInstance.getCommentDataOf(index: randomNum).getDicOf(index: indexPath.row).comment
 
         return commentCell
     }

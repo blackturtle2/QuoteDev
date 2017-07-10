@@ -217,14 +217,12 @@ class DataCenter {
     
     
     // ***** ***** ***** ***** ***** 댓글 데이터센터 ***** ***** ***** ***** ***** //
-    
-    
-    
     func loadCommentData() {
         guard let dicData = UserDefaults.standard.dictionary(forKey: commentUserDefaultsForKey) else {
-            print("ERROR- loadData_guard_let")
-            self.commentRootData = commentTotalList(data: ["0" : [["nickName" : "재성A", "comment" : "0-0 댓글입니다.", "date" : "07/07"], ["nickName" : "기수", "comment" : "0-1 댓글입니다.", "date" : "07/08"]],
-                                                           
+            print("ERROR- loadCommentData() - loadData_guard_let")
+            self.commentRootData = commentTotalList(data: [
+                "0" : [["nickName" : "재성A", "comment" : "0-0 댓글입니다.", "date" : "07/07"],
+                       ["nickName" : "기수", "comment" : "0-1 댓글입니다.", "date" : "07/08"]],
                 "1" : [["nickName" : "보영", "comment" : "정말 좋은 명언이예요! 1-1", "date" : "07/07"],
                        ["nickName" : "창호", "comment" : "개발 공부를 열심히 하겠어요! 1-2", "date" : "07/08"]],
                 "2" : [["nickName" : "동윤", "comment" : "iOS 마스터!! 2-1", "date" : "07/07"],
