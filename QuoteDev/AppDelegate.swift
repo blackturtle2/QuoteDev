@@ -18,14 +18,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         // 허용 여부 - 호출부분
+        
+        // ** Caution ** iOS 10.0 ** //
         let setting = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
         
         application.registerUserNotificationSettings(setting)
         
-        
-        if let localNoti = launchOptions?[UIApplicationLaunchOptionsKey.localNotification] as? UILocalNotification {
-            
-            
+        // ** Caution ** iOS 10.0 ** //
+//        if let localNoti = launchOptions?[UIApplicationLaunchOptionsKey.localNotification] as? UILocalNotification {
+        if (launchOptions?[UIApplicationLaunchOptionsKey.localNotification] as? UILocalNotification) != nil {
             let sb = UIStoryboard(name: "Main", bundle: Bundle.main)
             let vc = sb.instantiateViewController(withIdentifier: "vc")
             
