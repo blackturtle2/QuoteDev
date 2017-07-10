@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MainViewController: UIViewController {
+class MainViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet var imageQuoteImg:UIImageView?
     @IBOutlet var labelQuoteContent:UILabel?
@@ -17,29 +17,38 @@ class MainViewController: UIViewController {
     @IBOutlet var buttonLikeNum:UIButton?
     @IBOutlet var buttonCommentNum:UIButton?
     
-    @IBOutlet var labelCommentName1:UILabel?
-    @IBOutlet var labelCommentContent1:UILabel?
-    @IBOutlet var labelCommentName2:UILabel?
-    @IBOutlet var labelCommentContent2:UILabel?
+//    @IBOutlet var labelCommentName1:UILabel?
+//    @IBOutlet var labelCommentContent1:UILabel?
+//    @IBOutlet var labelCommentName2:UILabel?
+//    @IBOutlet var labelCommentContent2:UILabel?
     
-    var mainRootData = DataCenter.sharedInstance.rootData
+    @IBOutlet var tableViewComment:UITableView!
+    
+//    var mainRootData = DataCenter.sharedInstance.rootData
     
     var randomNum = Int(arc4random_uniform(4))
     
     
+    // ** Lyfe Cycle ** //
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        tableViewComment?.delegate = self
+        tableViewComment?.dataSource = self
+        
         DataCenter.sharedInstance.loadData()
         DataCenter.sharedInstance.loadCommentData()
         
         loadData()
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    
     
     func loadData() {
         var secondRandomNumber = Int(arc4random_uniform(9))
@@ -57,10 +66,10 @@ class MainViewController: UIViewController {
         labelQuoteSpeaker?.text = "- \(DataCenter.sharedInstance.getQuoteSpeakerOf(index: secondRandomNumber)) -"
         
         let tempCommentData = DataCenter.sharedInstance.getCommentDataOf(index: secondRandomNumber)
-        labelCommentName1?.text = tempCommentData.getDicOf(index: 0).nickName
-        labelCommentContent1?.text = tempCommentData.getDicOf(index: 0).comment
-        labelCommentName2?.text = tempCommentData.getDicOf(index: 1).nickName
-        labelCommentContent2?.text = tempCommentData.getDicOf(index: 1).comment
+//        labelCommentName1?.text = tempCommentData.getDicOf(index: 0).nickName
+//        labelCommentContent1?.text = tempCommentData.getDicOf(index: 0).comment
+//        labelCommentName2?.text = tempCommentData.getDicOf(index: 1).nickName
+//        labelCommentContent2?.text = tempCommentData.getDicOf(index: 1).comment
         buttonCommentNum?.setTitle(String(tempCommentData._arrComment.count), for: .normal)
         
     }
@@ -95,6 +104,20 @@ class MainViewController: UIViewController {
     @IBAction func buttonSavePhotoAction(_ sender:UIButton) {
         print("buttonSavePhotoAction")
         
+    }
+    
+    
+    // MARK: 댓글 테이블뷰 데이터 로드.
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 2
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let commentCell = tableView.dequeueReusableCell(withIdentifier: "myCell", for: indexPath)
+        
+
+        return commentCell
     }
 
 }
