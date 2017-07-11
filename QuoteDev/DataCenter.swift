@@ -314,14 +314,3 @@ class DataCenter {
     }
     
 }
-
-/*
- 
- ["0" :
-    [
-        ["nickName" : "재성A", "comment" : "첫번째 댓글입니다.", "date" : "07/07"],
-        ["nickName" : "기수", "comment" : "두번째 댓글입니다.", "date" : "07/08"]
-    ]
- ]
- 
- */
