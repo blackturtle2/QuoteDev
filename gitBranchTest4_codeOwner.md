@@ -1,4 +1,0 @@
-# QuoteDev
-
-
-`Git Branch Test`
