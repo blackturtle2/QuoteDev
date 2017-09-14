@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0D9613E5ECE9BF130E2281FD /* Pods_QuoteDev.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CB8A73D6F930854930511EE /* Pods_QuoteDev.framework */; };
 		FE7EC3961F6A4E1000696041 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE7EC3951F6A4E1000696041 /* AppDelegate.swift */; };
 		FE7EC3981F6A4E1000696041 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE7EC3971F6A4E1000696041 /* MainViewController.swift */; };
 		FE7EC39B1F6A4E1000696041 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FE7EC3991F6A4E1000696041 /* Main.storyboard */; };
@@ -15,6 +16,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4CB8A73D6F930854930511EE /* Pods_QuoteDev.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QuoteDev.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5BFF089C886F6B71AA3380D1 /* Pods-QuoteDev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuoteDev.debug.xcconfig"; path = "Pods/Target Support Files/Pods-QuoteDev/Pods-QuoteDev.debug.xcconfig"; sourceTree = "<group>"; };
+		5FC370CABF19E04A9D982688 /* Pods-QuoteDev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuoteDev.release.xcconfig"; path = "Pods/Target Support Files/Pods-QuoteDev/Pods-QuoteDev.release.xcconfig"; sourceTree = "<group>"; };
 		FE7EC3921F6A4E1000696041 /* QuoteDev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QuoteDev.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE7EC3951F6A4E1000696041 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FE7EC3971F6A4E1000696041 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -29,17 +33,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D9613E5ECE9BF130E2281FD /* Pods_QuoteDev.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3FE2FD421B77A7CF0572926B /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				5BFF089C886F6B71AA3380D1 /* Pods-QuoteDev.debug.xcconfig */,
+				5FC370CABF19E04A9D982688 /* Pods-QuoteDev.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		599375D61C8185805B24C35E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4CB8A73D6F930854930511EE /* Pods_QuoteDev.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		FE7EC3891F6A4E1000696041 = {
 			isa = PBXGroup;
 			children = (
 				FE7EC3941F6A4E1000696041 /* QuoteDev */,
 				FE7EC3931F6A4E1000696041 /* Products */,
+				3FE2FD421B77A7CF0572926B /* Pods */,
+				599375D61C8185805B24C35E /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -71,9 +95,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FE7EC3A41F6A4E1000696041 /* Build configuration list for PBXNativeTarget "QuoteDev" */;
 			buildPhases = (
+				0073A6BF81570475297DD898 /* [CP] Check Pods Manifest.lock */,
 				FE7EC38E1F6A4E1000696041 /* Sources */,
 				FE7EC38F1F6A4E1000696041 /* Frameworks */,
 				FE7EC3901F6A4E1000696041 /* Resources */,
+				2C86D8BEEDD3DF664CB72794 /* [CP] Embed Pods Frameworks */,
+				BD5BA6EF614807C3D1B84776 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -130,6 +157,54 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		0073A6BF81570475297DD898 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		2C86D8BEEDD3DF664CB72794 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-QuoteDev/Pods-QuoteDev-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BD5BA6EF614807C3D1B84776 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-QuoteDev/Pods-QuoteDev-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		FE7EC38E1F6A4E1000696041 /* Sources */ = {
@@ -260,6 +335,7 @@
 		};
 		FE7EC3A51F6A4E1000696041 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5BFF089C886F6B71AA3380D1 /* Pods-QuoteDev.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = QuoteDev/Info.plist;
@@ -273,6 +349,7 @@
 		};
 		FE7EC3A61F6A4E1000696041 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5FC370CABF19E04A9D982688 /* Pods-QuoteDev.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = QuoteDev/Info.plist;
