@@ -8,10 +8,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Board Main View Controller-->
+        <!--Board Dev Main View Controller-->
         <scene sceneID="LNC-l5-1A3">
             <objects>
-                <viewController id="wYJ-zD-gCg" customClass="GSBoardMainViewController" customModule="QuoteDev" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="wYJ-zD-gCg" customClass="BoardDevMainViewController" customModule="QuoteDev" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="dxL-eP-pQU"/>
                         <viewControllerLayoutGuide type="bottom" id="90Q-W4-03W"/>

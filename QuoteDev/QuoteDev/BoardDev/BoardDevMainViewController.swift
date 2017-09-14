@@ -1,5 +1,5 @@
 //
-//  GSBoardMainViewController.swift
+//  BoardDevMainViewController.swift
 //  QuoteDev
 //
 //  Created by leejaesung on 2017. 9. 14..
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class GSBoardMainViewController: UIViewController {
+class BoardDevMainViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

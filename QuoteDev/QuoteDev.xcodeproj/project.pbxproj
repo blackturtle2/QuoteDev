@@ -8,18 +8,20 @@
 
 /* Begin PBXBuildFile section */
 		0D9613E5ECE9BF130E2281FD /* Pods_QuoteDev.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CB8A73D6F930854930511EE /* Pods_QuoteDev.framework */; };
+		4C903C711F6A5D0D003ECEA4 /* BoardDev.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C903C701F6A5D0D003ECEA4 /* BoardDev.storyboard */; };
+		4C903C731F6A5D17003ECEA4 /* BoardDevMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C903C721F6A5D17003ECEA4 /* BoardDevMainViewController.swift */; };
 		FE7EC3961F6A4E1000696041 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE7EC3951F6A4E1000696041 /* AppDelegate.swift */; };
 		FE7EC3981F6A4E1000696041 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE7EC3971F6A4E1000696041 /* MainViewController.swift */; };
 		FE7EC39B1F6A4E1000696041 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FE7EC3991F6A4E1000696041 /* Main.storyboard */; };
 		FE7EC39D1F6A4E1000696041 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FE7EC39C1F6A4E1000696041 /* Assets.xcassets */; };
 		FE7EC3A01F6A4E1000696041 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FE7EC39E1F6A4E1000696041 /* LaunchScreen.storyboard */; };
 		FE7EC3A81F6A51BD00696041 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FE7EC3A71F6A51BD00696041 /* GoogleService-Info.plist */; };
-		FE7EC3AB1F6A539C00696041 /* GSBoardDev.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FE7EC3AA1F6A539C00696041 /* GSBoardDev.storyboard */; };
-		FE7EC3AD1F6A53E500696041 /* GSBoardMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE7EC3AC1F6A53E500696041 /* GSBoardMainViewController.swift */; };
 		FE7EC3B01F6A557300696041 /* SettingMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE7EC3AF1F6A557300696041 /* SettingMainViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4C903C701F6A5D0D003ECEA4 /* BoardDev.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = BoardDev.storyboard; path = BoardDev/BoardDev.storyboard; sourceTree = "<group>"; };
+		4C903C721F6A5D17003ECEA4 /* BoardDevMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BoardDevMainViewController.swift; path = BoardDev/BoardDevMainViewController.swift; sourceTree = "<group>"; };
 		4CB8A73D6F930854930511EE /* Pods_QuoteDev.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QuoteDev.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5BFF089C886F6B71AA3380D1 /* Pods-QuoteDev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuoteDev.debug.xcconfig"; path = "Pods/Target Support Files/Pods-QuoteDev/Pods-QuoteDev.debug.xcconfig"; sourceTree = "<group>"; };
 		5FC370CABF19E04A9D982688 /* Pods-QuoteDev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuoteDev.release.xcconfig"; path = "Pods/Target Support Files/Pods-QuoteDev/Pods-QuoteDev.release.xcconfig"; sourceTree = "<group>"; };
@@ -31,8 +33,6 @@
 		FE7EC39F1F6A4E1000696041 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FE7EC3A11F6A4E1000696041 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FE7EC3A71F6A51BD00696041 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		FE7EC3AA1F6A539C00696041 /* GSBoardDev.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = GSBoardDev.storyboard; path = GSBoardDev/GSBoardDev.storyboard; sourceTree = "<group>"; };
-		FE7EC3AC1F6A53E500696041 /* GSBoardMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GSBoardMainViewController.swift; path = GSBoardDev/GSBoardMainViewController.swift; sourceTree = "<group>"; };
 		FE7EC3AF1F6A557300696041 /* SettingMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingMainViewController.swift; path = SettingView/SettingMainViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -91,7 +91,7 @@
 				FE7EC3951F6A4E1000696041 /* AppDelegate.swift */,
 				FE7EC3971F6A4E1000696041 /* MainViewController.swift */,
 				FE7EC3AE1F6A555400696041 /* SettingView */,
-				FE7EC3A91F6A536300696041 /* GSBoardDev */,
+				FE7EC3A91F6A536300696041 /* BoardDev */,
 				FE7EC39C1F6A4E1000696041 /* Assets.xcassets */,
 				FE7EC3A71F6A51BD00696041 /* GoogleService-Info.plist */,
 				FE7EC3A11F6A4E1000696041 /* Info.plist */,
@@ -99,13 +99,13 @@
 			path = QuoteDev;
 			sourceTree = "<group>";
 		};
-		FE7EC3A91F6A536300696041 /* GSBoardDev */ = {
+		FE7EC3A91F6A536300696041 /* BoardDev */ = {
 			isa = PBXGroup;
 			children = (
-				FE7EC3AA1F6A539C00696041 /* GSBoardDev.storyboard */,
-				FE7EC3AC1F6A53E500696041 /* GSBoardMainViewController.swift */,
+				4C903C701F6A5D0D003ECEA4 /* BoardDev.storyboard */,
+				4C903C721F6A5D17003ECEA4 /* BoardDevMainViewController.swift */,
 			);
-			name = GSBoardDev;
+			name = BoardDev;
 			sourceTree = "<group>";
 		};
 		FE7EC3AE1F6A555400696041 /* SettingView */ = {
@@ -151,7 +151,7 @@
 				TargetAttributes = {
 					FE7EC3911F6A4E1000696041 = {
 						CreatedOnToolsVersion = 8.3.3;
-						DevelopmentTeam = 29Q45PKR77;
+						DevelopmentTeam = PV38XQ6LPC;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -180,7 +180,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FE7EC3A01F6A4E1000696041 /* LaunchScreen.storyboard in Resources */,
-				FE7EC3AB1F6A539C00696041 /* GSBoardDev.storyboard in Resources */,
+				4C903C711F6A5D0D003ECEA4 /* BoardDev.storyboard in Resources */,
 				FE7EC3A81F6A51BD00696041 /* GoogleService-Info.plist in Resources */,
 				FE7EC39D1F6A4E1000696041 /* Assets.xcassets in Resources */,
 				FE7EC39B1F6A4E1000696041 /* Main.storyboard in Resources */,
@@ -196,13 +196,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-QuoteDev-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		2C86D8BEEDD3DF664CB72794 /* [CP] Embed Pods Frameworks */ = {
@@ -211,9 +214,18 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-QuoteDev/Pods-QuoteDev-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/Toaster/Toaster.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Toaster.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -243,8 +255,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				FE7EC3B01F6A557300696041 /* SettingMainViewController.swift in Sources */,
-				FE7EC3AD1F6A53E500696041 /* GSBoardMainViewController.swift in Sources */,
 				FE7EC3981F6A4E1000696041 /* MainViewController.swift in Sources */,
+				4C903C731F6A5D17003ECEA4 /* BoardDevMainViewController.swift in Sources */,
 				FE7EC3961F6A4E1000696041 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -371,7 +383,7 @@
 			baseConfigurationReference = 5BFF089C886F6B71AA3380D1 /* Pods-QuoteDev.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 29Q45PKR77;
+				DEVELOPMENT_TEAM = PV38XQ6LPC;
 				INFOPLIST_FILE = QuoteDev/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -386,7 +398,7 @@
 			baseConfigurationReference = 5FC370CABF19E04A9D982688 /* Pods-QuoteDev.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 29Q45PKR77;
+				DEVELOPMENT_TEAM = PV38XQ6LPC;
 				INFOPLIST_FILE = QuoteDev/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
