@@ -14,6 +14,8 @@
 		FE7EC39D1F6A4E1000696041 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FE7EC39C1F6A4E1000696041 /* Assets.xcassets */; };
 		FE7EC3A01F6A4E1000696041 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FE7EC39E1F6A4E1000696041 /* LaunchScreen.storyboard */; };
 		FE7EC3A81F6A51BD00696041 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FE7EC3A71F6A51BD00696041 /* GoogleService-Info.plist */; };
+		FE7EC3AB1F6A539C00696041 /* GSBoardDev.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FE7EC3AA1F6A539C00696041 /* GSBoardDev.storyboard */; };
+		FE7EC3AD1F6A53E500696041 /* GSBoardMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE7EC3AC1F6A53E500696041 /* GSBoardMainViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +30,8 @@
 		FE7EC39F1F6A4E1000696041 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FE7EC3A11F6A4E1000696041 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FE7EC3A71F6A51BD00696041 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		FE7EC3AA1F6A539C00696041 /* GSBoardDev.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = GSBoardDev.storyboard; path = GSBoardDev/GSBoardDev.storyboard; sourceTree = "<group>"; };
+		FE7EC3AC1F6A53E500696041 /* GSBoardMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GSBoardMainViewController.swift; path = GSBoardDev/GSBoardMainViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,11 +88,21 @@
 				FE7EC3991F6A4E1000696041 /* Main.storyboard */,
 				FE7EC3951F6A4E1000696041 /* AppDelegate.swift */,
 				FE7EC3971F6A4E1000696041 /* MainViewController.swift */,
+				FE7EC3A91F6A536300696041 /* GSBoardDev */,
 				FE7EC39C1F6A4E1000696041 /* Assets.xcassets */,
 				FE7EC3A71F6A51BD00696041 /* GoogleService-Info.plist */,
 				FE7EC3A11F6A4E1000696041 /* Info.plist */,
 			);
 			path = QuoteDev;
+			sourceTree = "<group>";
+		};
+		FE7EC3A91F6A536300696041 /* GSBoardDev */ = {
+			isa = PBXGroup;
+			children = (
+				FE7EC3AA1F6A539C00696041 /* GSBoardDev.storyboard */,
+				FE7EC3AC1F6A53E500696041 /* GSBoardMainViewController.swift */,
+			);
+			name = GSBoardDev;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -155,6 +169,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FE7EC3A01F6A4E1000696041 /* LaunchScreen.storyboard in Resources */,
+				FE7EC3AB1F6A539C00696041 /* GSBoardDev.storyboard in Resources */,
 				FE7EC3A81F6A51BD00696041 /* GoogleService-Info.plist in Resources */,
 				FE7EC39D1F6A4E1000696041 /* Assets.xcassets in Resources */,
 				FE7EC39B1F6A4E1000696041 /* Main.storyboard in Resources */,
@@ -216,6 +231,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FE7EC3AD1F6A53E500696041 /* GSBoardMainViewController.swift in Sources */,
 				FE7EC3981F6A4E1000696041 /* MainViewController.swift in Sources */,
 				FE7EC3961F6A4E1000696041 /* AppDelegate.swift in Sources */,
 			);
