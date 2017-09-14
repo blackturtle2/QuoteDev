@@ -21,9 +21,9 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dKw-na-qXW">
-                                <rect key="frame" x="242" y="614" width="102" height="30"/>
+                                <rect key="frame" x="210" y="597" width="129" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Move GSBoard"/>
+                                <state key="normal" title="Move GSBoardDev"/>
                                 <connections>
                                     <segue destination="bm6-J3-KyO" kind="show" id="9Sb-QW-G54"/>
                                 </connections>
