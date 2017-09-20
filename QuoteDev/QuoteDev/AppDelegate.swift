@@ -9,8 +9,6 @@
 import UIKit
 import Firebase
 
-let userUid:String = "firebaseUserUid"
-
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -23,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // UserDefaults에 저장된 uid가 없을 경우, Firebase의 Auth signInAnonymously을 진행합니다.
         // Firebase의 익명 Auth는 앱을 지웠다 설치하더라도 같은 uid를 갖습니다. ( 디바이스 의존성 )
-        if UserDefaults.standard.string(forKey: userUid) == nil {
+        if UserDefaults.standard.string(forKey: userDefaultsUid) == nil {
             Auth.auth().signInAnonymously { (user, error) in
                 print("///// signInAnonymously user: ", user ?? "no user")
                 print("///// signInAnonymously user uid: ", user?.uid ?? "no user uid")
@@ -31,11 +29,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 
                 // SignIn 후, UserDefaults에 저장합니다.
                 guard let uid = user?.uid else { return }
-                UserDefaults.standard.set(uid, forKey: userUid)
+                UserDefaults.standard.set(uid, forKey: userDefaultsUid)
             }
         }
         
-        print("///// userDefaults uid: ", UserDefaults.standard.string(forKey: userUid) ?? "no data")
+        print("///// userDefaults uid: ", UserDefaults.standard.string(forKey: userDefaultsUid) ?? "no data")
         
         return true
     }
