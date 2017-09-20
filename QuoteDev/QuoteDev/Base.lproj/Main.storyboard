@@ -34,7 +34,7 @@
                                 <state key="normal" title="Comment"/>
                                 <connections>
                                     <action selector="buttonCommentAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="cPa-Xr-Zmk"/>
-                                    <segue destination="xuP-7E-1r0" kind="show" id="J83-tE-FIT"/>
+                                    <segue destination="xuP-7E-1r0" kind="show" id="l6l-aX-3MD"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="o7W-tp-Ucm">
@@ -72,10 +72,10 @@
             </objects>
             <point key="canvasLocation" x="1076" y="111.99400299850076"/>
         </scene>
-        <!--View Controller-->
+        <!--Quote Comment View Controller-->
         <scene sceneID="A7W-fM-qCV">
             <objects>
-                <viewController id="xuP-7E-1r0" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="QuoteCommentViewController" id="xuP-7E-1r0" customClass="QuoteCommentViewController" customModule="QuoteDev" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="TwH-67-fy2"/>
                         <viewControllerLayoutGuide type="bottom" id="ZnW-cA-lWd"/>
