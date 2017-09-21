@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="wYJ-zD-gCg">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="c0Z-G9-k5R">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -8,10 +8,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Board Dev Main View Controller-->
+        <!--글 등록-->
         <scene sceneID="LNC-l5-1A3">
             <objects>
-                <viewController id="wYJ-zD-gCg" customClass="BoardDevMainViewController" customModule="QuoteDev" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="wYJ-zD-gCg" customClass="BoardDevMainViewController" customModule="QuoteDev" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="dxL-eP-pQU"/>
                         <viewControllerLayoutGuide type="bottom" id="90Q-W4-03W"/>
@@ -20,20 +20,108 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="GSBoardDev main" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qjT-1P-2Xe">
-                                <rect key="frame" x="117" y="323" width="140" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AMm-fu-rL8">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4do-kD-mEG" userLabel="Content View">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="703"/>
+                                        <subviews>
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="ieI-L5-Qyt">
+                                                <rect key="frame" x="5" y="5" width="365" height="200"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <mutableString key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</mutableString>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                            </textView>
+                                        </subviews>
+                                        <color key="backgroundColor" cocoaTouchSystemColor="lightTextColor"/>
+                                        <constraints>
+                                            <constraint firstItem="ieI-L5-Qyt" firstAttribute="top" secondItem="4do-kD-mEG" secondAttribute="top" constant="5" id="CGa-1o-2UH"/>
+                                            <constraint firstAttribute="trailing" secondItem="ieI-L5-Qyt" secondAttribute="trailing" constant="5" id="U5h-jX-EQn"/>
+                                            <constraint firstItem="ieI-L5-Qyt" firstAttribute="leading" secondItem="4do-kD-mEG" secondAttribute="leading" constant="5" id="pvS-jm-L70"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="4do-kD-mEG" secondAttribute="bottom" id="Ev8-hk-jfr"/>
+                                    <constraint firstItem="4do-kD-mEG" firstAttribute="height" secondItem="AMm-fu-rL8" secondAttribute="height" constant="100" id="K6m-k8-iOC"/>
+                                    <constraint firstItem="4do-kD-mEG" firstAttribute="leading" secondItem="AMm-fu-rL8" secondAttribute="leading" id="XZJ-yx-FTb"/>
+                                    <constraint firstAttribute="trailing" secondItem="4do-kD-mEG" secondAttribute="trailing" id="aBS-H0-6oH"/>
+                                    <constraint firstItem="4do-kD-mEG" firstAttribute="top" secondItem="AMm-fu-rL8" secondAttribute="top" id="fQA-qo-MIJ"/>
+                                    <constraint firstItem="4do-kD-mEG" firstAttribute="width" secondItem="AMm-fu-rL8" secondAttribute="width" id="oB5-tl-pX5"/>
+                                </constraints>
+                            </scrollView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UcI-Jo-AuY">
+                                <rect key="frame" x="0.0" y="617" width="375" height="50"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B7G-vF-pe5">
+                                        <rect key="frame" x="21" y="8" width="46" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" backgroundImage=" photo_icon.png"/>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="atZ-2w-OYb"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="AMm-fu-rL8" secondAttribute="trailing" id="BMM-Ju-lfU"/>
+                            <constraint firstItem="AMm-fu-rL8" firstAttribute="leading" secondItem="HgO-xP-2Se" secondAttribute="leading" id="QlE-p7-nWY"/>
+                            <constraint firstItem="90Q-W4-03W" firstAttribute="top" secondItem="AMm-fu-rL8" secondAttribute="bottom" id="dTP-oH-HhU"/>
+                            <constraint firstAttribute="trailing" secondItem="UcI-Jo-AuY" secondAttribute="trailing" id="jxY-yo-qG0"/>
+                            <constraint firstItem="90Q-W4-03W" firstAttribute="top" secondItem="UcI-Jo-AuY" secondAttribute="bottom" id="mBC-UJ-0nf"/>
+                            <constraint firstItem="AMm-fu-rL8" firstAttribute="top" secondItem="dxL-eP-pQU" secondAttribute="bottom" id="rE6-jb-mLc"/>
+                            <constraint firstItem="UcI-Jo-AuY" firstAttribute="leading" secondItem="HgO-xP-2Se" secondAttribute="leading" id="u5d-gv-PBk"/>
+                        </constraints>
                     </view>
+                    <navigationItem key="navigationItem" title="글 등록" id="e8i-p7-x9V">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="1wZ-y4-57r">
+                            <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <segue destination="H98-mk-gc8" kind="presentation" id="QKM-4d-YZV"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Item" systemItem="done" id="cq4-I4-gyR">
+                            <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </barButtonItem>
+                    </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="b7A-pX-2ed" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="880" y="367"/>
+            <point key="canvasLocation" x="1818.4000000000001" y="366.56671664167919"/>
+        </scene>
+        <!--SettingDev-->
+        <scene sceneID="aSN-00-JuG">
+            <objects>
+                <viewControllerPlaceholder storyboardName="SettingDev" id="H98-mk-gc8" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Fpf-hn-Ek2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2361" y="52"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="r2g-Bw-xuL">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="c0Z-G9-k5R" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="CMs-c2-RuF">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="wYJ-zD-gCg" kind="relationship" relationship="rootViewController" id="phH-A3-tsF"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jVy-Rh-B9C" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="879.20000000000005" y="366.56671664167919"/>
         </scene>
     </scenes>
+    <resources>
+        <image name=" photo_icon.png" width="16" height="16"/>
+    </resources>
 </document>

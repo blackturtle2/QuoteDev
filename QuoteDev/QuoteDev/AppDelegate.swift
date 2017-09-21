@@ -19,6 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         
         FirebaseApp.configure()
+        application.registerUserNotificationSettings(UIUserNotificationSettings(types: [.alert, .sound], categories: nil))
+        
         
         return true
     }
