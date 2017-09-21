@@ -8,11 +8,13 @@
 
 import UIKit
 
-class SettingMainViewController: UIViewController {
-
+class SettingMainViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    
+    @IBOutlet weak var settingTableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        settingTableView.delegate = self
+        settingTableView.dataSource = self
         // Do any additional setup after loading the view.
     }
 
@@ -22,14 +24,27 @@ class SettingMainViewController: UIViewController {
     }
     
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
     }
-    */
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "NotiCell", for: indexPath)
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let nextViewContorller = self.storyboard?.instantiateViewController(withIdentifier: "SettingDevNotiView") as! SettingDevNotiViewController
+        
+    
+        self.present(nextViewContorller, animated: true, completion: nil)
+        
+    }
 
 }
