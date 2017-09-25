@@ -14,6 +14,9 @@ class MainViewController: UIViewController {
     @IBOutlet var buttonLike : UIButton! //명언 좋아요 버튼
     @IBOutlet var buttonComment : UIButton! //명언 댓글 버튼
     
+    /*******************************************/
+    //MARK:-        LifeCycle                  //
+    /*******************************************/
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -24,6 +27,10 @@ class MainViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    
+    /*******************************************/
+    //MARK:-         Functions                 //
+    /*******************************************/
     
     // MARK: 명언 좋아요 버튼 액션
     @IBAction func buttonLikeAction(_ sender: UIButton) {
