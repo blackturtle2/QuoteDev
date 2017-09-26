@@ -8,9 +8,10 @@
 
 import UIKit
 import Firebase
+import UserNotifications
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate{
 
     var window: UIWindow?
 
@@ -19,7 +20,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         FirebaseApp.configure()
         
-        application.registerUserNotificationSettings(UIUserNotificationSettings(types: [.alert, .sound], categories: nil))
+        // 로컬 및 원격 통지에 대한 권한을 요청
+        if #available(iOS 10.0, *) {
+            let center = UNUserNotificationCenter.current()
+            center.delegate = self
+            
+            UNUserNotificationCenter.current().requestAuthorization(options: [.alert,.sound], completionHandler: { (flag, err) in
+                
+            })
+            application.registerForRemoteNotifications()
+        } else {
+            application.registerUserNotificationSettings(UIUserNotificationSettings(types: [.alert, .sound], categories: nil))
+            // Fallback on earlier versions
+        }
         
         // UserDefaults에 저장된 uid가 없을 경우, Firebase의 Auth signInAnonymously을 진행합니다.
         // Firebase의 익명 Auth는 앱을 지웠다 설치하더라도 같은 uid를 갖습니다. ( 디바이스 의존성 )
@@ -62,6 +75,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
-
+    // 특정 알림에 대해 사용자가 선택한 작업을 앱에 알리기 위해 호출됩니다.
+    @available(iOS 10.0, *)
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        print("userNotificatonCenter - didReceive")
+    }
+    
+    // 포 그라운드 앱에 알림이 전달되면 호출됩니다
+    @available(iOS 10.0, *)
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        print("userNotificatonCenter - willPresent")
+        center.getPendingNotificationRequests { (requests) in
+            for req in requests {
+                print(req.content.title+"호출됨")
+                completionHandler(.alert)
+            }
+        }
+    }
 }
 
