@@ -58,6 +58,22 @@
                                                 <constraint firstAttribute="width" secondItem="LrG-3z-qMg" secondAttribute="height" multiplier="16:9" id="b0k-JL-RZQ"/>
                                             </constraints>
                                         </imageView>
+                                        <view alpha="0.5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ca4-rS-U3f">
+                                            <rect key="frame" x="0.0" y="44" width="375" height="211"/>
+                                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        </view>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="발 없는 오픈소스 천리 간다" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JpR-xn-itO">
+                                            <rect key="frame" x="0.0" y="137.5" width="375" height="24"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="- 오픈소스에 PR 날리고 취직한 신입 개발자 -" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eZ3-F5-42t">
+                                            <rect key="frame" x="0.0" y="169.5" width="375" height="18"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n9g-TF-v2l" userLabel="like_mother_view">
                                             <rect key="frame" x="0.0" y="255" width="375" height="44"/>
                                             <subviews>
@@ -119,16 +135,26 @@
                                     </subviews>
                                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                     <constraints>
+                                        <constraint firstItem="ca4-rS-U3f" firstAttribute="bottom" secondItem="LrG-3z-qMg" secondAttribute="bottom" id="6Em-Rt-kvS"/>
                                         <constraint firstItem="LrG-3z-qMg" firstAttribute="leading" secondItem="kcY-Hy-Bda" secondAttribute="leading" id="6IH-vv-t4u"/>
+                                        <constraint firstItem="ca4-rS-U3f" firstAttribute="trailing" secondItem="LrG-3z-qMg" secondAttribute="trailing" id="7ha-qU-Zfs"/>
                                         <constraint firstAttribute="trailing" secondItem="cO4-gW-JKr" secondAttribute="trailing" id="9NW-Xe-Tho"/>
+                                        <constraint firstItem="ca4-rS-U3f" firstAttribute="top" secondItem="LrG-3z-qMg" secondAttribute="top" id="G6g-wO-4EO"/>
                                         <constraint firstAttribute="trailing" secondItem="LrG-3z-qMg" secondAttribute="trailing" id="Goo-Zx-3Od"/>
+                                        <constraint firstItem="ca4-rS-U3f" firstAttribute="leading" secondItem="LrG-3z-qMg" secondAttribute="leading" id="IUl-E1-cYI"/>
                                         <constraint firstItem="LrG-3z-qMg" firstAttribute="top" secondItem="cO4-gW-JKr" secondAttribute="bottom" id="LPO-Fo-Byb"/>
+                                        <constraint firstItem="eZ3-F5-42t" firstAttribute="trailing" secondItem="ca4-rS-U3f" secondAttribute="trailing" id="OK6-Oi-iak"/>
+                                        <constraint firstItem="eZ3-F5-42t" firstAttribute="leading" secondItem="ca4-rS-U3f" secondAttribute="leading" id="Prd-MT-euZ"/>
+                                        <constraint firstItem="eZ3-F5-42t" firstAttribute="top" secondItem="JpR-xn-itO" secondAttribute="bottom" constant="8" id="RPj-Lu-Vpv"/>
                                         <constraint firstItem="2Kj-mG-9O9" firstAttribute="centerX" secondItem="kcY-Hy-Bda" secondAttribute="centerX" id="Wph-xZ-QB9"/>
+                                        <constraint firstItem="JpR-xn-itO" firstAttribute="centerY" secondItem="ca4-rS-U3f" secondAttribute="centerY" id="Zb0-iP-TR8"/>
+                                        <constraint firstItem="JpR-xn-itO" firstAttribute="leading" secondItem="ca4-rS-U3f" secondAttribute="leading" id="cRy-aw-d6d"/>
                                         <constraint firstItem="cO4-gW-JKr" firstAttribute="leading" secondItem="kcY-Hy-Bda" secondAttribute="leading" id="d0O-do-veZ"/>
                                         <constraint firstItem="LrG-3z-qMg" firstAttribute="top" secondItem="2Kj-mG-9O9" secondAttribute="bottom" constant="8" id="fSm-WR-EB0"/>
                                         <constraint firstItem="2Kj-mG-9O9" firstAttribute="top" secondItem="kcY-Hy-Bda" secondAttribute="top" constant="8" id="fqA-2c-2bD"/>
                                         <constraint firstItem="n9g-TF-v2l" firstAttribute="leading" secondItem="kcY-Hy-Bda" secondAttribute="leading" id="gRP-Qn-oR4"/>
                                         <constraint firstItem="cO4-gW-JKr" firstAttribute="top" secondItem="kcY-Hy-Bda" secondAttribute="top" id="l1t-ba-PQ2"/>
+                                        <constraint firstItem="JpR-xn-itO" firstAttribute="trailing" secondItem="ca4-rS-U3f" secondAttribute="trailing" id="nDi-4k-uwV"/>
                                         <constraint firstAttribute="trailing" secondItem="n9g-TF-v2l" secondAttribute="trailing" id="s5x-tF-UPD"/>
                                         <constraint firstItem="n9g-TF-v2l" firstAttribute="top" secondItem="LrG-3z-qMg" secondAttribute="bottom" id="va3-oF-7Qs"/>
                                     </constraints>
