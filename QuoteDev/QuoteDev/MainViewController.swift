@@ -15,6 +15,7 @@ class MainViewController: UIViewController {
     
     @IBOutlet var buttonLike : UIButton! //명언 좋아요 버튼
     @IBOutlet var buttonComment : UIButton! //명언 댓글 버튼
+    @IBOutlet weak var segmentedControlQuoteMode: UISegmentedControl!
     
     /*******************************************/
     //MARK:-        LifeCycle                  //
@@ -24,6 +25,9 @@ class MainViewController: UIViewController {
         
         self.tableViewMain.delegate = self
         self.tableViewMain.dataSource = self
+        
+        //Segmented Control의 흰색 배경이 비치지 않도록 합니다.
+        self.segmentedControlQuoteMode.layer.cornerRadius = 5;
         
         //스크롤 뷰의 initial position을 조정해서 명언 모드 Segmented Control이 처음에는 보이지 않게 합니다.
         self.tableViewMain.contentOffset = CGPoint(x: 0, y: 50)
@@ -102,12 +106,12 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         case archive = 2
     }
     
-    // section의 개수
+    // MARK: tableView - section의 개수
     func numberOfSections(in tableView: UITableView) -> Int {
         return 3
     }
     
-    // section의 타이틀
+    // MARK: tableView - section의 타이틀
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
         case enumMainTableViewSection.save.rawValue:
@@ -119,7 +123,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-    // section의 row 개수
+    // MARK: tableView - section의 row 개수
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case enumMainTableViewSection.quoteComment.rawValue:
@@ -133,7 +137,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-    // footer의 타이틀
+    // MARK: tableView - footer의 타이틀
     func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         switch section {
         case enumMainTableViewSection.quoteComment.rawValue:
@@ -143,7 +147,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-    // cell 그리기
+    // MARK: tableView - cell 그리기
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let basicCell = UITableViewCell()
         
@@ -180,6 +184,14 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         default:
             return basicCell
         }
+        
+    }
+    
+    // MARK: tableView - DidSelectRowAt
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        // 터치한 표시를 제거하는 액션
+        tableView.deselectRow(at: indexPath, animated: true)
         
     }
 }
