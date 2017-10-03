@@ -45,12 +45,12 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
         case setting = 3
     }
     
-    // section의 개수
+    // MARK: tableView - section의 개수
     func numberOfSections(in tableView: UITableView) -> Int {
         return 4
     }
     
-    // section의 타이틀
+    // MARK: tableView - section의 타이틀
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
         case enumSettingSection.howTo.rawValue:
@@ -66,7 +66,7 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-    // section의 row 개수
+    // MARK: tableView - section의 row 개수
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case enumSettingSection.howTo.rawValue:
@@ -82,7 +82,7 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-    // footer의 타이틀
+    // MARK: tableView - footer의 타이틀
     func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         switch section {
         case enumSettingSection.quoteOptions.rawValue:
@@ -94,7 +94,7 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-    // cell 그리기
+    // MARK: tableView - cell 그리기
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let basicCell = UITableViewCell()
         
@@ -140,6 +140,14 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
         default:
             return basicCell
         }
+        
+    }
+    
+    // MARK: tableView - DidSelectRowAt
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        // 터치한 표시를 제거하는 액션
+        tableView.deselectRow(at: indexPath, animated: true)
         
     }
     
