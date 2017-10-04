@@ -11,12 +11,26 @@ import Firebase
 
 class MainViewController: UIViewController {
     
+    @IBOutlet var tableViewMain: UITableView!
+    
     @IBOutlet var buttonLike : UIButton! //명언 좋아요 버튼
     @IBOutlet var buttonComment : UIButton! //명언 댓글 버튼
+    @IBOutlet weak var segmentedControlQuoteMode: UISegmentedControl!
     
+    /*******************************************/
+    //MARK:-        LifeCycle                  //
+    /*******************************************/
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        self.tableViewMain.delegate = self
+        self.tableViewMain.dataSource = self
+        
+        //Segmented Control의 흰색 배경이 비치지 않도록 합니다.
+        self.segmentedControlQuoteMode.layer.cornerRadius = 5;
+        
+        //스크롤 뷰의 initial position을 조정해서 명언 모드 Segmented Control이 처음에는 보이지 않게 합니다.
+        self.tableViewMain.contentOffset = CGPoint(x: 0, y: 50)
     }
     
     override func didReceiveMemoryWarning() {
@@ -24,6 +38,10 @@ class MainViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    
+    /*******************************************/
+    //MARK:-         Functions                 //
+    /*******************************************/
     
     // MARK: 명언 좋아요 버튼 액션
     @IBAction func buttonLikeAction(_ sender: UIButton) {
@@ -78,3 +96,102 @@ class MainViewController: UIViewController {
     
 }
 
+/*******************************************/
+//MARK:-         extenstion                //
+/*******************************************/
+extension MainViewController: UITableViewDelegate, UITableViewDataSource {
+    enum enumMainTableViewSection : Int {
+        case quoteComment = 0
+        case save = 1
+        case archive = 2
+    }
+    
+    // MARK: tableView - section의 개수
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 3
+    }
+    
+    // MARK: tableView - section의 타이틀
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        switch section {
+        case enumMainTableViewSection.save.rawValue:
+            return "SAVE"
+        case enumMainTableViewSection.archive.rawValue:
+            return "ARCHIVE"
+        default:
+            return ""
+        }
+    }
+    
+    // MARK: tableView - section의 row 개수
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        switch section {
+        case enumMainTableViewSection.quoteComment.rawValue:
+            return 3 //명언 댓글 리스트
+        case enumMainTableViewSection.save.rawValue:
+            return 2 //사진으로 저장, 배경화면으로 저장
+        case enumMainTableViewSection.archive.rawValue:
+            return 2 //나의 좋아요 명언, 나의 댓글 명언
+        default:
+            return 0
+        }
+    }
+    
+    // MARK: tableView - footer의 타이틀
+    func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        switch section {
+        case enumMainTableViewSection.quoteComment.rawValue:
+            return " "
+        default:
+            return nil
+        }
+    }
+    
+    // MARK: tableView - cell 그리기
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let basicCell = UITableViewCell()
+        
+        switch indexPath.section {
+        case enumMainTableViewSection.quoteComment.rawValue:
+            switch indexPath.row{
+            case 0: //명언 댓글 첫번째
+                return tableView.dequeueReusableCell(withIdentifier: "quoteComment", for: indexPath)
+            case 1: //명언 댓글 두번째
+                return tableView.dequeueReusableCell(withIdentifier: "quoteComment", for: indexPath)
+            case 2: // 댓글 더보기 버튼
+                return tableView.dequeueReusableCell(withIdentifier: "moreCommentsButton", for: indexPath)
+            default:
+                return basicCell
+            }
+        case enumMainTableViewSection.save.rawValue:
+            switch indexPath.row{
+            case 0: //사진으로 저장
+                return tableView.dequeueReusableCell(withIdentifier: "saveToPhotoAlbumButton", for: indexPath)
+            case 1: //배경화면으로 저장
+                return tableView.dequeueReusableCell(withIdentifier: "saveToBackgroundPhotoButton", for: indexPath)
+            default:
+                return basicCell
+            }
+        case enumMainTableViewSection.archive.rawValue:
+            switch indexPath.row{
+            case 0: //나의 좋아요 명언
+                return tableView.dequeueReusableCell(withIdentifier: "myLikeQuotesButton", for: indexPath)
+            case 1: //나의 댓글 명언
+                return tableView.dequeueReusableCell(withIdentifier: "myCommentQuoteButton", for: indexPath)
+            default:
+                return basicCell
+            }
+        default:
+            return basicCell
+        }
+        
+    }
+    
+    // MARK: tableView - DidSelectRowAt
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        // 터치한 표시를 제거하는 액션
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+    }
+}
