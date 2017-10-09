@@ -55,7 +55,7 @@ class MainViewController: UIViewController {
     //MARK:-         Functions                 //
     /*******************************************/
     
-    // MARK: 명언 텍스트와 소스 가져오기 메소드 정의
+    // MARK: 명언 텍스트와 소스 가져오기 function 정의
     // TODO: Constants로 모두 바꾸기.
     // TODO: 진지 모드 / 유쾌 모드 선택에 따른 각각의 데이터 가져오기 구현.
     // TODO: 오늘 날짜에 따라 그 날에 해당되는 명언 데이터 가져오기 구현.
@@ -85,7 +85,7 @@ class MainViewController: UIViewController {
         }
     }
     
-    // MARK: 명언 좋아요 버튼의 카운트 변경 메소드 정의
+    // MARK: 명언 좋아요 버튼의 카운트 변경 function 정의
     func showQuoteLikesCount() {
         guard let realTodayQuoteID = self.todaysQuoteID else { return }
         Database.database().reference().child("quotes_likes").child(realTodayQuoteID).observe(DataEventType.value, with: {[unowned self] (snapshot) in
@@ -147,11 +147,25 @@ class MainViewController: UIViewController {
             }))
             
             self.present(alertSetUserNickname, animated: true, completion: nil)
-            
         }
+    }
+    
+    // MARK: 명언 공유 버튼 액션 정의
+    @IBAction func buttonShareAction(_ sender: UIButton) {
+        guard let quoteText = self.labelQuoteText.text else { return }
+        guard let quoteSource = self.labelQuoteSource.text else { return }
+        let sharingText = quoteText + "\n" + quoteSource + "\n\n" + "by QuoteDev"
         
+        self.shareTextOf(text: sharingText)
+    }
+    
+    // 텍스트 공유 기능 function 정의
+    func shareTextOf(text: String) {
+        let activityVC = UIActivityViewController(activityItems: [text], applicationActivities: nil) // 액티비티 뷰 컨트롤러 설정
+        activityVC.popoverPresentationController?.sourceView = self.view // 아이패드에서 작동하도록 pop over로 설정
+        activityVC.excludedActivityTypes = [ UIActivityType.airDrop, UIActivityType.addToReadingList, UIActivityType.saveToCameraRoll ] // 제외 타입 설정: 에어드롭, 읽기목록, 카메라롤 저장
         
-        
+        self.present(activityVC, animated: true, completion: nil)
     }
     
 }

@@ -113,7 +113,7 @@
                                                     <rect key="frame" x="341" y="9" width="19" height="25"/>
                                                     <state key="normal" image="icon_button_share"/>
                                                     <connections>
-                                                        <action selector="buttonCommentAction:" destination="zcT-tT-xTD" eventType="touchUpInside" id="ea9-qu-f4W"/>
+                                                        <action selector="buttonShareAction:" destination="zcT-tT-xTD" eventType="touchUpInside" id="48e-9G-azs"/>
                                                     </connections>
                                                 </button>
                                             </subviews>
