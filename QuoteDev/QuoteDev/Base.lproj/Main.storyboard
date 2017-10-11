@@ -8,6 +8,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -375,6 +376,9 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="tQz-Wj-vX4" kind="show" id="cfR-Bn-wb3"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="notificationSetting" id="6oh-Nv-fBN">
                                         <rect key="frame" x="0.0" y="99.5" width="375" height="44"/>
@@ -543,6 +547,121 @@
             </objects>
             <point key="canvasLocation" x="1748" y="112"/>
         </scene>
+        <!--위젯 설정 방법-->
+        <scene sceneID="1DI-QW-cax">
+            <objects>
+                <viewController id="tQz-Wj-vX4" customClass="SettingHowToSetWidgetViewController" customModule="QuoteDev" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="DQe-wg-A0R"/>
+                        <viewControllerLayoutGuide type="bottom" id="tUv-E6-2cs"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="bye-QZ-bhG">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TBd-s7-qKn">
+                                <rect key="frame" x="0.0" y="64" width="375" height="571"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0IX-6m-urS" userLabel="Contents View">
+                                        <rect key="frame" x="0.0" y="0.0" width="1125" height="603"/>
+                                        <subviews>
+                                            <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="qDY-Dg-7SW">
+                                                <rect key="frame" x="0.0" y="0.0" width="1125" height="603"/>
+                                                <subviews>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="udX-a9-oVL">
+                                                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                                                        <subviews>
+                                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="how_to_widget_1" translatesAutoresizingMaskIntoConstraints="NO" id="Po9-XH-1Hy">
+                                                                <rect key="frame" x="37.5" y="0.0" width="300" height="571"/>
+                                                            </imageView>
+                                                        </subviews>
+                                                        <constraints>
+                                                            <constraint firstItem="Po9-XH-1Hy" firstAttribute="centerX" secondItem="udX-a9-oVL" secondAttribute="centerX" id="6CA-tt-ee0"/>
+                                                            <constraint firstItem="Po9-XH-1Hy" firstAttribute="width" secondItem="udX-a9-oVL" secondAttribute="width" multiplier="4/5" id="vCV-jQ-jAw"/>
+                                                        </constraints>
+                                                    </view>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5c9-RA-np6">
+                                                        <rect key="frame" x="375" y="237.5" width="375" height="128"/>
+                                                        <subviews>
+                                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="how_to_widget_2" translatesAutoresizingMaskIntoConstraints="NO" id="Icz-xv-imG">
+                                                                <rect key="frame" x="37.5" y="-237.5" width="300" height="571"/>
+                                                            </imageView>
+                                                        </subviews>
+                                                        <constraints>
+                                                            <constraint firstItem="Icz-xv-imG" firstAttribute="width" secondItem="5c9-RA-np6" secondAttribute="width" multiplier="4/5" id="AB8-3R-A8G"/>
+                                                            <constraint firstItem="Icz-xv-imG" firstAttribute="centerX" secondItem="5c9-RA-np6" secondAttribute="centerX" id="Kfp-bZ-b8E"/>
+                                                        </constraints>
+                                                    </view>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ife-j1-7JH">
+                                                        <rect key="frame" x="750" y="237.5" width="375" height="128"/>
+                                                        <subviews>
+                                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="how_to_widget_3" translatesAutoresizingMaskIntoConstraints="NO" id="sm2-lb-Dzc">
+                                                                <rect key="frame" x="37.5" y="-237.5" width="300" height="571"/>
+                                                            </imageView>
+                                                        </subviews>
+                                                        <constraints>
+                                                            <constraint firstItem="sm2-lb-Dzc" firstAttribute="width" secondItem="ife-j1-7JH" secondAttribute="width" multiplier="4/5" id="ms2-R2-zhs"/>
+                                                            <constraint firstItem="sm2-lb-Dzc" firstAttribute="centerX" secondItem="ife-j1-7JH" secondAttribute="centerX" id="vT3-tQ-U5w"/>
+                                                        </constraints>
+                                                    </view>
+                                                </subviews>
+                                            </stackView>
+                                        </subviews>
+                                        <color key="backgroundColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstItem="qDY-Dg-7SW" firstAttribute="centerY" secondItem="0IX-6m-urS" secondAttribute="centerY" id="15N-SD-v8V"/>
+                                            <constraint firstItem="qDY-Dg-7SW" firstAttribute="leading" secondItem="0IX-6m-urS" secondAttribute="leading" id="8Qx-So-tu1"/>
+                                            <constraint firstAttribute="bottom" secondItem="qDY-Dg-7SW" secondAttribute="bottom" id="Cgx-Sm-Y6N"/>
+                                            <constraint firstItem="qDY-Dg-7SW" firstAttribute="top" secondItem="0IX-6m-urS" secondAttribute="top" id="xRJ-Gx-46G"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="0IX-6m-urS" secondAttribute="trailing" id="BUO-td-zE1"/>
+                                    <constraint firstAttribute="bottom" secondItem="0IX-6m-urS" secondAttribute="bottom" constant="32" id="MQ3-5r-7aO"/>
+                                    <constraint firstItem="0IX-6m-urS" firstAttribute="leading" secondItem="TBd-s7-qKn" secondAttribute="leading" id="x4v-Ml-Q25"/>
+                                    <constraint firstItem="0IX-6m-urS" firstAttribute="top" secondItem="TBd-s7-qKn" secondAttribute="top" id="xXB-pc-EZa"/>
+                                </constraints>
+                            </scrollView>
+                            <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="xkQ-eR-DmP">
+                                <rect key="frame" x="168" y="630" width="39" height="37"/>
+                                <color key="pageIndicatorTintColor" red="0.56078431370000004" green="0.5568627451" blue="0.58039215690000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="currentPageIndicatorTintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </pageControl>
+                        </subviews>
+                        <color key="backgroundColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="xkQ-eR-DmP" firstAttribute="centerX" secondItem="bye-QZ-bhG" secondAttribute="centerX" id="3SK-lB-miw"/>
+                            <constraint firstItem="0IX-6m-urS" firstAttribute="top" secondItem="DQe-wg-A0R" secondAttribute="bottom" priority="250" id="8l9-uD-tux"/>
+                            <constraint firstItem="Po9-XH-1Hy" firstAttribute="top" secondItem="DQe-wg-A0R" secondAttribute="bottom" id="Al7-Ix-pEx"/>
+                            <constraint firstItem="TBd-s7-qKn" firstAttribute="width" secondItem="bye-QZ-bhG" secondAttribute="width" id="BJJ-0T-qww"/>
+                            <constraint firstItem="5c9-RA-np6" firstAttribute="width" secondItem="bye-QZ-bhG" secondAttribute="width" id="Dwt-vw-5hK"/>
+                            <constraint firstItem="tUv-E6-2cs" firstAttribute="top" secondItem="Po9-XH-1Hy" secondAttribute="bottom" constant="32" id="GOC-Ho-Rw6"/>
+                            <constraint firstAttribute="trailing" secondItem="TBd-s7-qKn" secondAttribute="trailing" id="L6v-Ny-bEj"/>
+                            <constraint firstItem="tUv-E6-2cs" firstAttribute="top" secondItem="Icz-xv-imG" secondAttribute="bottom" constant="32" id="LVU-RJ-iGM"/>
+                            <constraint firstItem="tUv-E6-2cs" firstAttribute="top" secondItem="xkQ-eR-DmP" secondAttribute="bottom" id="PJq-Hw-guM"/>
+                            <constraint firstItem="0IX-6m-urS" firstAttribute="width" secondItem="bye-QZ-bhG" secondAttribute="width" multiplier="3" priority="250" id="PyG-ah-Rym"/>
+                            <constraint firstItem="tUv-E6-2cs" firstAttribute="top" secondItem="TBd-s7-qKn" secondAttribute="bottom" constant="32" id="Q5l-Xc-ggR"/>
+                            <constraint firstItem="sm2-lb-Dzc" firstAttribute="top" secondItem="DQe-wg-A0R" secondAttribute="bottom" id="Rrn-Ig-gA9"/>
+                            <constraint firstItem="TBd-s7-qKn" firstAttribute="leading" secondItem="bye-QZ-bhG" secondAttribute="leading" id="b4q-iG-1MQ"/>
+                            <constraint firstItem="udX-a9-oVL" firstAttribute="width" secondItem="bye-QZ-bhG" secondAttribute="width" id="bJf-dH-cqF"/>
+                            <constraint firstItem="tUv-E6-2cs" firstAttribute="top" secondItem="0IX-6m-urS" secondAttribute="bottom" priority="250" id="gJp-oc-BsC"/>
+                            <constraint firstItem="TBd-s7-qKn" firstAttribute="top" secondItem="DQe-wg-A0R" secondAttribute="bottom" id="inN-ix-cN0"/>
+                            <constraint firstItem="tUv-E6-2cs" firstAttribute="top" secondItem="sm2-lb-Dzc" secondAttribute="bottom" constant="32" id="j1r-Eb-OO9"/>
+                            <constraint firstItem="ife-j1-7JH" firstAttribute="width" secondItem="bye-QZ-bhG" secondAttribute="width" id="qOv-dZ-WfO"/>
+                            <constraint firstItem="Icz-xv-imG" firstAttribute="top" secondItem="DQe-wg-A0R" secondAttribute="bottom" id="zCC-Cq-pEf"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="위젯 설정 방법" id="ZAX-9X-vJF"/>
+                    <connections>
+                        <outlet property="pageControlScrollView" destination="xkQ-eR-DmP" id="tWe-BQ-SsB"/>
+                        <outlet property="scrollViewMain" destination="TBd-s7-qKn" id="fbx-Hd-FTJ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Jsx-Jt-SC7" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2873.5999999999999" y="111.99400299850076"/>
+        </scene>
         <!--quote comment-->
         <scene sceneID="A7W-fM-qCV">
             <objects>
@@ -598,6 +717,9 @@
         </scene>
     </scenes>
     <resources>
+        <image name="how_to_widget_1" width="375" height="667"/>
+        <image name="how_to_widget_2" width="375" height="667"/>
+        <image name="how_to_widget_3" width="375" height="667"/>
         <image name="icon_button_comment" width="22" height="20"/>
         <image name="icon_button_like" width="22" height="20"/>
         <image name="icon_button_more" width="24" height="6"/>
