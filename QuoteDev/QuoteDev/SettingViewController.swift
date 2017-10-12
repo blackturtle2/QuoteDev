@@ -12,6 +12,10 @@ import MessageUI
 class SettingViewController: UIViewController {
     
     @IBOutlet var mainTableView : UITableView!
+    
+    // 알림 시간 cell 선택으로 나오는 UI 선언
+    @IBOutlet weak var motherViewAlarmTimePicker: UIView!
+    @IBOutlet weak var datePickerSetAlarmTime: UIDatePicker!
 
     /*******************************************/
     //MARK:-        LifeCycle                  //
@@ -59,6 +63,26 @@ class SettingViewController: UIViewController {
         return mailComposerVC
     }
     
+    // MARK: 알림 시간 DatePicker의 완료 버튼 액션 정의
+    @IBAction func buttonCompleteAlarmTimeSetting(_ sender: UIButton) {
+        let formatter = DateFormatter()
+        formatter.timeStyle = .short
+        print("///// buttonCompleteAlarmTimeSetting: ", formatter.string(from: self.datePickerSetAlarmTime.date))
+        // "3:00 AM"과 같은 포맷입니다.
+        
+        let userAlarmTime = formatter.string(from: self.datePickerSetAlarmTime.date)
+        
+        // 사용자가 세팅한 알람 시간은 UserDefaults에 저장합니다.
+        UserDefaults.standard.set(userAlarmTime, forKey: Constants.settingAlarmTime)
+        self.mainTableView.reloadRows(at: [[1,1]], with: UITableViewRowAnimation.automatic) // 사용자가 세팅한 시간으로 알림 시간 cell의 UI에 표현합니다.
+        
+        self.motherViewAlarmTimePicker.isHidden = true
+    }
+    
+    // MARK: 알림 시간 DatePicker의 취소 버튼 액션 정의
+    @IBAction func buttonCancelAlarmSetting(_ sender: UIButton) {
+        self.motherViewAlarmTimePicker.isHidden = true
+    }
 }
 
 /*******************************************/
@@ -140,7 +164,9 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
                 resultCell.textLabel?.text = "알림 설정"
                 return resultCell
             case 1: //알림 시간
-                return tableView.dequeueReusableCell(withIdentifier: "notificationTime", for: indexPath)
+                let resultCell = tableView.dequeueReusableCell(withIdentifier: "notificationTime", for: indexPath)
+                resultCell.detailTextLabel?.text = UserDefaults.standard.string(forKey: Constants.settingAlarmTime) ?? "9:00 AM"
+                return resultCell
             case 2: //기본 명언 모드
                 return tableView.dequeueReusableCell(withIdentifier: "defaultQuoteMode", for: indexPath)
             default:
@@ -179,13 +205,20 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
         switch indexPath.section {
         case enumSettingSection.about.rawValue:
             switch indexPath.row{
-            case 0: //개발자 소개
+            case 0: // 개발자 소개
                 return
-            case 1: //개발자 문의
+            case 1: // 개발자 문의
                 // 개발자에게 메일을 보냅니다.
                 self.sendEmailTo(emailAddress: "blackturtle2@gmail.com")
-            case 2: //앱 버전
+            case 2: // 앱 버전
                 return
+            default:
+                return
+            }
+        case enumSettingSection.quoteOptions.rawValue:
+            switch indexPath.row {
+            case 1: // 알림 시간 설정
+                self.motherViewAlarmTimePicker.isHidden = false
             default:
                 return
             }

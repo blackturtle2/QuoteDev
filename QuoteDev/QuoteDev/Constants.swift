@@ -17,5 +17,7 @@ struct Constants {
     static let firebaseUsersRoot:String = "Users"
     static let firebaseUserUid:String = "userUid"
     static let firebaseUserNickname:String = "userNickname"
+    
+    static let settingAlarmTime:String = "settingAlarmTime"
 }
 
