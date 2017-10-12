@@ -90,14 +90,14 @@ class SettingViewController: UIViewController {
     func setDefaultQuoteMode() {
         let alert: UIAlertController = UIAlertController(title: nil, message: "설정 후, 다음 앱 실행 때부터 적용됩니다.", preferredStyle: .actionSheet)
         
-        let seriousModeButton = UIAlertAction(title: "진지 모드", style: .default, handler: { (action) in
+        let seriousModeButton = UIAlertAction(title: "진지 모드", style: .default, handler: {[unowned self] (action) in
             print("seriousModeButton")
             UserDefaults.standard.set(Constants.settingQuoteModeSerous, forKey: Constants.settingDefaultQuoteMode)
             Toast.init(text: "진지 모드로 적용되었습니다.").show()
             self.mainTableView.reloadRows(at: [[enumSettingSection.quoteOptions.rawValue,2]], with: UITableViewRowAnimation.automatic) // 사용자가 설정한 기본 명언 모드의 텍스트가 cell의 UI에 표현됩니다.
         })
         
-        let joyfulModeButton = UIAlertAction(title: "유쾌 모드", style: .default, handler: { (action) in
+        let joyfulModeButton = UIAlertAction(title: "유쾌 모드", style: .default, handler: {[unowned self] (action) in
             print("joyfulModeButton")
             UserDefaults.standard.set(Constants.settingQuoteModeJoyful, forKey: Constants.settingDefaultQuoteMode)
             Toast.init(text: "유쾌 모드로 적용되었습니다.").show()
@@ -136,7 +136,7 @@ class SettingViewController: UIViewController {
             
         }else if person == "hwanggisu" {
             let alert = UIAlertController(title: "황기수 (iOS Dev)", message: "- QuoteDev 게시판 개발\n\n", preferredStyle: .actionSheet)
-            let mailButton = UIAlertAction(title: "e-mail", style: .default, handler: { (action) in
+            let mailButton = UIAlertAction(title: "e-mail", style: .default, handler: {[unowned self] (action) in
                 self.sendEmailTo(emailAddress: "kisu9838@gmail.com")
             })
             let cancelButton = UIAlertAction(title: "취소", style: .cancel, handler: nil)
