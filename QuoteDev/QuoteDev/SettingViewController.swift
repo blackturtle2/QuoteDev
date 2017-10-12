@@ -9,6 +9,7 @@
 import UIKit
 import MessageUI
 import Toaster
+import SafariServices
 
 class SettingViewController: UIViewController {
     
@@ -102,13 +103,60 @@ class SettingViewController: UIViewController {
             Toast.init(text: "유쾌 모드로 적용되었습니다.").show()
             self.mainTableView.reloadRows(at: [[enumSettingSection.quoteOptions.rawValue,2]], with: UITableViewRowAnimation.automatic) // 사용자가 설정한 기본 명언 모드의 텍스트가 cell의 UI에 표현됩니다.
         })
-        let cancelButton = UIAlertAction(title: "취소", style: .destructive, handler: nil)
+        let cancelButton = UIAlertAction(title: "취소", style: .cancel, handler: nil)
         
         alert.addAction(seriousModeButton)
         alert.addAction(joyfulModeButton)
         alert.addAction(cancelButton)
         
         self.present(alert, animated: true, completion: nil)
+    }
+    
+    // MARK: 개발자 소개 액션 정의
+    func showAboutDeveloperOf(person:String) {
+        if person == "leejaesung" {
+            let alert = UIAlertController(title: "이재성 (PM & iOS Dev)", message: "- QuoteDev 메인 및 설정 개발\n\n// 공돌이에서 기획자로\n// 기획자에서 다시 개발자로\n\n컴돌이로 졸업 후, 사업을 시작.\n3년 후, 모 카셰어링 회사에서 기획자로 근무.\n1년 후, iOS 개발자가 되겠다고 탈출.\n\nPalm OS, WindowsCE 시절부터 모바일을 좋아했고.\n애플을 좋아하며, 또 애플을 좋아한다.\n온라인에서는 \"까만거북이\"로 활동한다. (a.k.a 까북)", preferredStyle: .actionSheet)
+            let blogButton = UIAlertAction(title: "Blog", style: .default, handler: {[unowned self] (action) in
+                self.openSafariViewOf(url: "http://blackturtle2.net")
+            })
+            let githubButton = UIAlertAction(title: "GitHub", style: .default, handler: {[unowned self] (action) in
+                self.openSafariViewOf(url: "https://github.com/blackturtle2")
+            })
+            let mailButton = UIAlertAction(title: "E-mail", style: .default, handler: {[unowned self] (action) in
+                self.sendEmailTo(emailAddress: "blackturtle2@gmail.com")
+            })
+            let cancelButton = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+            
+            alert.addAction(blogButton)
+            alert.addAction(githubButton)
+            alert.addAction(mailButton)
+            alert.addAction(cancelButton)
+            
+            self.present(alert, animated: true, completion: nil)
+            
+        }else if person == "hwanggisu" {
+            let alert = UIAlertController(title: "황기수 (iOS Dev)", message: "- QuoteDev 게시판 개발\n\n", preferredStyle: .actionSheet)
+            let mailButton = UIAlertAction(title: "e-mail", style: .default, handler: { (action) in
+                self.sendEmailTo(emailAddress: "kisu9838@gmail.com")
+            })
+            let cancelButton = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+            
+            alert.addAction(mailButton)
+            alert.addAction(cancelButton)
+            
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    // MARK: 인앱웹뷰 열기 function 정의
+    // `SafariServices`의 import가 필요합니다.
+    func openSafariViewOf(url:String) {
+        guard let realURL = URL(string: url) else { return }
+        
+        // iOS 9부터 지원하는 `SFSafariViewController`를 이용합니다.
+        let safariViewController = SFSafariViewController(url: realURL)
+//        safariViewController.delegate = self // 사파리 뷰에서 `Done` 버튼을 눌렀을 때의 액션 정의를 위한 Delegate 초기화입니다.
+        self.present(safariViewController, animated: true, completion: nil)
     }
 }
 
@@ -152,7 +200,7 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
         case enumSettingSection.quoteOptions.rawValue:
             return 3 //알림, 알림 시간, 기본 모드
         case enumSettingSection.about.rawValue:
-            return 3 //개발자 소개, 개발자 문의, 앱 버전
+            return 4 //개발자 소개(이재성), 개발자 소개(황기수), 앱 버전, 앱 문의하기
         case enumSettingSection.setting.rawValue:
             return 1 // 초기화
         default:
@@ -213,12 +261,18 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
         // MARK: ABOUT
         case enumSettingSection.about.rawValue:
             switch indexPath.row{
-            case 0: //개발자 소개
-                return tableView.dequeueReusableCell(withIdentifier: "aboutDeveloper", for: indexPath)
-            case 1: //개발자 문의
-                return tableView.dequeueReusableCell(withIdentifier: "askToDeveloper", for: indexPath)
-            case 2: //앱 버전
+            case 0: // 개발자 소개 (이재성)
+                let resultCell = tableView.dequeueReusableCell(withIdentifier: "aboutDeveloper", for: indexPath)
+                resultCell.detailTextLabel?.text = "Lee Jaesung"
+                return resultCell
+            case 1: // 개발자 소개 (황기수)
+                let resultCell = tableView.dequeueReusableCell(withIdentifier: "aboutDeveloper", for: indexPath)
+                resultCell.detailTextLabel?.text = "Hwang Gisu"
+                return resultCell
+            case 2: // 앱 버전
                 return tableView.dequeueReusableCell(withIdentifier: "appVersion", for: indexPath)
+            case 3: // 앱 문의하기
+                return tableView.dequeueReusableCell(withIdentifier: "askToDeveloper", for: indexPath)
             default:
                 return basicCell
             }
@@ -243,24 +297,30 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
         tableView.deselectRow(at: indexPath, animated: true)
         
         switch indexPath.section {
-        case enumSettingSection.about.rawValue:
-            switch indexPath.row{
-            case 0: // 개발자 소개
-                return
-            case 1: // 개발자 문의
-                // 개발자에게 메일을 보냅니다.
-                self.sendEmailTo(emailAddress: "blackturtle2@gmail.com")
-            case 2: // 앱 버전
-                return
-            default:
-                return
-            }
+        // MARK: HOW TO
+            // 위젯 설정 방법은 스토리보드에서 show segue로 연결하였습니다.
+        // MARK: QUOTE OPTIONS
         case enumSettingSection.quoteOptions.rawValue:
             switch indexPath.row {
             case 1: // 알림 시간 설정
                 self.motherViewAlarmTimePicker.isHidden = false
             case 2: // 기본 명언 모드 설정
                 self.setDefaultQuoteMode()
+            default:
+                return
+            }
+        // MARK: ABOUT
+        case enumSettingSection.about.rawValue:
+            switch indexPath.row{
+            case 0: // 개발자 소개 (이재성)
+                self.showAboutDeveloperOf(person: "leejaesung")
+            case 1: // 개발자 소개 (황기수)
+                self.showAboutDeveloperOf(person: "hwanggisu")
+            case 2: // 앱 버전
+                return
+            case 3: // 앱 문의하기
+                // 개발자에게 메일을 보냅니다.
+                self.sendEmailTo(emailAddress: "blackturtle2@gmail.com")
             default:
                 return
             }
