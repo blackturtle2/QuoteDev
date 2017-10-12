@@ -133,9 +133,15 @@
                     <navigationItem key="navigationItem" title="New Commit" id="e8i-p7-x9V">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="1wZ-y4-57r">
                             <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <action selector="cancelBtnTouched:" destination="wYJ-zD-gCg" id="0CA-m7-Uy8"/>
+                            </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Item" systemItem="done" id="cq4-I4-gyR">
                             <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <connections>
+                                <action selector="doneBtnTouched:" destination="wYJ-zD-gCg" id="aLq-fJ-ny7"/>
+                            </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
@@ -324,6 +330,9 @@
                     <navigationItem key="navigationItem" title="BoardDev" id="a57-cV-D0V">
                         <barButtonItem key="leftBarButtonItem" title="Back" id="j7R-tD-SM7">
                             <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <connections>
+                                <action selector="backBtnTouched:" destination="0gc-fj-JRm" id="ExY-Cl-AjV"/>
+                            </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="글쓰기" id="YRR-Db-gRt">
                             <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import Firebase
 //  게시판 글쓰기 뷰컨트롤러
 class BoardDevWriteViewController: UIViewController {
     // 이미지 여부에 따라 제어하기위한 UIView
@@ -16,15 +16,28 @@ class BoardDevWriteViewController: UIViewController {
     @IBOutlet weak var photoDeleteBtn: UIButton!
     @IBOutlet weak var textView: UITextView!
     
+    var reference: DatabaseReference!
     var imageUrlData: URL?
     var textIsEmpty: Bool = true
     let imagePickerController = UIImagePickerController()
+    var user_uid: String = "#null"
+    var user_nickname = "#null"
+    var childCount: Int?
     override func viewDidLoad() {
         super.viewDidLoad()
         imagePickerController.delegate = self
         textView.delegate = self
         // UIButton 자체에 imageInset이 있어서 테스트 해볼예정입니다.
         
+        guard let uid = UserDefaults.standard.string(forKey: Constants.userDefaults_Uid), let nickName = UserDefaults.standard.string(forKey: Constants.userDefaults_UserNickname) else {return}
+        user_uid = uid
+        user_nickname = nickName
+        
+        let nowDate = Date()
+        let dateFormatter: DateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyymmddHHmm"
+        let date = dateFormatter.string(from: nowDate)
+        print("DATE:// ", date)
         
         
     }
@@ -71,6 +84,45 @@ class BoardDevWriteViewController: UIViewController {
     @IBAction func phtoDeleBtnTouched(_ sender: UIButton) {
         print("phtodelete bten 터치")
         
+    }
+    
+    @IBAction func cancelBtnTouched(_ sender: UIBarButtonItem){
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    @IBAction func doneBtnTouched(_ sender: UIBarButtonItem){
+        // 작성버튼 클릭시 인스턴스 값 할당
+        reference = Database.database().reference()
+        let nowDate = Date()
+        
+        let dateFormatter: DateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyymmddHHmm"
+        let currentDate = dateFormatter.string(from: nowDate)
+        let board_uid = "\(user_uid)\(currentDate)"
+        print("BoardUID:// ", board_uid)
+        
+        print("TEXT://", self.textView.text)
+        
+        // 현재 board 하위노드에 children 카운트측적을 위한 호출
+        reference.child("board").observeSingleEvent(of: .value, with: { (dataSnap) in
+            var board_count = 0
+            if dataSnap.exists() {
+               board_count = Int(dataSnap.childrenCount)
+            }
+            print(board_count)
+            var insertData: [String:Any] = [:]
+            insertData.updateValue(board_uid, forKey: "board_uid")
+            insertData.updateValue(self.textView.text, forKey: "board_text")
+            insertData.updateValue("no-data", forKey: "board_img_url")
+            insertData.updateValue(currentDate, forKey: "board_date") // date형식의경우 계속 시간이 변경됨
+            insertData.updateValue(self.user_uid, forKey: "user_uid")
+            insertData.updateValue(self.user_nickname, forKey: "user_nickname")
+            insertData.updateValue(board_count, forKey: "board_count") // board_count(고유 글번호)
+            
+            self.reference.child("board").childByAutoId().setValue(insertData)
+        }) { (error) in
+            print(error.localizedDescription)
+        }
     }
 }
 

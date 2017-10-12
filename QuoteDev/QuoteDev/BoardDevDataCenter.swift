@@ -18,3 +18,17 @@ class BoardDevDataCenter {
     
     
 }
+
+struct Board {
+    let board_uid: String
+    let board_text: String
+    let board_img_url: URL?
+    let board_date: Date
+    let user_uid: String
+    let user_nickname: String
+    let board_count: Int
+}
+struct BoardLists {
+    
+    
+}
