@@ -18,6 +18,10 @@ struct Constants {
     static let firebaseUserUid:String = "userUid"
     static let firebaseUserNickname:String = "userNickname"
     
+    static let firebaseAppVersion:String = "app_version"
+    static let firebaseAppCurrentVersion:String = "current_version"
+    static let firebaseAppForcedUpdateVersion:String = "forced_update_version"
+    
     static let settingAlarmTime:String = "settingAlarmTime"
     static let settingDefaultQuoteMode:String = "settingDefaultQuoteMode"
     static let settingQuoteModeSerous:String = "quotes_data_kor_serious"

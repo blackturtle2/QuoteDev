@@ -10,6 +10,7 @@ import UIKit
 import MessageUI
 import Toaster
 import SafariServices
+import Firebase
 
 class SettingViewController: UIViewController {
     
@@ -38,7 +39,7 @@ class SettingViewController: UIViewController {
     //MARK:-         Functions                 //
     /*******************************************/
     
-    //MARK: 개발자 문의 email 보내기 function 정의
+    //MARK: 앱 문의 email 보내기 function 정의
     // [주의] `MessageUI` import 필요
     func sendEmailTo(emailAddress email:String) {
         let userSystemVersion = UIDevice.current.systemVersion // 현재 사용자 iOS 버전
@@ -148,7 +149,7 @@ class SettingViewController: UIViewController {
         }
     }
     
-    // MARK: 인앱웹뷰 열기 function 정의
+    // MARK: 인앱웹뷰(SFSafariView) 열기 function 정의
     // `SafariServices`의 import가 필요합니다.
     func openSafariViewOf(url:String) {
         guard let realURL = URL(string: url) else { return }
@@ -157,6 +158,30 @@ class SettingViewController: UIViewController {
         let safariViewController = SFSafariViewController(url: realURL)
 //        safariViewController.delegate = self // 사파리 뷰에서 `Done` 버튼을 눌렀을 때의 액션 정의를 위한 Delegate 초기화입니다.
         self.present(safariViewController, animated: true, completion: nil)
+    }
+    
+    // MARK: 앱의 최신 버전을 체크 function 정의
+    // 앱의 버전을 firebase로 체크하고, toast로 표현합니다.
+    // 추후 강제 업데이트를 위해, firebase에는 `forced_update_version`을 넣어두었습니다.
+    func checkAppNewVersion() {
+        Database.database().reference().child(Constants.firebaseAppVersion).child(Constants.firebaseAppCurrentVersion).observeSingleEvent(of: DataEventType.value, with: { (snapshot) in
+            // firebase에 있는 최신 버전
+            guard let firebaseAppCurrentVersion = snapshot.value else { return }
+            print("///// firebaseAppCurrentVersion: ", firebaseAppCurrentVersion)
+            
+            // 현재 사용자의 앱 버전
+            guard let realUserVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] else { return }
+            
+            if String(describing: firebaseAppCurrentVersion) == String(describing: realUserVersion) {
+                DispatchQueue.main.async {
+                    Toast.init(text: "최신 버전입니다. :D").show()
+                }
+            }else {
+                DispatchQueue.main.async {
+                    Toast.init(text: "현재 최신 버전이 아닙니다.\n\n앱스토어에 등록된 최신 버전은 \(firebaseAppCurrentVersion) 버전입니다.\n앱 업데이트가 필요합니다.").show()
+                }
+            }
+        })
     }
 }
 
@@ -269,9 +294,12 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
                 let resultCell = tableView.dequeueReusableCell(withIdentifier: "aboutDeveloper", for: indexPath)
                 resultCell.detailTextLabel?.text = "Hwang Gisu"
                 return resultCell
-            case 2: // 앱 버전
-                return tableView.dequeueReusableCell(withIdentifier: "appVersion", for: indexPath)
-            case 3: // 앱 문의하기
+            case 2: // 버전 정보
+                let resultCell = tableView.dequeueReusableCell(withIdentifier: "appVersion", for: indexPath)
+                let userAppVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String // 현재 사용자 앱 버전
+                resultCell.detailTextLabel?.text = userAppVersion
+                return resultCell
+            case 3: // 메일 문의하기
                 return tableView.dequeueReusableCell(withIdentifier: "askToDeveloper", for: indexPath)
             default:
                 return basicCell
@@ -317,7 +345,7 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
             case 1: // 개발자 소개 (황기수)
                 self.showAboutDeveloperOf(person: "hwanggisu")
             case 2: // 앱 버전
-                return
+                self.checkAppNewVersion()
             case 3: // 앱 문의하기
                 // 개발자에게 메일을 보냅니다.
                 self.sendEmailTo(emailAddress: "blackturtle2@gmail.com")
