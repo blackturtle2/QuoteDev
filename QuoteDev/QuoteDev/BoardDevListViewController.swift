@@ -11,12 +11,14 @@ import Firebase
 class BoardDevListViewController: UIViewController {
     // 게시글들을 가진 구조체
     var boardDatas: BoardLists?
+    var boardArrs: [Board] = []
     var reference: DatabaseReference!
     @IBOutlet weak var boardTableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
         boardTableView.delegate = self
         boardTableView.dataSource = self
+        
         // Do any additional setup after loading the view.
         // UserDefault에 저장된 uid 확인
         print("UID:// ",UserDefaults.standard.string(forKey: Constants.userDefaults_Uid) ?? "no-data")
@@ -26,13 +28,24 @@ class BoardDevListViewController: UIViewController {
             guard let boardsArr = dataSnap.value as? [String:Any] else{return}
             
             print("boardsArr 카운트:// ", boardsArr.count)
+            
+            
+            var boardArrDicData: [Board] = []
             for board in boardsArr {
                 print("LIST BOARD:// ",board)
                 print("LIST BOARD KEY:// ", board.key)
-                
+                guard let boardData = board.value as? [String:Any]  else {return}// board 구조체 사용예정
+                let board = Board(inDictionary: boardData, boardKey: board.key)
+                print("LIST BOARD detail board:// ",board)
+                boardArrDicData.append(board)
+                // autoid 자체가 시간순으로 들어오다보니 데이터 를 가져올때 정렬할필요있다.
             }
-            
-            
+            print("BOARDARRDIC:// ", boardArrDicData)
+            self.boardArrs = boardArrDicData
+            DispatchQueue.main.async {
+                
+                self.boardTableView.reloadData()
+            }
         }) { (error) in
             
         }
@@ -54,10 +67,19 @@ class BoardDevListViewController: UIViewController {
 extension BoardDevListViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return boardArrs.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let boardCell = tableView.dequeueReusableCell(withIdentifier: "boadrCell", for: indexPath) as! BoardDevListTableViewCell
+        
+            boardCell.boardCountLabel.text = self.boardArrs[indexPath.row].board_count.description
+            
+            boardCell.boardCotentsLabel.text = self.boardArrs[indexPath.row].board_text
+            
+            boardCell.boardWriterLabel.text = self.boardArrs[indexPath.row].user_nickname
+            
+        
+        
         
         return boardCell
     }
