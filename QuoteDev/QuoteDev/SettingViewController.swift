@@ -8,6 +8,7 @@
 
 import UIKit
 import MessageUI
+import Toaster
 
 class SettingViewController: UIViewController {
     
@@ -91,12 +92,14 @@ class SettingViewController: UIViewController {
         let seriousModeButton = UIAlertAction(title: "진지 모드", style: .default, handler: { (action) in
             print("seriousModeButton")
             UserDefaults.standard.set(Constants.settingQuoteModeSerous, forKey: Constants.settingDefaultQuoteMode)
+            Toast.init(text: "진지 모드로 적용되었습니다.").show()
             self.mainTableView.reloadRows(at: [[enumSettingSection.quoteOptions.rawValue,2]], with: UITableViewRowAnimation.automatic) // 사용자가 설정한 기본 명언 모드의 텍스트가 cell의 UI에 표현됩니다.
         })
         
         let joyfulModeButton = UIAlertAction(title: "유쾌 모드", style: .default, handler: { (action) in
             print("joyfulModeButton")
             UserDefaults.standard.set(Constants.settingQuoteModeJoyful, forKey: Constants.settingDefaultQuoteMode)
+            Toast.init(text: "유쾌 모드로 적용되었습니다.").show()
             self.mainTableView.reloadRows(at: [[enumSettingSection.quoteOptions.rawValue,2]], with: UITableViewRowAnimation.automatic) // 사용자가 설정한 기본 명언 모드의 텍스트가 cell의 UI에 표현됩니다.
         })
         let cancelButton = UIAlertAction(title: "취소", style: .destructive, handler: nil)
