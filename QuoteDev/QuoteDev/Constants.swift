@@ -19,5 +19,8 @@ struct Constants {
     static let firebaseUserNickname:String = "userNickname"
     
     static let settingAlarmTime:String = "settingAlarmTime"
+    static let settingDefaultQuoteMode:String = "settingDefaultQuoteMode"
+    static let settingQuoteModeSerous:String = "quotes_data_kor_serious"
+    static let settingQuoteModeJoyful:String = "quotes_data_kor_joyful"
 }
 

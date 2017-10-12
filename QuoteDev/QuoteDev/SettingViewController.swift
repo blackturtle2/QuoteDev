@@ -74,7 +74,7 @@ class SettingViewController: UIViewController {
         
         // 사용자가 세팅한 알람 시간은 UserDefaults에 저장합니다.
         UserDefaults.standard.set(userAlarmTime, forKey: Constants.settingAlarmTime)
-        self.mainTableView.reloadRows(at: [[1,1]], with: UITableViewRowAnimation.automatic) // 사용자가 세팅한 시간으로 알림 시간 cell의 UI에 표현합니다.
+        self.mainTableView.reloadRows(at: [[enumSettingSection.quoteOptions.rawValue,1]], with: UITableViewRowAnimation.automatic) // 사용자가 세팅한 시간으로 알림 시간 cell의 UI에 표현합니다.
         
         self.motherViewAlarmTimePicker.isHidden = true
     }
@@ -82,6 +82,30 @@ class SettingViewController: UIViewController {
     // MARK: 알림 시간 DatePicker의 취소 버튼 액션 정의
     @IBAction func buttonCancelAlarmSetting(_ sender: UIButton) {
         self.motherViewAlarmTimePicker.isHidden = true
+    }
+    
+    // MARK: 기본 명언 모드 액션 정의
+    func setDefaultQuoteMode() {
+        let alert: UIAlertController = UIAlertController(title: nil, message: "설정 후, 다음 앱 실행 때부터 적용됩니다.", preferredStyle: .actionSheet)
+        
+        let seriousModeButton = UIAlertAction(title: "진지 모드", style: .default, handler: { (action) in
+            print("seriousModeButton")
+            UserDefaults.standard.set(Constants.settingQuoteModeSerous, forKey: Constants.settingDefaultQuoteMode)
+            self.mainTableView.reloadRows(at: [[enumSettingSection.quoteOptions.rawValue,2]], with: UITableViewRowAnimation.automatic) // 사용자가 설정한 기본 명언 모드의 텍스트가 cell의 UI에 표현됩니다.
+        })
+        
+        let joyfulModeButton = UIAlertAction(title: "유쾌 모드", style: .default, handler: { (action) in
+            print("joyfulModeButton")
+            UserDefaults.standard.set(Constants.settingQuoteModeJoyful, forKey: Constants.settingDefaultQuoteMode)
+            self.mainTableView.reloadRows(at: [[enumSettingSection.quoteOptions.rawValue,2]], with: UITableViewRowAnimation.automatic) // 사용자가 설정한 기본 명언 모드의 텍스트가 cell의 UI에 표현됩니다.
+        })
+        let cancelButton = UIAlertAction(title: "취소", style: .destructive, handler: nil)
+        
+        alert.addAction(seriousModeButton)
+        alert.addAction(joyfulModeButton)
+        alert.addAction(cancelButton)
+        
+        self.present(alert, animated: true, completion: nil)
     }
 }
 
@@ -150,6 +174,7 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
         let basicCell = UITableViewCell()
         
         switch indexPath.section {
+        // MARK: HOW TO
         case enumSettingSection.howTo.rawValue:
             switch indexPath.row{
             case 0: //위젯 설정 방법
@@ -157,6 +182,7 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
             default:
                 return basicCell
             }
+        // MARK: QUOTE OPTIONS
         case enumSettingSection.quoteOptions.rawValue:
             switch indexPath.row{
             case 0: //알림 on/off
@@ -168,10 +194,20 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
                 resultCell.detailTextLabel?.text = UserDefaults.standard.string(forKey: Constants.settingAlarmTime) ?? "9:00 AM"
                 return resultCell
             case 2: //기본 명언 모드
-                return tableView.dequeueReusableCell(withIdentifier: "defaultQuoteMode", for: indexPath)
+                let resultCell = tableView.dequeueReusableCell(withIdentifier: "defaultQuoteMode", for: indexPath)
+                
+                // 이전 뷰인 메인 뷰에서 userDefaults 값이 없을 경우, 진지 모드로 기본 생성됩니다. ( 앱을 처음 실행했을 때 )
+                guard let userQuoteMode = UserDefaults.standard.string(forKey: Constants.settingDefaultQuoteMode) else { return resultCell }
+                if userQuoteMode == Constants.settingQuoteModeSerous {
+                    resultCell.detailTextLabel?.text = "진지 모드"
+                }else if userQuoteMode == Constants.settingQuoteModeJoyful {
+                    resultCell.detailTextLabel?.text = "유쾌 모드"
+                }
+                return resultCell
             default:
                 return basicCell
             }
+        // MARK: ABOUT
         case enumSettingSection.about.rawValue:
             switch indexPath.row{
             case 0: //개발자 소개
@@ -183,6 +219,7 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
             default:
                 return basicCell
             }
+        // MARK: SETTING
         case enumSettingSection.setting.rawValue:
             switch indexPath.row{
             case 0: //초기화
@@ -219,6 +256,8 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
             switch indexPath.row {
             case 1: // 알림 시간 설정
                 self.motherViewAlarmTimePicker.isHidden = false
+            case 2: // 기본 명언 모드 설정
+                self.setDefaultQuoteMode()
             default:
                 return
             }
