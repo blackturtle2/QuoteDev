@@ -174,7 +174,7 @@ class SettingViewController: UIViewController {
             
             if String(describing: firebaseAppCurrentVersion) == String(describing: realUserVersion) {
                 DispatchQueue.main.async {
-                    Toast.init(text: "최신 버전입니다. :D").show()
+                    Toast.init(text: "현재 최신 버전입니다. :D").show()
                 }
             }else {
                 DispatchQueue.main.async {
