@@ -116,14 +116,14 @@ class SettingViewController: UIViewController {
     // MARK: 개발자 소개 액션 정의
     func showAboutDeveloperOf(person:String) {
         if person == "leejaesung" {
-            let alert = UIAlertController(title: "이재성 (PM & iOS Dev)", message: "- QuoteDev 메인 및 설정 개발\n\n// 공돌이에서 기획자로\n// 기획자에서 다시 개발자로\n\n컴돌이로 졸업 후, 사업을 시작.\n3년 후, 모 카셰어링 회사에서 기획자로 근무.\n1년 후, iOS 개발자가 되겠다고 탈출.\n\nPalm OS, WindowsCE 시절부터 모바일을 좋아했고.\n애플을 좋아하며, 또 애플을 좋아한다.\n온라인에서는 \"까만거북이\"로 활동한다. (a.k.a 까북)", preferredStyle: .actionSheet)
+            let alert = UIAlertController(title: "이재성 (PM & iOS Dev)", message: "[ QuoteDev 메인 및 설정 개발 ]\n\n// 공돌이에서 기획자로\n// 기획자에서 다시 개발자로\n\n컴돌이로 졸업 후, 사업을 시작.\n3년 후, 모 카셰어링 회사에서 기획자로 근무.\n1년 후, iOS 개발자가 되겠다고 탈출.\n\nPalm OS, WindowsCE 시절부터 모바일을 좋아했고.\n애플을 좋아하며, 또 애플을 좋아한다.\n온라인에서는 \"까만거북이\"로 활동한다. (a.k.a 까북)", preferredStyle: .actionSheet)
             let blogButton = UIAlertAction(title: "Blog", style: .default, handler: {[unowned self] (action) in
                 self.openSafariViewOf(url: "http://blackturtle2.net")
             })
             let githubButton = UIAlertAction(title: "GitHub", style: .default, handler: {[unowned self] (action) in
                 self.openSafariViewOf(url: "https://github.com/blackturtle2")
             })
-            let mailButton = UIAlertAction(title: "E-mail", style: .default, handler: {[unowned self] (action) in
+            let mailButton = UIAlertAction(title: "e-mail", style: .destructive, handler: {[unowned self] (action) in
                 self.sendEmailTo(emailAddress: "blackturtle2@gmail.com")
             })
             let cancelButton = UIAlertAction(title: "취소", style: .cancel, handler: nil)
@@ -136,12 +136,16 @@ class SettingViewController: UIViewController {
             self.present(alert, animated: true, completion: nil)
             
         }else if person == "hwanggisu" {
-            let alert = UIAlertController(title: "황기수 (iOS Dev)", message: "- QuoteDev 게시판 개발\n\n", preferredStyle: .actionSheet)
-            let mailButton = UIAlertAction(title: "e-mail", style: .default, handler: {[unowned self] (action) in
+            let alert = UIAlertController(title: "황기수 (iOS Dev)", message: "[ QuoteDev 게시판 개발 ]\n\n", preferredStyle: .actionSheet)
+            let githubButton = UIAlertAction(title: "GitHub", style: .default, handler: {[unowned self] (action) in
+                self.openSafariViewOf(url: "https://github.com/GisuHwang")
+            })
+            let mailButton = UIAlertAction(title: "e-mail", style: .destructive, handler: {[unowned self] (action) in
                 self.sendEmailTo(emailAddress: "kisu9838@gmail.com")
             })
             let cancelButton = UIAlertAction(title: "취소", style: .cancel, handler: nil)
             
+            alert.addAction(githubButton)
             alert.addAction(mailButton)
             alert.addAction(cancelButton)
             
