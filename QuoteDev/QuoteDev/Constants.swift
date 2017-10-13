@@ -24,7 +24,7 @@ struct Constants {
     
     static let settingAlarmTime:String = "settingAlarmTime"
     static let settingDefaultQuoteMode:String = "settingDefaultQuoteMode"
-    static let settingQuoteModeSerous:String = "quotes_data_kor_serious"
+    static let settingQuoteModeSerious:String = "quotes_data_kor_serious"
     static let settingQuoteModeJoyful:String = "quotes_data_kor_joyful"
 }
 

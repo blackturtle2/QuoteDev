@@ -41,7 +41,7 @@ class MainViewController: UIViewController {
         self.tableViewMain.contentOffset = CGPoint(x: 0, y: 50)
         
         if UserDefaults.standard.string(forKey: Constants.settingDefaultQuoteMode) == nil {
-            UserDefaults.standard.set(Constants.settingQuoteModeSerous, forKey: Constants.settingDefaultQuoteMode)
+            UserDefaults.standard.set(Constants.settingQuoteModeSerious, forKey: Constants.settingDefaultQuoteMode)
         }
         guard let userQuoteModeSetting = UserDefaults.standard.string(forKey: Constants.settingDefaultQuoteMode) else { return }
         
@@ -65,6 +65,11 @@ class MainViewController: UIViewController {
     // TODO: 오늘 날짜에 따라 그 날에 해당되는 명언 데이터 가져오기 구현.
     // TODO: 오늘 날짜에 따라 그 날에 해당되는 로컬 이미지로 교체 되도록 구현.
     func showQuoteData(quoteMode:String) {
+        if quoteMode == Constants.settingQuoteModeSerious {
+            self.segmentedControlQuoteMode.selectedSegmentIndex = 0
+        }
+        
+        
         Database.database().reference().child(quoteMode).observe(DataEventType.value, with: {[unowned self]  (snapshot) in
             guard let data = snapshot.value as? [[String:Any]] else { return }
             print("///// data- firebase snapshot- quoteMode: \n", data)
