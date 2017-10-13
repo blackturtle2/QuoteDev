@@ -69,7 +69,6 @@ class MainViewController: UIViewController {
     }
     
     // MARK: 명언 텍스트와 소스 가져오기 function 정의
-    // TODO: Constants로 모두 바꾸기.
     // TODO: 오늘 날짜에 따라 그 날에 해당되는 명언 데이터 가져오기 구현.
     // TODO: 오늘 날짜에 따라 그 날에 해당되는 로컬 이미지로 교체 되도록 구현.
     func showQuoteData(quoteMode:String) {
@@ -78,13 +77,14 @@ class MainViewController: UIViewController {
             self.segmentedControlQuoteMode.selectedSegmentIndex = 1 // 기본 세팅이 0이므로 진지 모드의 케이스는 액션을 주지 않았습니다.
         }
         
+        // 명언 모드에 따른 데이터 통신
         Database.database().reference().child(quoteMode).observe(DataEventType.value, with: {[unowned self]  (snapshot) in
             guard let data = snapshot.value as? [[String:Any]] else { return }
-            print("///// data- firebase snapshot- quoteMode: \n", data)
+            print("///// data- firebase snapshot- quoteMode: ", data)
             
-            let quotesID = data[0]["quotes_id"] as! String
-            let quotesText = data[0]["quotes_text"] as! String
-            let quotesSource = data[0]["quotes_source"] as! String
+            let quotesID = data[0][Constants.firebaseQuoteID] as! String
+            let quotesText = data[0][Constants.firebaseQuoteText] as! String
+            let quotesSource = data[0][Constants.firebaseQuoteSource] as! String
             
             // UI 적용
             DispatchQueue.main.async {
@@ -93,7 +93,7 @@ class MainViewController: UIViewController {
             }
             
             self.todaysQuoteID = quotesID
-            UserDefaults.standard.set(quotesID, forKey: "todaysQuotesID")
+            UserDefaults.standard.set(quotesID, forKey: Constants.userDefaultsTodayQuoteID)
             
             // 좋아요 개수를 가져오고, UI에 반영합니다.
             self.showQuoteLikesCount()
@@ -106,7 +106,7 @@ class MainViewController: UIViewController {
     // MARK: 명언 좋아요 버튼의 카운트 변경 function 정의
     func showQuoteLikesCount() {
         guard let realTodayQuoteID = self.todaysQuoteID else { return }
-        Database.database().reference().child("quotes_likes").child(realTodayQuoteID).observe(DataEventType.value, with: {[unowned self] (snapshot) in
+        Database.database().reference().child(Constants.firebaseQuoteLikes).child(realTodayQuoteID).observe(DataEventType.value, with: {[unowned self] (snapshot) in
             guard let data = snapshot.value as? [String] else { return }
             print("///// data- firebase snapshot- quotes_likes: \n", data)
             
@@ -141,7 +141,7 @@ class MainViewController: UIViewController {
             }
             
             // OK 버튼 Action 추가
-            alertSetUserNickname.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alertSetUserNickname] (_) in
+            alertSetUserNickname.addAction(UIAlertAction(title: "확인", style: .default, handler: { [weak alertSetUserNickname] (_) in
                 
                 // 텍스트필드 호출
                 let textFieldNickname = alertSetUserNickname!.textFields![0] // 위에서 직접 추가한 텍스트필드이므로 옵셔널 바인딩은 스킵.
