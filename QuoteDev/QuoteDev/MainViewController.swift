@@ -59,16 +59,24 @@ class MainViewController: UIViewController {
     //MARK:-         Functions                 //
     /*******************************************/
     
+    // MARK: 명언 모드 Segmented Control 액션 정의
+    @IBAction func segmentedControlQuoteModeAction(_ sender: UISegmentedControl) {
+        if sender.selectedSegmentIndex == 0 { // 진지 모드
+            self.showQuoteData(quoteMode: Constants.settingQuoteModeSerious)
+        }else if sender.selectedSegmentIndex == 1 { // 유쾌 모드
+            self.showQuoteData(quoteMode: Constants.settingQuoteModeJoyful)
+        }
+    }
+    
     // MARK: 명언 텍스트와 소스 가져오기 function 정의
     // TODO: Constants로 모두 바꾸기.
-    // TODO: 진지 모드 / 유쾌 모드 선택에 따른 각각의 데이터 가져오기 구현.
     // TODO: 오늘 날짜에 따라 그 날에 해당되는 명언 데이터 가져오기 구현.
     // TODO: 오늘 날짜에 따라 그 날에 해당되는 로컬 이미지로 교체 되도록 구현.
     func showQuoteData(quoteMode:String) {
-        if quoteMode == Constants.settingQuoteModeSerious {
-            self.segmentedControlQuoteMode.selectedSegmentIndex = 0
+        // 유쾌모드일 경우, 화면 최상단에 있는 Segmented Control의 index를 바꿉니다.
+        if quoteMode == Constants.settingQuoteModeJoyful {
+            self.segmentedControlQuoteMode.selectedSegmentIndex = 1 // 기본 세팅이 0이므로 진지 모드의 케이스는 액션을 주지 않았습니다.
         }
-        
         
         Database.database().reference().child(quoteMode).observe(DataEventType.value, with: {[unowned self]  (snapshot) in
             guard let data = snapshot.value as? [[String:Any]] else { return }

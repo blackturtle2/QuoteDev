@@ -52,6 +52,9 @@
                                                 <segment title="유쾌 모드"/>
                                             </segments>
                                             <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <connections>
+                                                <action selector="segmentedControlQuoteModeAction:" destination="zcT-tT-xTD" eventType="valueChanged" id="O4B-uW-SLB"/>
+                                            </connections>
                                         </segmentedControl>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="temp_quote_background_image" translatesAutoresizingMaskIntoConstraints="NO" id="LrG-3z-qMg">
                                             <rect key="frame" x="0.0" y="44" width="375" height="211"/>
