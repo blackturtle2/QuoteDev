@@ -34,15 +34,19 @@ class MainViewController: UIViewController {
         self.tableViewMain.delegate = self
         self.tableViewMain.dataSource = self
         
-        // Segmented Control의 흰색 배경이 비치지 않도록 합니다.
+        // UI: Segmented Control의 흰색 배경이 비치지 않도록 합니다.
         self.segmentedControlQuoteMode.layer.cornerRadius = 5;
         
-        // 스크롤 뷰의 initial position을 조정해서 명언 모드 Segmented Control이 처음에는 보이지 않게 합니다.
+        // UI: 스크롤 뷰의 initial position을 조정해서 명언 모드 Segmented Control이 처음에는 보이지 않게 합니다.
         self.tableViewMain.contentOffset = CGPoint(x: 0, y: 50)
         
-        // 명언 텍스트와 소스를 가져와서 뿌리는 메소드를 호출합니다.
-        self.showQuoteTextAndSource()
+        if UserDefaults.standard.string(forKey: Constants.settingDefaultQuoteMode) == nil {
+            UserDefaults.standard.set(Constants.settingQuoteModeSerous, forKey: Constants.settingDefaultQuoteMode)
+        }
+        guard let userQuoteModeSetting = UserDefaults.standard.string(forKey: Constants.settingDefaultQuoteMode) else { return }
         
+        // 명언 텍스트와 소스를 가져와서 뿌리는 메소드를 호출합니다.
+        self.showQuoteData(quoteMode: userQuoteModeSetting)
     }
     
     override func didReceiveMemoryWarning() {
@@ -60,15 +64,16 @@ class MainViewController: UIViewController {
     // TODO: 진지 모드 / 유쾌 모드 선택에 따른 각각의 데이터 가져오기 구현.
     // TODO: 오늘 날짜에 따라 그 날에 해당되는 명언 데이터 가져오기 구현.
     // TODO: 오늘 날짜에 따라 그 날에 해당되는 로컬 이미지로 교체 되도록 구현.
-    func showQuoteTextAndSource() {
-        Database.database().reference().child("quotes_data_kor_serious").observe(DataEventType.value, with: {[unowned self]  (snapshot) in
+    func showQuoteData(quoteMode:String) {
+        Database.database().reference().child(quoteMode).observe(DataEventType.value, with: {[unowned self]  (snapshot) in
             guard let data = snapshot.value as? [[String:Any]] else { return }
-            print("///// data- firebase snapshot- quotes_data_kor_serious: \n", data)
+            print("///// data- firebase snapshot- quoteMode: \n", data)
             
             let quotesID = data[0]["quotes_id"] as! String
             let quotesText = data[0]["quotes_text"] as! String
             let quotesSource = data[0]["quotes_source"] as! String
             
+            // UI 적용
             DispatchQueue.main.async {
                 self.labelQuoteText.text = quotesText
                 self.labelQuoteSource.text = "- " + quotesSource + " -"
@@ -81,7 +86,7 @@ class MainViewController: UIViewController {
             self.showQuoteLikesCount()
             
         }) { (error) in
-            print("///// error- firebase quotes_data_kor_serious: \n", error)
+            print("///// error- firebase quoteMode: \n", error)
         }
     }
     
