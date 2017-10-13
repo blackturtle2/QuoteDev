@@ -12,10 +12,18 @@ import Firebase
 class MainViewController: UIViewController {
     
     @IBOutlet var tableViewMain: UITableView!
+    @IBOutlet weak var segmentedControlQuoteMode: UISegmentedControl!
+    
+    @IBOutlet var labelQuoteText : UILabel! //명언 텍스트 레이블
+    @IBOutlet var labelQuoteSource : UILabel! //명언 출처 or 저자 레이블
     
     @IBOutlet var buttonLike : UIButton! //명언 좋아요 버튼
+    @IBOutlet var buttonLikeCount : UIButton! //명언 좋아요 버튼
     @IBOutlet var buttonComment : UIButton! //명언 댓글 버튼
-    @IBOutlet weak var segmentedControlQuoteMode: UISegmentedControl!
+    @IBOutlet var buttonCommentCount : UIButton! //명언 댓글 버튼
+    
+    var todaysQuoteID: String?
+    
     
     /*******************************************/
     //MARK:-        LifeCycle                  //
@@ -26,11 +34,15 @@ class MainViewController: UIViewController {
         self.tableViewMain.delegate = self
         self.tableViewMain.dataSource = self
         
-        //Segmented Control의 흰색 배경이 비치지 않도록 합니다.
+        // Segmented Control의 흰색 배경이 비치지 않도록 합니다.
         self.segmentedControlQuoteMode.layer.cornerRadius = 5;
         
-        //스크롤 뷰의 initial position을 조정해서 명언 모드 Segmented Control이 처음에는 보이지 않게 합니다.
+        // 스크롤 뷰의 initial position을 조정해서 명언 모드 Segmented Control이 처음에는 보이지 않게 합니다.
         self.tableViewMain.contentOffset = CGPoint(x: 0, y: 50)
+        
+        // 명언 텍스트와 소스를 가져와서 뿌리는 메소드를 호출합니다.
+        self.showQuoteTextAndSource()
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -42,6 +54,54 @@ class MainViewController: UIViewController {
     /*******************************************/
     //MARK:-         Functions                 //
     /*******************************************/
+    
+    // MARK: 명언 텍스트와 소스 가져오기 function 정의
+    // TODO: Constants로 모두 바꾸기.
+    // TODO: 진지 모드 / 유쾌 모드 선택에 따른 각각의 데이터 가져오기 구현.
+    // TODO: 오늘 날짜에 따라 그 날에 해당되는 명언 데이터 가져오기 구현.
+    // TODO: 오늘 날짜에 따라 그 날에 해당되는 로컬 이미지로 교체 되도록 구현.
+    func showQuoteTextAndSource() {
+        Database.database().reference().child("quotes_data_kor_serious").observe(DataEventType.value, with: {[unowned self]  (snapshot) in
+            guard let data = snapshot.value as? [[String:Any]] else { return }
+            print("///// data- firebase snapshot- quotes_data_kor_serious: \n", data)
+            
+            let quotesID = data[0]["quotes_id"] as! String
+            let quotesText = data[0]["quotes_text"] as! String
+            let quotesSource = data[0]["quotes_source"] as! String
+            
+            DispatchQueue.main.async {
+                self.labelQuoteText.text = quotesText
+                self.labelQuoteSource.text = "- " + quotesSource + " -"
+            }
+            
+            self.todaysQuoteID = quotesID
+            UserDefaults.standard.set(quotesID, forKey: "todaysQuotesID")
+            
+            // 좋아요 개수를 가져오고, UI에 반영합니다.
+            self.showQuoteLikesCount()
+            
+        }) { (error) in
+            print("///// error- firebase quotes_data_kor_serious: \n", error)
+        }
+    }
+    
+    // MARK: 명언 좋아요 버튼의 카운트 변경 function 정의
+    func showQuoteLikesCount() {
+        guard let realTodayQuoteID = self.todaysQuoteID else { return }
+        Database.database().reference().child("quotes_likes").child(realTodayQuoteID).observe(DataEventType.value, with: {[unowned self] (snapshot) in
+            guard let data = snapshot.value as? [String] else { return }
+            print("///// data- firebase snapshot- quotes_likes: \n", data)
+            
+            let likesCount = data.count
+            
+            DispatchQueue.main.async {
+                self.buttonLikeCount.setTitle(String(likesCount), for: UIControlState.normal)
+            }
+            
+        }) { (error) in
+            print("///// error- firebase quotes_likes: \n", error)
+        }
+    }
     
     // MARK: 명언 좋아요 버튼 액션
     @IBAction func buttonLikeAction(_ sender: UIButton) {
@@ -87,11 +147,25 @@ class MainViewController: UIViewController {
             }))
             
             self.present(alertSetUserNickname, animated: true, completion: nil)
-            
         }
+    }
+    
+    // MARK: 명언 공유 버튼 액션 정의
+    @IBAction func buttonShareAction(_ sender: UIButton) {
+        guard let quoteText = self.labelQuoteText.text else { return }
+        guard let quoteSource = self.labelQuoteSource.text else { return }
+        let sharingText = quoteText + "\n" + quoteSource + "\n\n" + "by QuoteDev"
         
+        self.shareTextOf(text: sharingText)
+    }
+    
+    // 텍스트 공유 기능 function 정의
+    func shareTextOf(text: String) {
+        let activityVC = UIActivityViewController(activityItems: [text], applicationActivities: nil) // 액티비티 뷰 컨트롤러 설정
+        activityVC.popoverPresentationController?.sourceView = self.view // 아이패드에서 작동하도록 pop over로 설정
+        activityVC.excludedActivityTypes = [ UIActivityType.airDrop, UIActivityType.addToReadingList, UIActivityType.saveToCameraRoll ] // 제외 타입 설정: 에어드롭, 읽기목록, 카메라롤 저장
         
-        
+        self.present(activityVC, animated: true, completion: nil)
     }
     
 }
