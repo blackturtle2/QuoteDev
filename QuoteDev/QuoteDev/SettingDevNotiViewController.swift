@@ -18,7 +18,7 @@ class SettingDevNotiViewController: UIViewController {
 // 10.0이하
 //UIApplication.shared.cancelAllLocalNotifications()
         
-                print("#ScheduleNOTI#",UIApplication.shared.scheduledLocalNotifications)
+                print("#ScheduleNOTI#",UIApplication.shared.scheduledLocalNotifications ?? "no data")
 // 10.0이상
 //
         if #available(iOS 10.0, *) {
@@ -151,10 +151,10 @@ class SettingDevNotiViewController: UIViewController {
             notifyAlarm.userInfo = identyUserinfo
             
             print(notifyAlarm)
-            print("#ScheduleNOTI before#",UIApplication.shared.scheduledLocalNotifications)
+            print("#ScheduleNOTI before#",UIApplication.shared.scheduledLocalNotifications ?? "no data")
             // 로컬 정보를 앱의 스케쥴노티에 등록
             app.scheduleLocalNotification(notifyAlarm)
-            print("#ScheduleNOTI after#",UIApplication.shared.scheduledLocalNotifications)
+            print("#ScheduleNOTI after#",UIApplication.shared.scheduledLocalNotifications ?? "no data")
             self.dismiss(animated: true, completion: nil)
             
             
