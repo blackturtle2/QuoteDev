@@ -5,7 +5,7 @@
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
@@ -322,7 +322,7 @@ JS and GS</string>
                                 <rect key="frame" x="279" y="692" width="80" height="92"/>
                                 <state key="normal" image="icon_button_move_board_dev"/>
                                 <connections>
-                                    <segue destination="7Bv-8p-hd8" kind="presentation" id="FgU-ua-s3N"/>
+                                    <segue destination="7Bv-8p-hd8" kind="show" id="FgU-ua-s3N"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -780,7 +780,9 @@ JS and GS</string>
         <!--BoardDev-->
         <scene sceneID="bv5-xJ-M4a">
             <objects>
-                <viewControllerPlaceholder storyboardName="BoardDev" id="7Bv-8p-hd8" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="BoardDev" id="7Bv-8p-hd8" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="PXG-Qp-am4"/>
+                </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QvH-wy-BxF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1580" y="699"/>
