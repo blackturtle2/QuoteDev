@@ -18,13 +18,20 @@ struct Constants {
     static let firebaseUserUid:String = "userUid"
     static let firebaseUserNickname:String = "userNickname"
     
+    // quote main
+    static let firebaseQuoteID:String = "quotes_id"
+    static let firebaseQuoteText:String = "quotes_text"
+    static let firebaseQuoteSource:String = "quotes_source"
+    static let firebaseQuoteLikes:String = "quotes_likes"
+    static let userDefaultsTodayQuoteID:String = "userDefaultsTodayQuoteID"
+    
     static let firebaseAppVersion:String = "app_version"
     static let firebaseAppCurrentVersion:String = "current_version"
     static let firebaseAppForcedUpdateVersion:String = "forced_update_version"
     
     static let settingAlarmTime:String = "settingAlarmTime"
     static let settingDefaultQuoteMode:String = "settingDefaultQuoteMode"
-    static let settingQuoteModeSerous:String = "quotes_data_kor_serious"
+    static let settingQuoteModeSerious:String = "quotes_data_kor_serious"
     static let settingQuoteModeJoyful:String = "quotes_data_kor_joyful"
 }
 

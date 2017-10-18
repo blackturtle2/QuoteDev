@@ -34,15 +34,19 @@ class MainViewController: UIViewController {
         self.tableViewMain.delegate = self
         self.tableViewMain.dataSource = self
         
-        // Segmented Control의 흰색 배경이 비치지 않도록 합니다.
+        // UI: Segmented Control의 흰색 배경이 비치지 않도록 합니다.
         self.segmentedControlQuoteMode.layer.cornerRadius = 5;
         
-        // 스크롤 뷰의 initial position을 조정해서 명언 모드 Segmented Control이 처음에는 보이지 않게 합니다.
+        // UI: 스크롤 뷰의 initial position을 조정해서 명언 모드 Segmented Control이 처음에는 보이지 않게 합니다.
         self.tableViewMain.contentOffset = CGPoint(x: 0, y: 50)
         
-        // 명언 텍스트와 소스를 가져와서 뿌리는 메소드를 호출합니다.
-        self.showQuoteTextAndSource()
+        if UserDefaults.standard.string(forKey: Constants.settingDefaultQuoteMode) == nil {
+            UserDefaults.standard.set(Constants.settingQuoteModeSerious, forKey: Constants.settingDefaultQuoteMode)
+        }
+        guard let userQuoteModeSetting = UserDefaults.standard.string(forKey: Constants.settingDefaultQuoteMode) else { return }
         
+        // 명언 텍스트와 소스를 가져와서 뿌리는 메소드를 호출합니다.
+        self.showQuoteData(quoteMode: userQuoteModeSetting)
     }
     
     override func didReceiveMemoryWarning() {
@@ -55,40 +59,54 @@ class MainViewController: UIViewController {
     //MARK:-         Functions                 //
     /*******************************************/
     
+    // MARK: 명언 모드 Segmented Control 액션 정의
+    @IBAction func segmentedControlQuoteModeAction(_ sender: UISegmentedControl) {
+        if sender.selectedSegmentIndex == 0 { // 진지 모드
+            self.showQuoteData(quoteMode: Constants.settingQuoteModeSerious)
+        }else if sender.selectedSegmentIndex == 1 { // 유쾌 모드
+            self.showQuoteData(quoteMode: Constants.settingQuoteModeJoyful)
+        }
+    }
+    
     // MARK: 명언 텍스트와 소스 가져오기 function 정의
-    // TODO: Constants로 모두 바꾸기.
-    // TODO: 진지 모드 / 유쾌 모드 선택에 따른 각각의 데이터 가져오기 구현.
     // TODO: 오늘 날짜에 따라 그 날에 해당되는 명언 데이터 가져오기 구현.
     // TODO: 오늘 날짜에 따라 그 날에 해당되는 로컬 이미지로 교체 되도록 구현.
-    func showQuoteTextAndSource() {
-        Database.database().reference().child("quotes_data_kor_serious").observe(DataEventType.value, with: {[unowned self]  (snapshot) in
+    func showQuoteData(quoteMode:String) {
+        // 유쾌모드일 경우, 화면 최상단에 있는 Segmented Control의 index를 바꿉니다.
+        if quoteMode == Constants.settingQuoteModeJoyful {
+            self.segmentedControlQuoteMode.selectedSegmentIndex = 1 // 기본 세팅이 0이므로 진지 모드의 케이스는 액션을 주지 않았습니다.
+        }
+        
+        // 명언 모드에 따른 데이터 통신
+        Database.database().reference().child(quoteMode).observe(DataEventType.value, with: {[unowned self]  (snapshot) in
             guard let data = snapshot.value as? [[String:Any]] else { return }
-            print("///// data- firebase snapshot- quotes_data_kor_serious: \n", data)
+            print("///// data- firebase snapshot- quoteMode: ", data)
             
-            let quotesID = data[0]["quotes_id"] as! String
-            let quotesText = data[0]["quotes_text"] as! String
-            let quotesSource = data[0]["quotes_source"] as! String
+            let quotesID = data[0][Constants.firebaseQuoteID] as! String
+            let quotesText = data[0][Constants.firebaseQuoteText] as! String
+            let quotesSource = data[0][Constants.firebaseQuoteSource] as! String
             
+            // UI 적용
             DispatchQueue.main.async {
                 self.labelQuoteText.text = quotesText
                 self.labelQuoteSource.text = "- " + quotesSource + " -"
             }
             
             self.todaysQuoteID = quotesID
-            UserDefaults.standard.set(quotesID, forKey: "todaysQuotesID")
+            UserDefaults.standard.set(quotesID, forKey: Constants.userDefaultsTodayQuoteID)
             
             // 좋아요 개수를 가져오고, UI에 반영합니다.
             self.showQuoteLikesCount()
             
         }) { (error) in
-            print("///// error- firebase quotes_data_kor_serious: \n", error)
+            print("///// error- firebase quoteMode: \n", error)
         }
     }
     
     // MARK: 명언 좋아요 버튼의 카운트 변경 function 정의
     func showQuoteLikesCount() {
         guard let realTodayQuoteID = self.todaysQuoteID else { return }
-        Database.database().reference().child("quotes_likes").child(realTodayQuoteID).observe(DataEventType.value, with: {[unowned self] (snapshot) in
+        Database.database().reference().child(Constants.firebaseQuoteLikes).child(realTodayQuoteID).observe(DataEventType.value, with: {[unowned self] (snapshot) in
             guard let data = snapshot.value as? [String] else { return }
             print("///// data- firebase snapshot- quotes_likes: \n", data)
             
@@ -123,7 +141,7 @@ class MainViewController: UIViewController {
             }
             
             // OK 버튼 Action 추가
-            alertSetUserNickname.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alertSetUserNickname] (_) in
+            alertSetUserNickname.addAction(UIAlertAction(title: "확인", style: .default, handler: { [weak alertSetUserNickname] (_) in
                 
                 // 텍스트필드 호출
                 let textFieldNickname = alertSetUserNickname!.textFields![0] // 위에서 직접 추가한 텍스트필드이므로 옵셔널 바인딩은 스킵.

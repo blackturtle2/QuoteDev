@@ -93,7 +93,7 @@ class SettingViewController: UIViewController {
         
         let seriousModeButton = UIAlertAction(title: "진지 모드", style: .default, handler: {[unowned self] (action) in
             print("seriousModeButton")
-            UserDefaults.standard.set(Constants.settingQuoteModeSerous, forKey: Constants.settingDefaultQuoteMode)
+            UserDefaults.standard.set(Constants.settingQuoteModeSerious, forKey: Constants.settingDefaultQuoteMode)
             Toast.init(text: "진지 모드로 적용되었습니다.").show()
             self.mainTableView.reloadRows(at: [[enumSettingSection.quoteOptions.rawValue,2]], with: UITableViewRowAnimation.automatic) // 사용자가 설정한 기본 명언 모드의 텍스트가 cell의 UI에 표현됩니다.
         })
@@ -278,7 +278,7 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
                 
                 // 이전 뷰인 메인 뷰에서 userDefaults 값이 없을 경우, 진지 모드로 기본 생성됩니다. ( 앱을 처음 실행했을 때 )
                 guard let userQuoteMode = UserDefaults.standard.string(forKey: Constants.settingDefaultQuoteMode) else { return resultCell }
-                if userQuoteMode == Constants.settingQuoteModeSerous {
+                if userQuoteMode == Constants.settingQuoteModeSerious {
                     resultCell.detailTextLabel?.text = "진지 모드"
                 }else if userQuoteMode == Constants.settingQuoteModeJoyful {
                     resultCell.detailTextLabel?.text = "유쾌 모드"
