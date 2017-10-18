@@ -28,9 +28,10 @@ class BoardDevWriteViewController: UIViewController {
         imagePickerController.delegate = self
         textView.delegate = self
         // UIButton 자체에 imageInset이 있어서 테스트 해볼예정입니다.
-        
-        guard let uid = UserDefaults.standard.string(forKey: Constants.userDefaults_Uid), let nickName = UserDefaults.standard.string(forKey: Constants.userDefaults_UserNickname) else {return}
+        print("///// userDefaults uid: ", UserDefaults.standard.string(forKey: Constants.userDefaults_Uid) ?? "no data")
+        guard let uid = UserDefaults.standard.string(forKey: Constants.userDefaults_Uid) else {return}
         user_uid = uid
+        guard let nickName = UserDefaults.standard.string(forKey: Constants.userDefaults_UserNickname) else {return}
         user_nickname = nickName
         
         let nowDate = Date()
@@ -113,16 +114,22 @@ class BoardDevWriteViewController: UIViewController {
             var insertData: [String:Any] = [:]
             insertData.updateValue(board_uid, forKey: "board_uid")
             insertData.updateValue(self.textView.text, forKey: "board_text")
-            insertData.updateValue("no-data", forKey: "board_img_url")
             insertData.updateValue(currentDate, forKey: "board_date") // date형식의경우 계속 시간이 변경됨
             insertData.updateValue(self.user_uid, forKey: "user_uid")
             insertData.updateValue(self.user_nickname, forKey: "user_nickname")
             insertData.updateValue(board_count, forKey: "board_count") // board_count(고유 글번호)
             
+            
+            // 스토리지 구현 해야함
+            insertData.updateValue("img url 부분", forKey: "board_img_url")
             self.reference.child("board").childByAutoId().setValue(insertData)
+            
+            
         }) { (error) in
             print(error.localizedDescription)
         }
+        
+        
     }
 }
 

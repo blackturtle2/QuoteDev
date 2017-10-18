@@ -17,6 +17,8 @@
 		4C903C751F6F9E25003ECEA4 /* SettingDev.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C903C741F6F9E25003ECEA4 /* SettingDev.storyboard */; };
 		4C903C771F6FA35B003ECEA4 /* SettingDevNotiViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C903C761F6FA35B003ECEA4 /* SettingDevNotiViewController.swift */; };
 		4CD9A8961F90A8E700623E01 /* BoardDevDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CD9A8951F90A8E700623E01 /* BoardDevDetailViewController.swift */; };
+		4CD9A89A1F90C45200623E01 /* BoardDevDetailCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CD9A8991F90C45200623E01 /* BoardDevDetailCommentCell.swift */; };
+		4CD9A89C1F944DD800623E01 /* BoardDevDetailHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CD9A89B1F944DD800623E01 /* BoardDevDetailHeaderView.swift */; };
 		FE15F6B91F72602C008E9A42 /* DataCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE15F6B81F72602C008E9A42 /* DataCenter.swift */; };
 		FE15F6BB1F726A41008E9A42 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE15F6BA1F726A41008E9A42 /* Constants.swift */; };
 		FE15F6BD1F726F85008E9A42 /* QuoteCommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE15F6BC1F726F85008E9A42 /* QuoteCommentViewController.swift */; };
@@ -45,6 +47,8 @@
 		4C903C761F6FA35B003ECEA4 /* SettingDevNotiViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingDevNotiViewController.swift; sourceTree = "<group>"; };
 		4CB8A73D6F930854930511EE /* Pods_QuoteDev.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QuoteDev.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4CD9A8951F90A8E700623E01 /* BoardDevDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardDevDetailViewController.swift; sourceTree = "<group>"; };
+		4CD9A8991F90C45200623E01 /* BoardDevDetailCommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardDevDetailCommentCell.swift; sourceTree = "<group>"; };
+		4CD9A89B1F944DD800623E01 /* BoardDevDetailHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardDevDetailHeaderView.swift; sourceTree = "<group>"; };
 		5BFF089C886F6B71AA3380D1 /* Pods-QuoteDev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuoteDev.debug.xcconfig"; path = "Pods/Target Support Files/Pods-QuoteDev/Pods-QuoteDev.debug.xcconfig"; sourceTree = "<group>"; };
 		5FC370CABF19E04A9D982688 /* Pods-QuoteDev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuoteDev.release.xcconfig"; path = "Pods/Target Support Files/Pods-QuoteDev/Pods-QuoteDev.release.xcconfig"; sourceTree = "<group>"; };
 		FE15F6B81F72602C008E9A42 /* DataCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataCenter.swift; sourceTree = "<group>"; };
@@ -139,6 +143,8 @@
 			children = (
 				4C903C701F6A5D0D003ECEA4 /* BoardDev.storyboard */,
 				4CD9A8951F90A8E700623E01 /* BoardDevDetailViewController.swift */,
+				4CD9A8991F90C45200623E01 /* BoardDevDetailCommentCell.swift */,
+				4CD9A89B1F944DD800623E01 /* BoardDevDetailHeaderView.swift */,
 				4C26BE161F7B46C80013A8A8 /* BoardDevWriteViewController.swift */,
 				4C7732DF1F7A32BB007F0E6D /* BoardDevDataCenter.swift */,
 				4C7732DB1F7A2CDE007F0E6D /* BoardDevListViewController.swift */,
@@ -307,10 +313,12 @@
 				4C7732DC1F7A2CDE007F0E6D /* BoardDevListViewController.swift in Sources */,
 				4C26BE171F7B46C80013A8A8 /* BoardDevWriteViewController.swift in Sources */,
 				FEF7AB5D1F795F290071D2F7 /* SettingViewController.swift in Sources */,
+				4CD9A89A1F90C45200623E01 /* BoardDevDetailCommentCell.swift in Sources */,
 				4C903C731F6A5D17003ECEA4 /* BoardDevMainViewController.swift in Sources */,
 				FE7EC3961F6A4E1000696041 /* AppDelegate.swift in Sources */,
 				FEAE97651F8E66DC0055D30E /* SettingHowToSetWidgetViewController.swift in Sources */,
 				FE15F6BB1F726A41008E9A42 /* Constants.swift in Sources */,
+				4CD9A89C1F944DD800623E01 /* BoardDevDetailHeaderView.swift in Sources */,
 				4C7732E01F7A32BB007F0E6D /* BoardDevDataCenter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

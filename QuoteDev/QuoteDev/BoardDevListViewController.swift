@@ -50,6 +50,8 @@ class BoardDevListViewController: UIViewController {
             
         }
         
+        
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -96,6 +98,8 @@ extension BoardDevListViewController: UITableViewDelegate, UITableViewDataSource
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "BoardDevDetailViewController") as! BoardDevDetailViewController
+        nextViewController.boardData = self.boardArrs[indexPath.row]
         self.navigationController?.pushViewController(nextViewController, animated: true)
+        
     }
 }
