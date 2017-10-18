@@ -93,6 +93,7 @@
 		FE7EC3891F6A4E1000696041 = {
 			isa = PBXGroup;
 			children = (
+				FE7EC39C1F6A4E1000696041 /* Assets.xcassets */,
 				FE7EC3941F6A4E1000696041 /* QuoteDev */,
 				FE7EC3931F6A4E1000696041 /* Products */,
 				3FE2FD421B77A7CF0572926B /* Pods */,
@@ -122,7 +123,6 @@
 				FE15F6BC1F726F85008E9A42 /* QuoteCommentViewController.swift */,
 				FE7EC3AE1F6A555400696041 /* SettingView */,
 				FE7EC3A91F6A536300696041 /* BoardDev */,
-				FE7EC39C1F6A4E1000696041 /* Assets.xcassets */,
 				4C26BE1A1F7C9FA00013A8A8 /* delete_icon.png */,
 				4C26BE1B1F7CA09F0013A8A8 /* camera_icon.png */,
 				4C26BE1E1F7CA1970013A8A8 /* photo_icon.png */,
