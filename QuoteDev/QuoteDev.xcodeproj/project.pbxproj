@@ -99,6 +99,7 @@
 		FE7EC3891F6A4E1000696041 = {
 			isa = PBXGroup;
 			children = (
+				FE7EC39C1F6A4E1000696041 /* Assets.xcassets */,
 				FE7EC3941F6A4E1000696041 /* QuoteDev */,
 				FE7EC3931F6A4E1000696041 /* Products */,
 				3FE2FD421B77A7CF0572926B /* Pods */,
@@ -128,7 +129,6 @@
 				FE15F6BC1F726F85008E9A42 /* QuoteCommentViewController.swift */,
 				FE7EC3AE1F6A555400696041 /* SettingView */,
 				FE7EC3A91F6A536300696041 /* BoardDev */,
-				FE7EC39C1F6A4E1000696041 /* Assets.xcassets */,
 				4C26BE1A1F7C9FA00013A8A8 /* delete_icon.png */,
 				4C26BE1B1F7CA09F0013A8A8 /* camera_icon.png */,
 				4C26BE1E1F7CA1970013A8A8 /* photo_icon.png */,
@@ -199,7 +199,7 @@
 				TargetAttributes = {
 					FE7EC3911F6A4E1000696041 = {
 						CreatedOnToolsVersion = 8.3.3;
-						DevelopmentTeam = PV38XQ6LPC;
+						DevelopmentTeam = 29Q45PKR77;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -445,7 +445,7 @@
 			baseConfigurationReference = 5BFF089C886F6B71AA3380D1 /* Pods-QuoteDev.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = PV38XQ6LPC;
+				DEVELOPMENT_TEAM = 29Q45PKR77;
 				INFOPLIST_FILE = QuoteDev/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -460,7 +460,7 @@
 			baseConfigurationReference = 5FC370CABF19E04A9D982688 /* Pods-QuoteDev.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = PV38XQ6LPC;
+				DEVELOPMENT_TEAM = 29Q45PKR77;
 				INFOPLIST_FILE = QuoteDev/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
