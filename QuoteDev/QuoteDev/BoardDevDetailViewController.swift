@@ -14,14 +14,15 @@ class BoardDevDetailViewController: UIViewController {
     @IBOutlet weak var boardHeaderView: BoardDevDetailHeaderView!
     
     var boardData: Board?
+    var likeCount: String?
     override func viewDidLoad() {
         super.viewDidLoad()
         print("게시판 디테일 뷰디드 로드")
         boardDetailTableView.delegate = self
         boardDetailTableView.dataSource = self
         
-        
-        
+        guard  let boardLikeCount = likeCount else {return}
+        boardHeaderView.boardLikeCountLabel.text = "\(boardLikeCount)"
         
         // Do any additional setup after loading the view.
     }
@@ -33,11 +34,18 @@ class BoardDevDetailViewController: UIViewController {
         // 현재 테이블 뷰의 헤더뷰 존재 여부 판단
         //guard  let headerView = boardDetailTableView.tableHeaderView as? BoardDevDetailHeaderView else { return }
         
-        print(boardData)
-        if boardData?.board_img_url != "no-data"{
+        
+        if let imgUrlStr = boardData?.board_img_url, let imgUrl = URL(string: imgUrlStr){
             print("이미지 존재")
-            //boardHeaderView.test = true
-
+            URLSession.shared.dataTask(with: imgUrl, completionHandler: { (data, response, error) in
+                guard let imgData = data else {return}
+                // 시점 고려하고 코너가 안먹넹
+                DispatchQueue.main.async {
+                    self.boardHeaderView.boardImgView.layer.cornerRadius = 20
+                    self.boardHeaderView.boardImgView.image = UIImage(data: imgData)
+   
+                }
+            }).resume()
         }else{
             print("이미지 없다")
             // 디테일뷰로 넘어올때 이미지 정보가 없을경우 화면에 이미지뷰를 제거하여 priority 설정에 따라 제거후 오토레이아웃 적용
@@ -49,15 +57,17 @@ class BoardDevDetailViewController: UIViewController {
         }
         
         
-        guard  let boardDatas = boardData else {
-            return
-        }
+        guard  let boardDatas = boardData else { return }
         boardHeaderView.boardCotentsLabel.text = boardDatas.board_text
         boardHeaderView.boardCountLabel.text = boardDatas.board_count.description
         boardHeaderView.boardWriterLabel.text = boardDatas.user_nickname
         boardHeaderView.boardCreateAtLabel.text = boardDatas.board_date
+        
+        
+        
         boardHeaderView.boardUID = boardDatas.board_uid
         boardHeaderView.userUID = boardDatas.user_uid
+        
         // 헤더뷰의 최소크기 할당
         // systemLayoutSizeFitting(_ targetSize: CGSize): 뷰가 유지하는 제약을 채우는 뷰의 사이즈를 돌려줍니다.
         // UILayoutFittingCompressedSize - 가능한 가장 작은 크기를 사용하는 옵션입니다.

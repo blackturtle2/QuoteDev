@@ -120,16 +120,34 @@ class BoardDevWriteViewController: UIViewController {
             insertData.updateValue(board_count, forKey: "board_count") // board_count(고유 글번호)
             
             
-            // 스토리지 구현 해야함
-            insertData.updateValue("img url 부분", forKey: "board_img_url")
-            self.reference.child("board").childByAutoId().setValue(insertData)
+           
+            guard let boardImg = self.photoImageView.image else {return}
+            
+            let uploadImg = UIImageJPEGRepresentation(boardImg, 0.3)
+            // 이미지 저장
+            Storage.storage().reference().child("board_img").child(board_uid).putData(uploadImg!, metadata: nil, completion: { (metaData, error) in
+                if let error = error {
+                    print("error// ", error)
+                    return
+                }
+                
+                print("meta data :  ",metaData)
+                guard let urlStr = metaData?.downloadURL()?.absoluteString else{return}
+                
+                insertData.updateValue(urlStr, forKey: "board_img_url")
+                self.reference.child("board").childByAutoId().setValue(insertData)
+    
+                
+            })
+            
+    
             
             
         }) { (error) in
             print(error.localizedDescription)
         }
         
-        
+        self.dismiss(animated: true, completion: nil)
     }
 }
 
