@@ -16,6 +16,8 @@ class BoardDevWriteViewController: UIViewController {
     @IBOutlet weak var photoDeleteBtn: UIButton!
     @IBOutlet weak var textView: UITextView!
     
+    @IBOutlet weak var footerView: UIView!
+    @IBOutlet weak var footerViewBottomConstraint: NSLayoutConstraint!
     var reference: DatabaseReference!
     var imageUrlData: URL?
     var textIsEmpty: Bool = true
@@ -27,6 +29,11 @@ class BoardDevWriteViewController: UIViewController {
         super.viewDidLoad()
         imagePickerController.delegate = self
         textView.delegate = self
+        
+        // NotificationCenter에 키보드 옵저버 등록
+        NotificationCenter.default.addObserver(self, selector: #selector(BoardDevWriteViewController.keyboardWillShowHide(notification:)), name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(BoardDevWriteViewController.keyboardWillShowHide(notification:)), name: .UIKeyboardWillHide, object: nil)
+        
         // UIButton 자체에 imageInset이 있어서 테스트 해볼예정입니다.
         print("///// userDefaults uid: ", UserDefaults.standard.string(forKey: Constants.userDefaults_Uid) ?? "no data")
         guard let uid = UserDefaults.standard.string(forKey: Constants.userDefaults_Uid) else {return}
@@ -41,8 +48,9 @@ class BoardDevWriteViewController: UIViewController {
         print("DATE:// ", date)
         
         
+        
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -71,6 +79,7 @@ class BoardDevWriteViewController: UIViewController {
             textView.textColor = UIColor.gray
             textIsEmpty = true
         }
+        NotificationCenter.default.post(name: .UIKeyboardWillHide, object: nil)
         
     }
     
@@ -148,6 +157,34 @@ class BoardDevWriteViewController: UIViewController {
         }
         
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    func keyboardWillShowHide(notification: Notification){
+        // guard-let으로 nil 값이면, 키보드를 내립니다.
+        guard let userInfo = notification.userInfo else {
+            self.textView.resignFirstResponder() // 키보드 내리기.
+            self.footerViewBottomConstraint.constant = 0 // 댓글 작성칸 내리기.
+            self.view.layoutIfNeeded() // UIView layout 새로고침.
+            return
+        }
+        
+        // notification.userInfo를 이용해 키보드와 UIView를 함께 올립니다.
+        print("///// userInfo: ", userInfo)
+        
+        let animationDuration: TimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as! NSNumber).doubleValue
+        let animationCurve = UIViewAnimationOptions(rawValue: (userInfo[UIKeyboardAnimationCurveUserInfoKey] as! NSNumber).uintValue << 16)
+        let frameEnd = (userInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        
+        UIView.animate(
+            withDuration: animationDuration,
+            delay: 0.0,
+            options: [.beginFromCurrentState, animationCurve],
+            animations: {
+                self.footerViewBottomConstraint.constant = (self.view.bounds.maxY - self.view.window!.convert(frameEnd, to: self.view).minY)
+                self.view.layoutIfNeeded()
+        },
+            completion: nil
+        )
     }
 }
 

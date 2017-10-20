@@ -12,6 +12,9 @@ class BoardDevDetailViewController: UIViewController {
     
     @IBOutlet weak var boardDetailTableView: UITableView!
     @IBOutlet weak var boardHeaderView: BoardDevDetailHeaderView!
+    @IBOutlet weak var commetView: UIView!
+    @IBOutlet weak var commentTextField: UITextField!
+    @IBOutlet weak var commentViewBottomConstraint: NSLayoutConstraint!
     
     var boardData: Board?
     var likeCount: String?
@@ -20,10 +23,32 @@ class BoardDevDetailViewController: UIViewController {
         print("게시판 디테일 뷰디드 로드")
         boardDetailTableView.delegate = self
         boardDetailTableView.dataSource = self
+        //commentTextField.delegate = self
         
         guard  let boardLikeCount = likeCount else {return}
         boardHeaderView.boardLikeCountLabel.text = "\(boardLikeCount)"
         
+        NotificationCenter.default.addObserver(self, selector: #selector(BoardDevDetailViewController.keyboardWillShow(notification:)), name: .UIKeyboardWillShow, object: nil)
+        if let imgUrlStr = boardData?.board_img_url, let imgUrl = URL(string: imgUrlStr){
+            print("이미지 존재")
+            URLSession.shared.dataTask(with: imgUrl, completionHandler: { (data, response, error) in
+                guard let imgData = data else {return}
+                // 시점 고려하고 코너가 안먹넹
+                DispatchQueue.main.async {
+                    self.boardHeaderView.boardImgView.layer.cornerRadius = 20
+                    self.boardHeaderView.boardImgView.image = UIImage(data: imgData)
+                    
+                }
+            }).resume()
+        }else{
+            print("이미지 없다")
+            // 디테일뷰로 넘어올때 이미지 정보가 없을경우 화면에 이미지뷰를 제거하여 priority 설정에 따라 제거후 오토레이아웃 적용
+            // 헤더뷰를 다시 그린다.
+            boardHeaderView.boardImgView.removeFromSuperview()
+            boardHeaderView.setNeedsLayout()
+            boardHeaderView.layoutIfNeeded()
+            
+        }
         // Do any additional setup after loading the view.
     }
     
@@ -35,27 +60,27 @@ class BoardDevDetailViewController: UIViewController {
         //guard  let headerView = boardDetailTableView.tableHeaderView as? BoardDevDetailHeaderView else { return }
         
         
-        if let imgUrlStr = boardData?.board_img_url, let imgUrl = URL(string: imgUrlStr){
-            print("이미지 존재")
-            URLSession.shared.dataTask(with: imgUrl, completionHandler: { (data, response, error) in
-                guard let imgData = data else {return}
-                // 시점 고려하고 코너가 안먹넹
-                DispatchQueue.main.async {
-                    self.boardHeaderView.boardImgView.layer.cornerRadius = 20
-                    self.boardHeaderView.boardImgView.image = UIImage(data: imgData)
-   
-                }
-            }).resume()
-        }else{
-            print("이미지 없다")
-            // 디테일뷰로 넘어올때 이미지 정보가 없을경우 화면에 이미지뷰를 제거하여 priority 설정에 따라 제거후 오토레이아웃 적용
-            // 헤더뷰를 다시 그린다.
-            boardHeaderView.boardImgView.removeFromSuperview()
-            boardHeaderView.setNeedsLayout()
-            boardHeaderView.layoutIfNeeded()
-
-        }
-        
+//        if let imgUrlStr = boardData?.board_img_url, let imgUrl = URL(string: imgUrlStr){
+//            print("이미지 존재")
+//            URLSession.shared.dataTask(with: imgUrl, completionHandler: { (data, response, error) in
+//                guard let imgData = data else {return}
+//                // 시점 고려하고 코너가 안먹넹
+//                DispatchQueue.main.async {
+//                    self.boardHeaderView.boardImgView.layer.cornerRadius = 20
+//                    self.boardHeaderView.boardImgView.image = UIImage(data: imgData)
+//
+//                }
+//            }).resume()
+//        }else{
+//            print("이미지 없다")
+//            // 디테일뷰로 넘어올때 이미지 정보가 없을경우 화면에 이미지뷰를 제거하여 priority 설정에 따라 제거후 오토레이아웃 적용
+//            // 헤더뷰를 다시 그린다.
+//            boardHeaderView.boardImgView.removeFromSuperview()
+//            boardHeaderView.setNeedsLayout()
+//            boardHeaderView.layoutIfNeeded()
+//
+//        }
+//
         
         guard  let boardDatas = boardData else { return }
         boardHeaderView.boardCotentsLabel.text = boardDatas.board_text
@@ -66,7 +91,7 @@ class BoardDevDetailViewController: UIViewController {
         
         
         boardHeaderView.boardUID = boardDatas.board_uid
-        boardHeaderView.userUID = boardDatas.user_uid
+        //boardHeaderView.userUID = boardDatas.user_uid
         
         // 헤더뷰의 최소크기 할당
         // systemLayoutSizeFitting(_ targetSize: CGSize): 뷰가 유지하는 제약을 채우는 뷰의 사이즈를 돌려줍니다.
@@ -94,9 +119,42 @@ class BoardDevDetailViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    // 키보드 올리기 or 내리기
+    func keyboardWillShow(notification: Notification) {
+        print("///// keyboardWillShowOrHide")
+        
+        // guard-let으로 nil 값이면, 키보드를 내립니다.
+        guard let userInfo = notification.userInfo else {
+            self.commentTextField.resignFirstResponder() // 키보드 내리기.
 
+            self.commentViewBottomConstraint.constant = 0 // 댓글 작성칸 내리기.
+            self.view.layoutIfNeeded() // UIView layout 새로고침.
+            return
+        }
+        
+        // notification.userInfo를 이용해 키보드와 UIView를 함께 올립니다.
+        print("///// userInfo: ", userInfo)
+        
+        let animationDuration: TimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as! NSNumber).doubleValue
+        let animationCurve = UIViewAnimationOptions(rawValue: (userInfo[UIKeyboardAnimationCurveUserInfoKey] as! NSNumber).uintValue << 16)
+        let frameEnd = (userInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        
+        UIView.animate(
+            withDuration: animationDuration,
+            delay: 0.0,
+            options: [.beginFromCurrentState, animationCurve],
+            animations: {
+                self.commentViewBottomConstraint.constant = (self.view.bounds.maxY - self.view.window!.convert(frameEnd, to: self.view).minY)
+                self.view.layoutIfNeeded()
+        },
+            completion: nil
+        )
+    }
+
+}
+extension BoardDevDetailViewController: UITextFieldDelegate {
     
-
+    
 }
 extension BoardDevDetailViewController: UITableViewDataSource, UITableViewDelegate {
     
