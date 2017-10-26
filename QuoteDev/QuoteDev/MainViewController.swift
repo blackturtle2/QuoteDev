@@ -90,7 +90,7 @@ class MainViewController: UIViewController {
         }
     }
     
-    // MARK: 오늘 날짜에 맞는 명언 키 값 가져오고, showQuoteData() 호출하기
+    // MARK: 오늘 날짜에 맞는 명언 키 값 가져오고, findShowQuoteData() 호출하기
     func findTodayQuoteKey(quoteMode:String, todayDate:Date) {
         let formatter = DateFormatter()
         formatter.dateFormat = "MMdd" // Firebase의 DB에 오늘 날짜(MMdd)에 맞춰서 오늘자 명언의 Key 값들이 저장되어 있습니다.
