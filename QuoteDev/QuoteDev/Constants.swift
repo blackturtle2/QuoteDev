@@ -21,7 +21,7 @@ struct Constants {
     // quote main
     static let firebaseQuoteID:String = "quotes_id"
     static let firebaseQuoteText:String = "quotes_text"
-    static let firebaseQuoteSource:String = "quotes_source"
+    static let firebaseQuoteAuthor:String = "quotes_author"
     static let firebaseQuoteLikes:String = "quotes_likes"
     static let userDefaultsTodayQuoteID:String = "userDefaultsTodayQuoteID"
     

@@ -66,13 +66,13 @@
                                             <rect key="frame" x="0.0" y="44" width="375" height="211"/>
                                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         </view>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="발 없는 오픈소스 천리 간다" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JpR-xn-itO">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="명언 찾는 중.." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JpR-xn-itO">
                                             <rect key="frame" x="0.0" y="137.5" width="375" height="24"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="- 오픈소스에 PR 날리고 취직한 신입 개발자 -" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eZ3-F5-42t">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="- 명언 말해주는 개발자 찾는 중.. -" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eZ3-F5-42t">
                                             <rect key="frame" x="0.0" y="169.5" width="375" height="18"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -350,7 +350,7 @@ JS and GS</string>
                         <outlet property="buttonCommentCount" destination="HCx-7b-gJQ" id="wWC-C2-mdd"/>
                         <outlet property="buttonLike" destination="I16-UV-dTL" id="cC2-Nt-Vlq"/>
                         <outlet property="buttonLikeCount" destination="U2J-mH-U3b" id="lFr-a1-ik2"/>
-                        <outlet property="labelQuoteSource" destination="eZ3-F5-42t" id="uDv-Cg-5bE"/>
+                        <outlet property="labelQuoteAuthor" destination="eZ3-F5-42t" id="uDv-Cg-5bE"/>
                         <outlet property="labelQuoteText" destination="JpR-xn-itO" id="Nzh-lV-2Wb"/>
                         <outlet property="segmentedControlQuoteMode" destination="2Kj-mG-9O9" id="Svw-We-zEp"/>
                         <outlet property="tableViewMain" destination="PST-9y-snG" id="9md-Ev-UBg"/>
