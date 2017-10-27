@@ -140,22 +140,22 @@ class MainViewController: UIViewController {
             guard let data = snapshot.value as? [String:Any] else { return }
             print("///// firebase snapshot- 2341: \n", data)
             
-            let quotesID = data[Constants.firebaseQuoteID] as! String
-            let quotesText = data[Constants.firebaseQuoteText] as! String
-            let quotesAuthor = data[Constants.firebaseQuoteAuthor] as! String
+            let quoteID = data[Constants.firebaseQuoteID] as! String
+            let quoteText = data[Constants.firebaseQuoteText] as! String
+            let quoteAuthor = data[Constants.firebaseQuoteAuthor] as! String
             
             // UI 적용
             DispatchQueue.main.async {
-                self.labelQuoteText.text = "“" + quotesText + "”"
-                self.labelQuoteAuthor.text = "- " + quotesAuthor + " -"
+                self.labelQuoteText.text = "“" + quoteText + "”"
+                self.labelQuoteAuthor.text = "- " + quoteAuthor + " -"
             }
             
             // 전역 변수와 UserDefaults에 현재 보여지는 명언 ID를 저장합니다.
-            self.currentQuoteID = quotesID
-            UserDefaults.standard.set(quotesID, forKey: Constants.userDefaultsCurrentQuoteID)
+            self.currentQuoteID = quoteID
+            UserDefaults.standard.set(quoteID, forKey: Constants.userDefaultsCurrentQuoteID)
             
             // 좋아요 개수를 가져오고, UI에 반영합니다.
-            self.findShowQuoteLikesCount()
+            self.findShowQuoteLikesCountOf(quoteID: quoteID)
             
         }) { (error) in
             print("///// firebase error- 2341: \n", error)
@@ -163,45 +163,56 @@ class MainViewController: UIViewController {
     }
     
     // MARK: 명언 좋아요 버튼의 카운트 변경 function 정의
-    func findShowQuoteLikesCount() {
-        guard let realTodayQuoteID = self.currentQuoteID else { return }
-        Database.database().reference().child(Constants.firebaseQuoteLikes).child(realTodayQuoteID).observe(DataEventType.value, with: {[unowned self] (snapshot) in
-            guard let data = snapshot.value as? [String] else { return }
-            print("///// data- firebase snapshot- quotes_likes: \n", data)
+    func findShowQuoteLikesCountOf(quoteID:String) {
+        Database.database().reference().child(Constants.firebaseQuoteLikes).child(quoteID).child(Constants.firebaseQuoteLikesCount).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
+            print("///// snapshot- 5234:\n", snapshot)
             
-            let likesCount = data.count
+            guard let data = snapshot.value as? Int else {
+                DispatchQueue.main.async {
+                    self.buttonLikeCount.setTitle("0", for: UIControlState.normal)
+                }
+                return
+            }
+            print("///// data- 4736: \n", data)
             
             DispatchQueue.main.async {
-                self.buttonLikeCount.setTitle(String(likesCount), for: UIControlState.normal)
+                self.buttonLikeCount.setTitle(String(data), for: UIControlState.normal)
             }
             
         }) { (error) in
-            print("///// error- firebase quotes_likes: \n", error)
+            print("///// error- 4736: \n", error.localizedDescription)
         }
     }
     
     // MARK: 명언 좋아요 버튼 액션
     @IBAction func buttonLikeAction(_ sender: UIButton) {
-        self.postShowLikeQuoteDB()
+        guard let realTodayQuoteID = self.currentQuoteID else { return }
+        
+        // 오늘의 명언에 대해 최초로 좋아요를 눌렀을 케이스 예외처리입니다.
+        Database.database().reference().child(Constants.firebaseQuoteLikes).child(realTodayQuoteID).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
+            
+            // 오늘의 명언에 대해 좋아요 데이터가 있는지 조회합니다.
+            if snapshot.exists() { // snapshot이 있을 경우, 바로 좋아요 기능 작동.
+                self.postShowLikeQuoteDB()
+            }else {
+                let dicInitialLikeData:[String:Any] = [Constants.firebaseQuoteLikesCount:0] // snapshot이 없을 경우, 좋아요 카운트 데이터 생성.
+                Database.database().reference().child(Constants.firebaseQuoteLikes).child(realTodayQuoteID).setValue(dicInitialLikeData) // realTodayQuoteID의 노드 생성.
+                self.postShowLikeQuoteDB() // 좋아요 기능 작동.
+            }
+            
+        }) { (error) in
+            print("///// error- 3130: \n", error.localizedDescription)
+        }
+
     }
     
-    @IBAction func buttonLikeCountAction(_ sender: UIButton) {
-        self.postShowLikeQuoteDB()
-    }
-    
+    // 좋아요 추가/취소 구현 부분입니다.
+    // realTodayQuoteID 노드가 있다는 전제로 좋아요 기능이 작동됩니다.
     func postShowLikeQuoteDB() {
         guard let realUid = Auth.auth().currentUser?.uid else { return }
         guard let realTodayQuoteID = self.currentQuoteID else { return }
         Database.database().reference().child(Constants.firebaseQuoteLikes).child(realTodayQuoteID).runTransactionBlock({[unowned self] (currentData) -> TransactionResult in
             print("///// try runTransactionBlock- ")
-            
-            // 오늘자 명언에 대해 최초로 좋아요를 눌렀을 경우에는 runTransactionBlock이 아닌, setValue로 데이터를 저장합니다. (runTransactionBlock 특성으로 realTodayQuoteID라는 키 값이 만들어지지 않기 때문 )
-            if !currentData.hasChildren() { // currentDate가 값을 갖고 있지 않을 케이스 예외처리
-                print("///// currentData.hasChildren() is false- ")
-                let dicTempData:[String:Any] = [Constants.firebaseQuoteLikesCount:0]
-                Database.database().reference().child(Constants.firebaseQuoteLikes).child(realTodayQuoteID).setValue(dicTempData) // realTodayQuoteID의 노드를 생성하고.
-                self.postShowLikeQuoteDB() // 다시 postLikeQuoteDB()를 실행합니다.
-            }
             
             if var post = currentData.value as? [String : AnyObject] {
                 var likes = post[Constants.firebaseQuoteLikesData] as? [String : Bool] ?? [:]
