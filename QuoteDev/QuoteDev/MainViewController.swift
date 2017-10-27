@@ -20,7 +20,7 @@ class MainViewController: UIViewController {
     @IBOutlet var buttonLike : UIButton! //명언 좋아요 버튼
     @IBOutlet var buttonLikeCount : UIButton! //명언 좋아요 버튼
     @IBOutlet var buttonComment : UIButton! //명언 댓글 버튼
-    @IBOutlet var buttonCommentCount : UIButton! //명언 댓글 버튼
+    @IBOutlet var buttonCommentsCount : UIButton! //명언 댓글 버튼
     
     var currentQuoteID: String?
     var todayJoyfulQuoteID: String?
@@ -160,6 +160,8 @@ class MainViewController: UIViewController {
             // 사용자가 좋아요를 눌렀는지 체크하고, UI에 반영합니다.
             self.findShowQuoteMyLikeOf(quoteID: quoteID)
             
+            self.findShowQuoteCommentCountOf(quoteID: quoteID)
+            
         }) { (error) in
             print("///// firebase error- 2341: \n", error)
         }
@@ -212,6 +214,28 @@ class MainViewController: UIViewController {
             
         }) { (error) in
             print("///// error- 8473: \n", error.localizedDescription)
+        }
+    }
+
+    // MARK: 명언 댓글 개수 확인 & UI 적용
+    func findShowQuoteCommentCountOf(quoteID:String) {
+        Database.database().reference().child(Constants.firebaseQuoteComments).child(quoteID).child(Constants.firebaseQuoteCommentsCount).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
+            print("///// snapshot- 6234:\n", snapshot)
+            
+            guard let data = snapshot.value as? Int else {
+                DispatchQueue.main.async {
+                    self.buttonCommentsCount.setTitle("0", for: UIControlState.normal)
+                }
+                return
+            }
+            print("///// data- 6234: \n", data)
+            
+            DispatchQueue.main.async {
+                self.buttonCommentsCount.setTitle(String(data), for: UIControlState.normal)
+            }
+            
+        }) { (error) in
+            print("///// error- 6234: \n", error.localizedDescription)
         }
     }
     

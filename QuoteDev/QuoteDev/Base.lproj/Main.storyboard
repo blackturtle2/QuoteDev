@@ -347,7 +347,7 @@ JS and GS</string>
                     <size key="freeformSize" width="375" height="800"/>
                     <connections>
                         <outlet property="buttonComment" destination="FMl-dm-933" id="a5J-2X-lT0"/>
-                        <outlet property="buttonCommentCount" destination="HCx-7b-gJQ" id="wWC-C2-mdd"/>
+                        <outlet property="buttonCommentsCount" destination="HCx-7b-gJQ" id="wWC-C2-mdd"/>
                         <outlet property="buttonLike" destination="I16-UV-dTL" id="cC2-Nt-Vlq"/>
                         <outlet property="buttonLikeCount" destination="U2J-mH-U3b" id="lFr-a1-ik2"/>
                         <outlet property="labelQuoteAuthor" destination="eZ3-F5-42t" id="uDv-Cg-5bE"/>
