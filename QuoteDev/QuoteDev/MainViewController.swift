@@ -91,7 +91,7 @@ class MainViewController: UIViewController {
         }
     }
     
-    // MARK: 오늘 날짜에 맞는 명언 키 값 가져오고, findShowQuoteData() 호출하기
+    // MARK: 명언 키 값 가져오기 - 오늘 날짜에 맞는 명언 키 값 가져오고, findShowQuoteData() 호출하기
     func findTodayQuoteKey(quoteMode:String, todayDate:Date) {
         let formatter = DateFormatter()
         formatter.dateFormat = "MMdd" // Firebase의 DB에 오늘 날짜(MMdd)에 맞춰서 오늘자 명언의 Key 값들이 저장되어 있습니다.
@@ -132,7 +132,7 @@ class MainViewController: UIViewController {
         }
     }
     
-    // MARK: 명언 모드와 키 값에 따라 명언 데이터를 가져오고, UI에 표현까지 완료하는 코드 구현
+    // MARK: 명언 데이터 가져오기 - 명언 모드와 키 값에 따라 명언 데이터를 가져오고, UI에 표현까지 완료하는 코드 구현
     func findShowQuoteData(quoteMode:String, quoteKey:String) {
         
         // 명언 모드에 따른 데이터 통신
@@ -182,6 +182,10 @@ class MainViewController: UIViewController {
     
     // MARK: 명언 좋아요 버튼 액션
     @IBAction func buttonLikeAction(_ sender: UIButton) {
+        self.postShowLikeQuoteDB()
+    }
+    
+    @IBAction func buttonLikeCountAction(_ sender: UIButton) {
         self.postShowLikeQuoteDB()
     }
     
