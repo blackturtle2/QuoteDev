@@ -14,6 +14,7 @@ struct Constants {
     
     static let quoteCommentViewController:String = "QuoteCommentViewController"
     
+    // auth
     static let firebaseUsersRoot:String = "Users"
     static let firebaseUserUid:String = "userUid"
     static let firebaseUserNickname:String = "userNickname"
@@ -23,8 +24,12 @@ struct Constants {
     static let firebaseQuoteText:String = "quotes_text"
     static let firebaseQuoteAuthor:String = "quotes_author"
     static let firebaseQuoteLikes:String = "quotes_likes"
-    static let userDefaultsTodayQuoteID:String = "userDefaultsTodayQuoteID"
+    static let firebaseQuoteLikesData:String = "likes_data"
+    static let firebaseQuoteLikesCount:String = "likes_count"
     
+    static let userDefaultsCurrentQuoteID:String = "userDefaultsCurrentQuoteID"
+    
+    // setting
     static let firebaseAppVersion:String = "app_version"
     static let firebaseAppCurrentVersion:String = "current_version"
     static let firebaseAppForcedUpdateVersion:String = "forced_update_version"
