@@ -157,12 +157,15 @@ class MainViewController: UIViewController {
             // 좋아요 개수를 가져오고, UI에 반영합니다.
             self.findShowQuoteLikesCountOf(quoteID: quoteID)
             
+            // 사용자가 좋아요를 눌렀는지 체크하고, UI에 반영합니다.
+            self.findShowQuoteMyLikeOf(quoteID: quoteID)
+            
         }) { (error) in
             print("///// firebase error- 2341: \n", error)
         }
     }
     
-    // MARK: 명언 좋아요 버튼의 카운트 변경 function 정의
+    // MARK: 명언 좋아요 카운트 변경 function 정의
     func findShowQuoteLikesCountOf(quoteID:String) {
         Database.database().reference().child(Constants.firebaseQuoteLikes).child(quoteID).child(Constants.firebaseQuoteLikesCount).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
             print("///// snapshot- 5234:\n", snapshot)
@@ -181,6 +184,34 @@ class MainViewController: UIViewController {
             
         }) { (error) in
             print("///// error- 4736: \n", error.localizedDescription)
+        }
+    }
+    
+    // MARK: 나의 좋아요 여부 체크 및 UI(좋아요 버튼 이미지) 변경 function 정의
+    func findShowQuoteMyLikeOf(quoteID:String) {
+        guard let realUid = Auth.auth().currentUser?.uid else { return }
+        Database.database().reference().child(Constants.firebaseQuoteLikes).child(quoteID).child(Constants.firebaseQuoteLikesData).child(realUid).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
+            print("///// snapshot- 8473:\n", snapshot)
+            
+            guard let data = snapshot.value as? Bool else {
+                // 좋아요를 취소하면, 데이터를 제거하므로, guard문 안에서 UI를 처리합니다.
+                DispatchQueue.main.async {
+                    self.buttonLike.setImage(#imageLiteral(resourceName: "icon_button_like"), for: .normal)
+                }
+                return
+            }
+            
+            // data가 true일 때, 좋아요 버튼의 이미지를 변경합니다.
+            if data {
+                DispatchQueue.main.async {
+                    self.buttonLike.setImage(#imageLiteral(resourceName: "icon_button_like_black"), for: .normal)
+                }
+            }
+            
+            print("///// data- 8473: \n", data)
+            
+        }) { (error) in
+            print("///// error- 8473: \n", error.localizedDescription)
         }
     }
     
