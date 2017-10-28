@@ -46,6 +46,12 @@ class QuoteCommentViewController: UIViewController {
         self.textFieldWritingComment.layer.borderWidth = 1.0
         self.textFieldWritingComment.layer.cornerRadius = 5; // borderStyle.roundedRect가 작동하지 않는 관계로.. cornerRadius를 강제로 삽입합니다.
         
+        // 타이틀에 오늘 날짜 나오도록 세팅
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy.MM.dd" // Firebase의 DB에 오늘 날짜(MMdd)에 맞춰서 오늘자 명언의 Key 값들이 저장되어 있습니다.
+        self.navigationItem.title = formatter.string(from: Date())
+        
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -57,13 +63,13 @@ class QuoteCommentViewController: UIViewController {
     //MARK:-         Functions                 //
     /*******************************************/
     
-    // MARK: 탭제스쳐로 키보드 내리기
-    @IBAction func tabGestureTableViewMain(_ sender: UITapGestureRecognizer) {
+    // MARK: 댓글 작성 완료 버튼(Push) 액션 정의
+    @IBAction func buttonCommentPushAction(_ sender: UIButton) {
         NotificationCenter.default.post(name: .UIKeyboardWillHide, object: nil)
     }
     
-    // MARK: 댓글 작성 완료 버튼(Push) 액션 정의
-    @IBAction func buttonCommentPushAction(_ sender: UIButton) {
+    // MARK: 탭제스쳐로 키보드 내리기
+    @IBAction func tabGestureTableViewMain(_ sender: UITapGestureRecognizer) {
         NotificationCenter.default.post(name: .UIKeyboardWillHide, object: nil)
     }
     
