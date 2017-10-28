@@ -10,13 +10,14 @@ import UIKit
 
 class QuoteCommentViewController: UIViewController {
 
-    @IBOutlet weak var tableViewMain: UITableView!
+    @IBOutlet weak var tableViewMain: UITableView! // 메인 테이블 뷰
     
-    @IBOutlet weak var viewWritingCommentBox: UIView!
-    @IBOutlet weak var textFieldWritingComment: UITextField!
+    @IBOutlet weak var viewWritingCommentBox: UIView! // 댓글 작성 박스 뷰
+    @IBOutlet weak var textFieldWritingComment: UITextField! // 댓글 작성 텍스트필드
     
-    @IBOutlet weak var constraintOfViewWritingCommentBox: NSLayoutConstraint!
-    @IBOutlet weak var constraintOfTableViewMain: NSLayoutConstraint!
+    @IBOutlet weak var constraintOfViewWritingCommentBox: NSLayoutConstraint! // 댓글 작성 박스 Bottom의 constraint
+    
+    @IBOutlet var tapGestureTableViewMain: UITapGestureRecognizer! // 키보드 올리기 or 내리기 목적의 탭제스쳐
     
     
     override func viewDidLoad() {
@@ -25,18 +26,16 @@ class QuoteCommentViewController: UIViewController {
         self.tableViewMain.delegate = self
         self.tableViewMain.dataSource = self
         
-        self.textFieldWritingComment.delegate = self
+        self.tapGestureTableViewMain.isEnabled = false // 댓글 작성 텍스트필드에 커서가 올라가서 키보드가 올라왔을 때에만 탭제스쳐가 작동하도록 설계합니다.
         
         // 댓글 작성 텍스트필드 터치 시, 키보드 올리기 위한 키보드 노티 옵저버 등록.
-        // 키보드 올리기
-        NotificationCenter.default.addObserver(
+        NotificationCenter.default.addObserver( // 키보드 올리기
             self,
             selector: #selector(QuoteCommentViewController.keyboardWillShowOrHide(notification:)),
             name: .UIKeyboardWillShow,
             object: nil)
         
-        // 키보드 내리기
-        NotificationCenter.default.addObserver(
+        NotificationCenter.default.addObserver( // 키보드 내리기
             self,
             selector: #selector(QuoteCommentViewController.keyboardWillShowOrHide(notification:)),
             name: .UIKeyboardWillHide,
@@ -53,34 +52,22 @@ class QuoteCommentViewController: UIViewController {
         super.didReceiveMemoryWarning()
     }
 
-}
-
-/*******************************************/
-//MARK:-         extenstion                //
-/*******************************************/
-extension QuoteCommentViewController: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+    
+    /*******************************************/
+    //MARK:-         Functions                 //
+    /*******************************************/
+    
+    // MARK: 탭제스쳐로 키보드 내리기
+    @IBAction func tabGestureTableViewMain(_ sender: UITapGestureRecognizer) {
+        NotificationCenter.default.post(name: .UIKeyboardWillHide, object: nil)
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "comment_cell", for: indexPath)
-        
-        return cell
+    // MARK: 댓글 작성 완료 버튼(Push) 액션 정의
+    @IBAction func buttonCommentPushAction(_ sender: UIButton) {
+        NotificationCenter.default.post(name: .UIKeyboardWillHide, object: nil)
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
-    }
-    
-}
-
-extension QuoteCommentViewController: UITextFieldDelegate {
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        
-    }
-    
-    // 키보드 올리기 or 내리기
+    // MARK: 키보드 올리기 or 내리기 Function 정의
     func keyboardWillShowOrHide(notification: Notification) {
         print("///// keyboardWillShowOrHide")
         
@@ -92,7 +79,7 @@ extension QuoteCommentViewController: UITextFieldDelegate {
             return
         }
         
-        // notification.userInfo를 이용해 키보드와 UIView를 함께 올립니다.
+        // notification.userInfo를 이용해 키보드가 올라올 때, self.view를 같이 올립니다.
         print("///// userInfo: ", userInfo)
         
         let animationDuration: TimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as! NSNumber).doubleValue
@@ -104,12 +91,42 @@ extension QuoteCommentViewController: UITextFieldDelegate {
             delay: 0.0,
             options: [.beginFromCurrentState, animationCurve],
             animations: {
-                self.constraintOfViewWritingCommentBox.constant = (self.view.bounds.maxY - self.view.window!.convert(frameEnd, to: self.view).minY)
-                self.constraintOfTableViewMain.constant = (self.view.bounds.maxY - self.view.window!.convert(frameEnd, to: self.view).minY)
-                self.tableViewMain.layoutIfNeeded()
+                // 기존 코드: 댓글 작성 박스의 constant만 올렸습니다.
+                // self.constraintOfViewWritingCommentBox.constant = (self.view.bounds.maxY - self.view.window!.convert(frameEnd, to: self.view).minY)
+                
+                // 아래 수정 코드: 키보드가 올라오면서 작아진 화면에서 댓글 목록이 자연스럽게 스크롤되도록 self.view의 height를 조정합니다.
+                self.view.frame.size.height -= (self.view.bounds.maxY - self.view.window!.convert(frameEnd, to: self.view).minY)
+                // self.tableViewMain.setContentOffset(CGPoint(x: 0, y: self.view.window!.convert(frameEnd, to: self.view).minY), animated: true) // 테이블 뷰 자동 스크롤
                 self.view.layoutIfNeeded()
+                
+                self.tapGestureTableViewMain.isEnabled = true // 키보드가 올라왔을 때에만 탭제스쳐를 작동시킵니다.
         },
             completion: nil
         )
     }
+    
+}
+
+/*******************************************/
+//MARK:-         extenstion                //
+/*******************************************/
+// MARK: extension - UITableViewDelegate, UITableViewDataSource
+extension QuoteCommentViewController: UITableViewDelegate, UITableViewDataSource {
+    // MARK: tableView - row의 개수
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 5
+    }
+    
+    // MARK: tableView - row의 높이
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
+    
+    // MARK: tableView - cell 그리기
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "comment_cell", for: indexPath)
+        
+        return cell
+    }
+    
 }
