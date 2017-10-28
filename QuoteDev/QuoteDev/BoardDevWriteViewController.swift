@@ -112,13 +112,19 @@ class BoardDevWriteViewController: UIViewController {
         print("BoardUID:// ", board_uid)
         
         print("TEXT://", self.textView.text)
+ 
         
         // 현재 board 하위노드에 children 카운트측적을 위한 호출
+        let autoId = reference.child("board").childByAutoId().key
         reference.child("board").runTransactionBlock({ (currentData) -> TransactionResult in
+            
             var board_count = 0
+            print(currentData)
+            print(currentData.childrenCount)
             if currentData.hasChildren() {
                 board_count = Int(currentData.childrenCount)
             }
+            var currentDataDic = currentData.value as? [String:Any] ?? [:]
             print(board_count)
             var insertData: [String:Any] = [:]
             insertData.updateValue(board_uid, forKey: "board_uid")
@@ -127,6 +133,7 @@ class BoardDevWriteViewController: UIViewController {
             insertData.updateValue(self.user_uid, forKey: "user_uid")
             insertData.updateValue(self.user_nickname, forKey: "user_nickname")
             insertData.updateValue(board_count, forKey: "board_count") // board_count(고유 글번호)
+            insertData.updateValue("urlStr", forKey: "board_img_url")
             
             if let boardImg = self.photoImageView.image {
                 let uploadImg = UIImageJPEGRepresentation(boardImg, 0.3)
@@ -136,73 +143,35 @@ class BoardDevWriteViewController: UIViewController {
                         print("error// ", error)
                         return
                     }
-                    
+
                     print("meta data :  ",metaData)
                     guard let urlStr = metaData?.downloadURL()?.absoluteString else{return}
-                    
+
                     insertData.updateValue(urlStr, forKey: "board_img_url")
-                    self.reference.child("board").child("\(board_count)").setValue(insertData)
-                    //currentData.value = insertData
+                    //self.reference.child("board").childByAutoId().setValue(insertData)
+                    currentDataDic.updateValue(insertData, forKey: autoId)
+                    currentData.value = currentDataDic
+                    self.reference.child("board").child(autoId).updateChildValues(insertData)
                     
+
                 })
+
             }else{
-                self.reference.child("board").child("\(board_count)").setValue(insertData)
-                //currentData.value = insertData
+                //self.reference.child("board").childByAutoId().setValue(insertData)
+                currentDataDic.updateValue(insertData, forKey: autoId)
+                currentData.value = currentDataDic
+
             }
-            
-            
+            DispatchQueue.main.async {
+                
+                self.navigationController?.popViewController(animated: true)
+            }
             return TransactionResult.success(withValue: currentData)
         }) { (error, commit, datasnap) in
             
+            
+            
         }
-        /*
-        reference.child("board").observeSingleEvent(of: .value, with: { (dataSnap) in
-            var board_count = 0
-            if dataSnap.exists() {
-               board_count = Int(dataSnap.childrenCount)
-            }
-            print(board_count)
-            var insertData: [String:Any] = [:]
-            insertData.updateValue(board_uid, forKey: "board_uid")
-            insertData.updateValue(self.textView.text, forKey: "board_text")
-            insertData.updateValue(currentDate, forKey: "board_date") // date형식의경우 계속 시간이 변경됨
-            insertData.updateValue(self.user_uid, forKey: "user_uid")
-            insertData.updateValue(self.user_nickname, forKey: "user_nickname")
-            insertData.updateValue(board_count, forKey: "board_count") // board_count(고유 글번호)
-            
-            
-           // 이미지 없을떼 등록되도록 수정해야함 
-            guard let boardImg = self.photoImageView.image else {
-                self.reference.child("board").childByAutoId().setValue(insertData)
-                self.navigationController?.popViewController(animated: true)
-                return
-                
-            }
-            
-            let uploadImg = UIImageJPEGRepresentation(boardImg, 0.3)
-            // 이미지 저장
-            Storage.storage().reference().child("board_img").child(board_uid).putData(uploadImg!, metadata: nil, completion: { (metaData, error) in
-                if let error = error {
-                    print("error// ", error)
-                    return
-                }
-                
-                print("meta data :  ",metaData)
-                guard let urlStr = metaData?.downloadURL()?.absoluteString else{return}
-                
-                insertData.updateValue(urlStr, forKey: "board_img_url")
-                self.reference.child("board").childByAutoId().setValue(insertData)
-    
-                
-            })
-            
-            self.navigationController?.popViewController(animated: true)
-            
-            
-        }) { (error) in
-            print(error.localizedDescription)
-        }
-        */
      
     }
     
@@ -227,7 +196,8 @@ class BoardDevWriteViewController: UIViewController {
             delay: 0.0,
             options: [.beginFromCurrentState, animationCurve],
             animations: {
-                self.footerViewBottomConstraint.constant = (self.view.bounds.maxY - self.view.window!.convert(frameEnd, to: self.view).minY)
+                guard let window = self.view.window else {return}
+                self.footerViewBottomConstraint.constant = (self.view.bounds.maxY - window.convert(frameEnd, to: self.view).minY)
                 self.view.layoutIfNeeded()
         },
             completion: nil
@@ -260,7 +230,7 @@ extension BoardDevWriteViewController: UINavigationControllerDelegate, UIImagePi
             photoImageView.layer.cornerRadius = 20
             self.dismiss(animated: true, completion: nil)
         }else{
-            let alertController = UIAlertController(title: "경고", message: "동영상 파일은 첨부하실수 없습니다.", preferredStyle: .alert)
+            let alertController = UIAlertController(title: "주의", message: "동영상 파일은 첨부하실수 없습니다.", preferredStyle: .alert)
             let cancelAction = UIAlertAction(title: "Ok", style: .default, handler: { (action) in
                 self.dismiss(animated: true, completion: nil)
                 
