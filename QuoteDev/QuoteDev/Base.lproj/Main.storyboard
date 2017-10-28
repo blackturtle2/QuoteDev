@@ -771,7 +771,7 @@ JS and GS</string>
                                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </view>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="comment_cell" id="VbX-ME-Ynm">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="comment_cell" id="VbX-ME-Ynm" customClass="QuoteCommentTableViewCell" customModule="QuoteDev" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="VbX-ME-Ynm" id="Qwz-ev-u1f">
@@ -791,12 +791,11 @@ JS and GS</string>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cdb-Zj-Bca">
-                                                                    <rect key="frame" x="328" y="76.5" width="15" height="4"/>
-                                                                    <constraints>
-                                                                        <constraint firstAttribute="height" constant="3.75" id="9sx-Bc-tlx"/>
-                                                                        <constraint firstAttribute="width" constant="15" id="jq8-tj-NXx"/>
-                                                                    </constraints>
-                                                                    <state key="normal" image="icon_button_more"/>
+                                                                    <rect key="frame" x="323" y="67.5" width="20" height="22"/>
+                                                                    <state key="normal" image="icon_button_more_white_Background"/>
+                                                                    <connections>
+                                                                        <action selector="buttonCommentOption:" destination="VbX-ME-Ynm" eventType="touchUpInside" id="ZIR-ze-WLt"/>
+                                                                    </connections>
                                                                 </button>
                                                             </subviews>
                                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -838,6 +837,9 @@ JS and GS</string>
                                                                     <state key="normal" title="like">
                                                                         <color key="titleColor" red="0.76862745098039209" green="0.10196078431372549" blue="0.086274509803921567" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     </state>
+                                                                    <connections>
+                                                                        <action selector="buttonCommentLikeAction:" destination="VbX-ME-Ynm" eventType="touchUpInside" id="mmg-gX-zFf"/>
+                                                                    </connections>
                                                                 </button>
                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HNg-ji-p44">
                                                                     <rect key="frame" x="38" y="0.0" width="30" height="27"/>
@@ -845,6 +847,9 @@ JS and GS</string>
                                                                     <state key="normal" title=". . .">
                                                                         <color key="titleColor" red="0.76862745098039209" green="0.10196078431372549" blue="0.086274509803921567" alpha="1" colorSpace="calibratedRGB"/>
                                                                     </state>
+                                                                    <connections>
+                                                                        <action selector="buttonCommentLikeCountAction:" destination="VbX-ME-Ynm" eventType="touchUpInside" id="IpK-mC-7n9"/>
+                                                                    </connections>
                                                                 </button>
                                                             </subviews>
                                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -880,6 +885,12 @@ JS and GS</string>
                                                 <constraint firstAttribute="trailing" secondItem="cAR-8i-yVB" secondAttribute="trailing" constant="16" id="xN4-g6-P99"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="labelCommentCreatedDate" destination="3YY-LB-oFJ" id="ssl-s6-Txs"/>
+                                            <outlet property="labelCommentNumberID" destination="Xrg-lh-OVz" id="d4I-im-8jG"/>
+                                            <outlet property="labelCommentText" destination="hxU-EX-ewk" id="Gcb-Zb-xdy"/>
+                                            <outlet property="labelCommentWriter" destination="g1U-Uw-f6G" id="OoT-pF-99b"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
@@ -978,6 +989,7 @@ JS and GS</string>
         <image name="icon_button_comment" width="22" height="20"/>
         <image name="icon_button_like" width="22" height="20"/>
         <image name="icon_button_more" width="24" height="6"/>
+        <image name="icon_button_more_white_Background" width="20" height="18"/>
         <image name="icon_button_move_board_dev" width="80" height="92"/>
         <image name="icon_button_share" width="19" height="25"/>
         <image name="temp_quote_background_image" width="640" height="361"/>

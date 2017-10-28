@@ -124,7 +124,7 @@ extension QuoteCommentViewController: UITableViewDelegate, UITableViewDataSource
     
     // MARK: tableView - cell 그리기
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "comment_cell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "comment_cell", for: indexPath) as! QuoteCommentTableViewCell
         
         return cell
     }
