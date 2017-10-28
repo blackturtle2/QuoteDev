@@ -15,14 +15,18 @@ class MainViewController: UIViewController {
     @IBOutlet weak var segmentedControlQuoteMode: UISegmentedControl!
     
     @IBOutlet var labelQuoteText : UILabel! //명언 텍스트 레이블
-    @IBOutlet var labelQuoteSource : UILabel! //명언 출처 or 저자 레이블
+    @IBOutlet var labelQuoteAuthor : UILabel! //명언 출처 or 저자 레이블
     
     @IBOutlet var buttonLike : UIButton! //명언 좋아요 버튼
     @IBOutlet var buttonLikeCount : UIButton! //명언 좋아요 버튼
     @IBOutlet var buttonComment : UIButton! //명언 댓글 버튼
-    @IBOutlet var buttonCommentCount : UIButton! //명언 댓글 버튼
+    @IBOutlet var buttonCommentsCount : UIButton! //명언 댓글 버튼
     
-    var todaysQuoteID: String?
+    var currentQuoteID: String?
+    var todayJoyfulQuoteID: String?
+    
+    var quoteSeriousKey: String? //오늘 날짜에 해당하는 진지모드 명언 키 값을 저장하는 변수
+    var quoteJoyfulKey: String? //오늘 날짜에 해당하는 유쾌모드 명언 키 값을 저장하는 변수
     
     
     /*******************************************/
@@ -40,13 +44,20 @@ class MainViewController: UIViewController {
         // UI: 스크롤 뷰의 initial position을 조정해서 명언 모드 Segmented Control이 처음에는 보이지 않게 합니다.
         self.tableViewMain.contentOffset = CGPoint(x: 0, y: 50)
         
+        // 기본 명언 모드를 세팅합니다. 앱 최초 실행으로 저장되어 있지 않으면, 강제로 진지모드로 설정(UserDefaults)합니다.
         if UserDefaults.standard.string(forKey: Constants.settingDefaultQuoteMode) == nil {
             UserDefaults.standard.set(Constants.settingQuoteModeSerious, forKey: Constants.settingDefaultQuoteMode)
         }
         guard let userQuoteModeSetting = UserDefaults.standard.string(forKey: Constants.settingDefaultQuoteMode) else { return }
         
-        // 명언 텍스트와 소스를 가져와서 뿌리는 메소드를 호출합니다.
-        self.showQuoteData(quoteMode: userQuoteModeSetting)
+        // UI: 사용자 설정이 유쾌모드일 경우, 화면 최상단에 있는 Segmented Control의 index를 바꿉니다.
+        if userQuoteModeSetting == Constants.settingQuoteModeJoyful {
+            self.segmentedControlQuoteMode.selectedSegmentIndex = 1 // 기본 세팅이 0이므로 진지 모드의 케이스는 액션을 주지 않았습니다.
+        }
+        
+        // 오늘 날짜를 태워서 명언의 키 값을 찾고, UI에 출력까지 실행합니다.
+        self.findTodayQuoteKey(quoteMode: userQuoteModeSetting, todayDate: Date())
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -60,70 +71,238 @@ class MainViewController: UIViewController {
     /*******************************************/
     
     // MARK: 명언 모드 Segmented Control 액션 정의
+    // 오늘 날짜의 명언 키 값이 전역 변수에 저장되어 있으면, findShowQuoteData()를 호출하고, 저장되어 있지 않으면, viewDidLoad()의 로직과 같은 루트로 실행합니다.
     @IBAction func segmentedControlQuoteModeAction(_ sender: UISegmentedControl) {
         if sender.selectedSegmentIndex == 0 { // 진지 모드
-            self.showQuoteData(quoteMode: Constants.settingQuoteModeSerious)
+            guard let realQuoteSeriousKey = self.quoteSeriousKey else {
+                self.findTodayQuoteKey(quoteMode: Constants.settingQuoteModeSerious, todayDate: Date())
+                return
+            }
+            
+            self.findShowQuoteData(quoteMode: Constants.settingQuoteModeSerious, quoteKey: realQuoteSeriousKey)
+            
         }else if sender.selectedSegmentIndex == 1 { // 유쾌 모드
-            self.showQuoteData(quoteMode: Constants.settingQuoteModeJoyful)
+            guard let realJoyfulSeriousKey = self.quoteJoyfulKey else {
+                self.findTodayQuoteKey(quoteMode: Constants.settingQuoteModeJoyful, todayDate: Date())
+                return
+            }
+            
+            self.findShowQuoteData(quoteMode: Constants.settingQuoteModeJoyful, quoteKey: realJoyfulSeriousKey)
         }
     }
     
-    // MARK: 명언 텍스트와 소스 가져오기 function 정의
-    // TODO: 오늘 날짜에 따라 그 날에 해당되는 명언 데이터 가져오기 구현.
-    // TODO: 오늘 날짜에 따라 그 날에 해당되는 로컬 이미지로 교체 되도록 구현.
-    func showQuoteData(quoteMode:String) {
-        // 유쾌모드일 경우, 화면 최상단에 있는 Segmented Control의 index를 바꿉니다.
-        if quoteMode == Constants.settingQuoteModeJoyful {
-            self.segmentedControlQuoteMode.selectedSegmentIndex = 1 // 기본 세팅이 0이므로 진지 모드의 케이스는 액션을 주지 않았습니다.
+    // MARK: 명언 키 값 가져오기 - 오늘 날짜에 맞는 명언 키 값 가져오고, findShowQuoteData() 호출하기
+    func findTodayQuoteKey(quoteMode:String, todayDate:Date) {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMdd" // Firebase의 DB에 오늘 날짜(MMdd)에 맞춰서 오늘자 명언의 Key 값들이 저장되어 있습니다.
+        
+        let today = formatter.string(from: Date())
+        
+        // 진지모드 key 값 가져오기
+        if quoteMode == Constants.settingQuoteModeSerious {
+            Database.database().reference().child("quotes_data_today_kor_serious").child(today).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
+                print("///// firebase snapshot- 425: \n", snapshot)
+                
+                guard let realQouteSeriousKey = snapshot.value as? Int else { return }
+                print("///// data- 425: \n", realQouteSeriousKey)
+                self.quoteSeriousKey = String(realQouteSeriousKey)
+                
+                // 해당 키 값에 맞는 명언 데이터 가져오기
+                self.findShowQuoteData(quoteMode: quoteMode, quoteKey: String(realQouteSeriousKey))
+                
+            }) { (error) in
+                print("///// firebase error- 425: \n", error)
+            }
+            
+            // 유쾌모드 key 값 가져오기
+        } else if quoteMode == Constants.settingQuoteModeJoyful {
+            Database.database().reference().child("quotes_data_today_kor_joyful").child(today).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
+                print("///// firebase snapshot- 5236: \n", snapshot)
+                
+                guard let realQouteJoyfulKey = snapshot.value as? Int else { return }
+                print("///// data- 5236: \n", realQouteJoyfulKey)
+                self.quoteJoyfulKey = String(realQouteJoyfulKey)
+                
+                // 해당 키 값에 맞는 명언 데이터 가져오기
+                self.findShowQuoteData(quoteMode: quoteMode, quoteKey: String(realQouteJoyfulKey))
+                
+            }) { (error) in
+                print("///// firebase error- 5236: \n", error)
+            }
         }
+    }
+    
+    // MARK: 명언 데이터 가져오기 - 명언 모드와 키 값에 따라 명언 데이터를 가져오고, UI에 표현까지 완료하는 코드 구현
+    func findShowQuoteData(quoteMode:String, quoteKey:String) {
         
         // 명언 모드에 따른 데이터 통신
-        Database.database().reference().child(quoteMode).observe(DataEventType.value, with: {[unowned self]  (snapshot) in
-            guard let data = snapshot.value as? [[String:Any]] else { return }
-            print("///// data- firebase snapshot- quoteMode: ", data)
+        Database.database().reference().child(quoteMode).child(quoteKey).observeSingleEvent(of: DataEventType.value, with: {[unowned self]  (snapshot) in
+            guard let data = snapshot.value as? [String:Any] else { return }
+            print("///// firebase snapshot- 2341: \n", data)
             
-            let quotesID = data[0][Constants.firebaseQuoteID] as! String
-            let quotesText = data[0][Constants.firebaseQuoteText] as! String
-            let quotesSource = data[0][Constants.firebaseQuoteSource] as! String
+            let quoteID = data[Constants.firebaseQuoteID] as! String
+            let quoteText = data[Constants.firebaseQuoteText] as! String
+            let quoteAuthor = data[Constants.firebaseQuoteAuthor] as! String
             
             // UI 적용
             DispatchQueue.main.async {
-                self.labelQuoteText.text = quotesText
-                self.labelQuoteSource.text = "- " + quotesSource + " -"
+                self.labelQuoteText.text = "“" + quoteText + "”"
+                self.labelQuoteAuthor.text = "- " + quoteAuthor + " -"
             }
             
-            self.todaysQuoteID = quotesID
-            UserDefaults.standard.set(quotesID, forKey: Constants.userDefaultsTodayQuoteID)
+            // 전역 변수와 UserDefaults에 현재 보여지는 명언 ID를 저장합니다.
+            self.currentQuoteID = quoteID
+            UserDefaults.standard.set(quoteID, forKey: Constants.userDefaultsCurrentQuoteID)
             
             // 좋아요 개수를 가져오고, UI에 반영합니다.
-            self.showQuoteLikesCount()
+            self.findShowQuoteLikesCountOf(quoteID: quoteID)
+            
+            // 사용자가 좋아요를 눌렀는지 체크하고, UI에 반영합니다.
+            self.findShowQuoteMyLikeOf(quoteID: quoteID)
+            
+            self.findShowQuoteCommentCountOf(quoteID: quoteID)
             
         }) { (error) in
-            print("///// error- firebase quoteMode: \n", error)
+            print("///// firebase error- 2341: \n", error)
         }
     }
     
-    // MARK: 명언 좋아요 버튼의 카운트 변경 function 정의
-    func showQuoteLikesCount() {
-        guard let realTodayQuoteID = self.todaysQuoteID else { return }
-        Database.database().reference().child(Constants.firebaseQuoteLikes).child(realTodayQuoteID).observe(DataEventType.value, with: {[unowned self] (snapshot) in
-            guard let data = snapshot.value as? [String] else { return }
-            print("///// data- firebase snapshot- quotes_likes: \n", data)
+    // MARK: 명언 좋아요 카운트 변경 function 정의
+    func findShowQuoteLikesCountOf(quoteID:String) {
+        Database.database().reference().child(Constants.firebaseQuoteLikes).child(quoteID).child(Constants.firebaseQuoteLikesCount).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
+            print("///// snapshot- 5234:\n", snapshot)
             
-            let likesCount = data.count
+            guard let data = snapshot.value as? Int else {
+                DispatchQueue.main.async {
+                    self.buttonLikeCount.setTitle("0", for: UIControlState.normal)
+                }
+                return
+            }
+            print("///// data- 4736: \n", data)
             
             DispatchQueue.main.async {
-                self.buttonLikeCount.setTitle(String(likesCount), for: UIControlState.normal)
+                self.buttonLikeCount.setTitle(String(data), for: UIControlState.normal)
             }
             
         }) { (error) in
-            print("///// error- firebase quotes_likes: \n", error)
+            print("///// error- 4736: \n", error.localizedDescription)
+        }
+    }
+    
+    // MARK: 나의 좋아요 여부 체크 및 UI(좋아요 버튼 이미지) 변경 function 정의
+    func findShowQuoteMyLikeOf(quoteID:String) {
+        guard let realUid = Auth.auth().currentUser?.uid else { return }
+        Database.database().reference().child(Constants.firebaseQuoteLikes).child(quoteID).child(Constants.firebaseQuoteLikesData).child(realUid).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
+            print("///// snapshot- 8473:\n", snapshot)
+            
+            guard let data = snapshot.value as? Bool else {
+                // 좋아요를 취소하면, 데이터를 제거하므로, guard문 안에서 UI를 처리합니다.
+                DispatchQueue.main.async {
+                    self.buttonLike.setImage(#imageLiteral(resourceName: "icon_button_like"), for: .normal)
+                }
+                return
+            }
+            
+            // data가 true일 때, 좋아요 버튼의 이미지를 변경합니다.
+            if data {
+                DispatchQueue.main.async {
+                    self.buttonLike.setImage(#imageLiteral(resourceName: "icon_button_like_black"), for: .normal)
+                }
+            }
+            
+            print("///// data- 8473: \n", data)
+            
+        }) { (error) in
+            print("///// error- 8473: \n", error.localizedDescription)
+        }
+    }
+
+    // MARK: 명언 댓글 개수 확인 & UI 적용
+    func findShowQuoteCommentCountOf(quoteID:String) {
+        Database.database().reference().child(Constants.firebaseQuoteComments).child(quoteID).child(Constants.firebaseQuoteCommentsCount).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
+            print("///// snapshot- 6234:\n", snapshot)
+            
+            guard let data = snapshot.value as? Int else {
+                DispatchQueue.main.async {
+                    self.buttonCommentsCount.setTitle("0", for: UIControlState.normal)
+                }
+                return
+            }
+            print("///// data- 6234: \n", data)
+            
+            DispatchQueue.main.async {
+                self.buttonCommentsCount.setTitle(String(data), for: UIControlState.normal)
+            }
+            
+        }) { (error) in
+            print("///// error- 6234: \n", error.localizedDescription)
         }
     }
     
     // MARK: 명언 좋아요 버튼 액션
     @IBAction func buttonLikeAction(_ sender: UIButton) {
+        guard let realTodayQuoteID = self.currentQuoteID else { return }
         
+        // 오늘의 명언에 대해 최초로 좋아요를 눌렀을 케이스 예외처리입니다.
+        Database.database().reference().child(Constants.firebaseQuoteLikes).child(realTodayQuoteID).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
+            
+            // 오늘의 명언에 대해 좋아요 데이터가 있는지 조회합니다.
+            if snapshot.exists() { // snapshot이 있을 경우, 바로 좋아요 기능 작동.
+                self.postShowLikeQuoteDB()
+            }else {
+                let dicInitialLikeData:[String:Any] = [Constants.firebaseQuoteLikesCount:0] // snapshot이 없을 경우, 좋아요 카운트 데이터 생성.
+                Database.database().reference().child(Constants.firebaseQuoteLikes).child(realTodayQuoteID).setValue(dicInitialLikeData) // realTodayQuoteID의 노드 생성.
+                self.postShowLikeQuoteDB() // 좋아요 기능 작동.
+            }
+            
+        }) { (error) in
+            print("///// error- 3130: \n", error.localizedDescription)
+        }
+
+    }
+    
+    // 좋아요 추가/취소 구현 부분입니다.
+    // realTodayQuoteID 노드가 있다는 전제로 좋아요 기능이 작동됩니다.
+    func postShowLikeQuoteDB() {
+        guard let realUid = Auth.auth().currentUser?.uid else { return }
+        guard let realTodayQuoteID = self.currentQuoteID else { return }
+        Database.database().reference().child(Constants.firebaseQuoteLikes).child(realTodayQuoteID).runTransactionBlock({[unowned self] (currentData) -> TransactionResult in
+            print("///// try runTransactionBlock- ")
+            
+            if var post = currentData.value as? [String : AnyObject] {
+                var likes = post[Constants.firebaseQuoteLikesData] as? [String : Bool] ?? [:]
+                var likeCount = post[Constants.firebaseQuoteLikesCount] as? Int ?? 0
+                
+                if let _ = likes[realUid] {
+                    // 좋아요 취소
+                    likeCount -= 1
+                    likes.removeValue(forKey: realUid)
+                    DispatchQueue.main.async {
+                        self.buttonLike.setImage(#imageLiteral(resourceName: "icon_button_like"), for: .normal) // 좋아요 버튼 이미지 업데이트
+                        self.buttonLikeCount.setTitle(String(likeCount), for: .normal) // 좋아요 카운트 버튼 타이틀 업데이트
+                    }
+                } else {
+                    // 좋아요 추가
+                    likeCount += 1
+                    likes[realUid] = true
+                    DispatchQueue.main.async {
+                        self.buttonLike.setImage(#imageLiteral(resourceName: "icon_button_like_black"), for: .normal)
+                        self.buttonLikeCount.setTitle(String(likeCount), for: .normal)
+                    }
+                }
+                post[Constants.firebaseQuoteLikesData] = likes as AnyObject?
+                post[Constants.firebaseQuoteLikesCount] = likeCount as AnyObject?
+                
+                currentData.value = post
+                return TransactionResult.success(withValue: currentData)
+            }
+            
+            return TransactionResult.success(withValue: currentData)
+        }) { (error, committed, snapshot) in
+            if let error = error {
+                print("///// error 4632: \n", error.localizedDescription)
+            }
+        }
     }
     
     // MARK: 명언 댓글 버튼 액션
@@ -171,8 +350,8 @@ class MainViewController: UIViewController {
     // MARK: 명언 공유 버튼 액션 정의
     @IBAction func buttonShareAction(_ sender: UIButton) {
         guard let quoteText = self.labelQuoteText.text else { return }
-        guard let quoteSource = self.labelQuoteSource.text else { return }
-        let sharingText = quoteText + "\n" + quoteSource + "\n\n" + "by QuoteDev"
+        guard let quoteAuthor = self.labelQuoteAuthor.text else { return }
+        let sharingText = quoteText + "\n" + quoteAuthor + "\n\n" + "by QuoteDev"
         
         self.shareTextOf(text: sharingText)
     }
