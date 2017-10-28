@@ -114,6 +114,48 @@ class BoardDevWriteViewController: UIViewController {
         print("TEXT://", self.textView.text)
         
         // 현재 board 하위노드에 children 카운트측적을 위한 호출
+        reference.child("board").runTransactionBlock({ (currentData) -> TransactionResult in
+            var board_count = 0
+            if currentData.hasChildren() {
+                board_count = Int(currentData.childrenCount)
+            }
+            print(board_count)
+            var insertData: [String:Any] = [:]
+            insertData.updateValue(board_uid, forKey: "board_uid")
+            insertData.updateValue(self.textView.text, forKey: "board_text")
+            insertData.updateValue(currentDate, forKey: "board_date") // date형식의경우 계속 시간이 변경됨
+            insertData.updateValue(self.user_uid, forKey: "user_uid")
+            insertData.updateValue(self.user_nickname, forKey: "user_nickname")
+            insertData.updateValue(board_count, forKey: "board_count") // board_count(고유 글번호)
+            
+            if let boardImg = self.photoImageView.image {
+                let uploadImg = UIImageJPEGRepresentation(boardImg, 0.3)
+                // 이미지 저장
+                Storage.storage().reference().child("board_img").child(board_uid).putData(uploadImg!, metadata: nil, completion: { (metaData, error) in
+                    if let error = error {
+                        print("error// ", error)
+                        return
+                    }
+                    
+                    print("meta data :  ",metaData)
+                    guard let urlStr = metaData?.downloadURL()?.absoluteString else{return}
+                    
+                    insertData.updateValue(urlStr, forKey: "board_img_url")
+                    self.reference.child("board").child("\(board_count)").setValue(insertData)
+                    //currentData.value = insertData
+                    
+                })
+            }else{
+                self.reference.child("board").child("\(board_count)").setValue(insertData)
+                //currentData.value = insertData
+            }
+            
+            
+            return TransactionResult.success(withValue: currentData)
+        }) { (error, commit, datasnap) in
+            
+        }
+        /*
         reference.child("board").observeSingleEvent(of: .value, with: { (dataSnap) in
             var board_count = 0
             if dataSnap.exists() {
@@ -129,8 +171,13 @@ class BoardDevWriteViewController: UIViewController {
             insertData.updateValue(board_count, forKey: "board_count") // board_count(고유 글번호)
             
             
-           
-            guard let boardImg = self.photoImageView.image else {return}
+           // 이미지 없을떼 등록되도록 수정해야함 
+            guard let boardImg = self.photoImageView.image else {
+                self.reference.child("board").childByAutoId().setValue(insertData)
+                self.navigationController?.popViewController(animated: true)
+                return
+                
+            }
             
             let uploadImg = UIImageJPEGRepresentation(boardImg, 0.3)
             // 이미지 저장
@@ -149,14 +196,14 @@ class BoardDevWriteViewController: UIViewController {
                 
             })
             
-    
+            self.navigationController?.popViewController(animated: true)
             
             
         }) { (error) in
             print(error.localizedDescription)
         }
-        
-        self.dismiss(animated: true, completion: nil)
+        */
+     
     }
     
     func keyboardWillShowHide(notification: Notification){

@@ -51,6 +51,15 @@ class BoardDevListViewController: UIViewController {
 //
 //        }
         
+        // My top posts by number of stars
+        let myTopPostsQuery = reference.child("board").queryOrdered(byChild: "board_count")
+        print("쿼리://",myTopPostsQuery)
+        myTopPostsQuery.observe(.value, with: { (data) in
+            print(data.value as? [String:Any])
+            
+        }) { (error) in
+            
+        }
         // singleEvent가이닌 observe를 사용하여 체크
         // autoid 자체가 시간순으로 들어오다보니 데이터 를 가져올때 정렬할필요있다.
         reference.child("board").observe(.value, with: { (dataSnap) in
@@ -147,7 +156,9 @@ extension BoardDevListViewController: UITableViewDelegate, UITableViewDataSource
         let selectCell = tableView.cellForRow(at: indexPath) as? BoardDevListTableViewCell
         
         nextViewController.likeCount = selectCell?.boardLikeCountLabel.text
+        tableView.deselectRow(at: indexPath, animated: true)
         self.navigationController?.pushViewController(nextViewController, animated: true)
         
     }
+    
 }
