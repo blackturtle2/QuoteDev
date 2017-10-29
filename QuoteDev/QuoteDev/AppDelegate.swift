@@ -55,7 +55,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         guard let realUid = Auth.auth().currentUser?.uid else { return true }
         Database.database().reference().child(Constants.firebaseUsersRoot).child(realUid).child(Constants.firebaseUserNickname).observeSingleEvent(of: DataEventType.value, with: { (snapshot) in
             print("///// snapshot- 8723: \n", snapshot)
-            if snapshot.exists() {
+            if snapshot.value as! String == "" {
+                UserDefaults.standard.set(nil, forKey: Constants.userDefaults_UserNickname)
+            }else if snapshot.exists() {
                 UserDefaults.standard.set(snapshot.value, forKey: Constants.userDefaults_UserNickname)
             }else {
                 UserDefaults.standard.set(nil, forKey: Constants.userDefaults_UserNickname)

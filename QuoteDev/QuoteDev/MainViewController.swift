@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import Toaster
 
 class MainViewController: UIViewController {
     
@@ -325,6 +326,11 @@ class MainViewController: UIViewController {
                 // 텍스트필드 호출
                 let textFieldNickname = alertSetUserNickname!.textFields![0] // 위에서 직접 추가한 텍스트필드이므로 옵셔널 바인딩은 스킵.
                 print("///// textField: ", textFieldNickname.text ?? "(no data)")
+                
+                if textFieldNickname.text == "" {
+                    Toast.init(text: "닉네임을 입력해주세요.").show()
+                    return
+                }
                 
                 // UserDefaults 에서 uid 호출 & 사용자가 텍스트필드에 입력한 텍스트 호출
                 guard let uid = UserDefaults.standard.string(forKey: Constants.userDefaults_Uid) else { return }
