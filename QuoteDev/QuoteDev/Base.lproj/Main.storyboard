@@ -228,8 +228,8 @@ JS and GS</string>
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="댓글 더보기" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aVu-wc-6uL">
-                                                    <rect key="frame" x="15" y="13.5" width="60" height="16"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="댓글 더 보기" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aVu-wc-6uL">
+                                                    <rect key="frame" x="15" y="13.5" width="63" height="16"/>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="13"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -781,8 +781,8 @@ JS and GS</string>
                                                 <constraint firstAttribute="height" constant="1" id="y0K-fL-Rki"/>
                                             </constraints>
                                         </view>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yIX-tS-mDg">
-                                            <rect key="frame" x="16" y="80" width="73" height="32"/>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yIX-tS-mDg">
+                                            <rect key="frame" x="16" y="80" width="343" height="32"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="32" id="20I-EG-EeQ"/>
                                             </constraints>
@@ -807,6 +807,7 @@ JS and GS</string>
                                         <constraint firstItem="Fvu-SB-q7p" firstAttribute="top" secondItem="yIX-tS-mDg" secondAttribute="bottom" constant="8" id="6nw-y7-lPV"/>
                                         <constraint firstItem="Fvu-SB-q7p" firstAttribute="leading" secondItem="Ncu-Bk-wI6" secondAttribute="leading" constant="16" id="CId-W3-iTw"/>
                                         <constraint firstItem="7hb-Za-4PJ" firstAttribute="leading" secondItem="Ncu-Bk-wI6" secondAttribute="leading" constant="16" id="EAc-dP-dC1"/>
+                                        <constraint firstAttribute="trailing" secondItem="yIX-tS-mDg" secondAttribute="trailing" constant="16" id="EFS-2c-4EJ"/>
                                         <constraint firstItem="yIX-tS-mDg" firstAttribute="top" secondItem="Xb8-xA-SL3" secondAttribute="bottom" constant="8" id="HY6-F8-cgS"/>
                                         <constraint firstItem="zHV-Lg-JXc" firstAttribute="leading" secondItem="Ncu-Bk-wI6" secondAttribute="leading" constant="16" id="Ijj-AX-laf"/>
                                         <constraint firstItem="Xb8-xA-SL3" firstAttribute="top" secondItem="zHV-Lg-JXc" secondAttribute="bottom" constant="16" id="UXF-HE-SkB"/>

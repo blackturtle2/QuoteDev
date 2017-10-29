@@ -31,7 +31,7 @@ struct Constants {
     
     static let firebaseQuoteComments:String = "quotes_comments"
     static let firebaseQuoteCommentsPosts:String = "posts"
-    static let firebaseQuoteCommentsCount:String = "comments_count"
+    static let firebaseQuoteCommentsCount:String = "posts_count"
     
     static let userDefaultsCurrentQuoteID:String = "userDefaultsCurrentQuoteID"
     
