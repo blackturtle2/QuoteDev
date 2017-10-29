@@ -100,7 +100,6 @@
                                                     <state key="normal" image="icon_button_comment"/>
                                                     <connections>
                                                         <action selector="buttonCommentAction:" destination="zcT-tT-xTD" eventType="touchUpInside" id="Vwl-6B-xlH"/>
-                                                        <segue destination="xuP-7E-1r0" kind="show" id="UXa-XX-AIg"/>
                                                     </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HCx-7b-gJQ">
@@ -111,7 +110,6 @@
                                                     </state>
                                                     <connections>
                                                         <action selector="buttonCommentCountAction:" destination="zcT-tT-xTD" eventType="touchUpInside" id="H9H-YJ-P35"/>
-                                                        <segue destination="xuP-7E-1r0" kind="show" id="3IO-KD-OGs"/>
                                                     </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZGo-ke-Fik">
@@ -758,7 +756,7 @@ JS and GS</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="P8n-ce-F3y">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <view key="tableFooterView" contentMode="scaleToFill" id="6tI-5G-hHR" userLabel="FooterView">
                                     <rect key="frame" x="0.0" y="72" width="375" height="50"/>
@@ -989,8 +987,5 @@ JS and GS</string>
         <image name="icon_button_share" width="19" height="25"/>
         <image name="temp_quote_background_image" width="640" height="361"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="UXa-XX-AIg"/>
-    </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
 </document>

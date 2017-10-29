@@ -22,6 +22,7 @@ class QuoteCommentViewController: UIViewController {
     @IBOutlet var tapGestureTableViewMain: UITapGestureRecognizer! // 키보드 올리기 or 내리기 목적의 탭제스쳐
     
     var todayQuoteID: String?
+    var userNickname: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,16 +57,17 @@ class QuoteCommentViewController: UIViewController {
         
         // 전역 변수의 QuoteID에 현재 CurrentQuoteID 저장
         self.todayQuoteID = UserDefaults.standard.string(forKey: Constants.userDefaultsCurrentQuoteID)
+        self.userNickname = UserDefaults.standard.string(forKey: Constants.userDefaults_UserNickname)
         
-        // Firebase에 댓글 노드가 없는 케이스 예외처리
+        // Firebase에 댓글 노드가 없는 케이스 예외처리 - 댓글 노드를 만듭니다.
         guard let realTodayQuoteID = self.todayQuoteID else { return }
-        Database.database().reference().child("quotes_comments").child(realTodayQuoteID).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
+        Database.database().reference().child(Constants.firebaseQuoteComments).child(realTodayQuoteID).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
             
-            if snapshot.exists() { // snapshot이 있을 경우, 바로 좋아요 기능 작동.
+            if snapshot.exists() {
                 
             }else {
                 let dicInitialData:[String:Any] = ["use":true] // snapshot이 없을 경우, use 데이터 생성.
-                Database.database().reference().child("quotes_comments").child(realTodayQuoteID).setValue(dicInitialData) // realTodayQuoteID의 노드 생성.
+                Database.database().reference().child(Constants.firebaseQuoteComments).child(realTodayQuoteID).setValue(dicInitialData) // realTodayQuoteID의 노드 생성.
             }
             
         }) { (error) in
@@ -86,6 +88,7 @@ class QuoteCommentViewController: UIViewController {
     // MARK: 댓글 작성 완료 버튼(Push) 액션 정의
     @IBAction func buttonCommentPushAction(_ sender: UIButton) {
         NotificationCenter.default.post(name: .UIKeyboardWillHide, object: nil)
+        Toast.init(text: "댓글을 Push 합니다.").show()
         
         // 댓글 텍스트필드가 비어 있을 때의 예외처리
         if self.textFieldWritingComment.text?.isEmpty == true {
@@ -100,16 +103,17 @@ class QuoteCommentViewController: UIViewController {
         
         guard let realUid = Auth.auth().currentUser?.uid else { return }
         guard let realTodayQuoteID = self.todayQuoteID else { return }
+        guard let realUserNickname = self.userNickname else { return }
         
         // 실제 통신 부분
-        let ref = Database.database().reference().child("quotes_comments").child(realTodayQuoteID)
+        let ref = Database.database().reference().child(Constants.firebaseQuoteComments).child(realTodayQuoteID)
         let key = ref.childByAutoId().key
-        let post = ["user_uid": realUid,
-                    "user_nickname": "nickname",
-                    "comment_keyID": key,
-                    "comment_created_date": String(describing: Date()),
-                    "comment_text": self.textFieldWritingComment.text ?? ""]
-        let childUpdates = ["/posts/\(key)": post]
+        let post = [Constants.firebaseQuoteCommentsUserUid: realUid,
+                    Constants.firebaseQuoteCommentsUserNickname: realUserNickname,
+                    Constants.firebaseQuoteCommentsCommentKeyID: key,
+                    Constants.firebaseQuoteCommentsCommentCreatedDate: String(describing: Date()),
+                    Constants.firebaseQuoteCommentsCommentText: self.textFieldWritingComment.text ?? ""]
+        let childUpdates = ["/\(Constants.firebaseQuoteCommentsPosts)/\(key)": post]
         ref.updateChildValues(childUpdates)
         
         self.textFieldWritingComment.text = ""

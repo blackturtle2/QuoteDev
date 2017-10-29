@@ -360,6 +360,9 @@ class MainViewController: UIViewController {
             
             self.present(alertSetUserNickname, animated: true, completion: nil)
         }
+        
+        let nextVC = self.storyboard?.instantiateViewController(withIdentifier: Constants.quoteCommentViewController)
+        self.navigationController?.pushViewController(nextVC!, animated: true)
     }
     
     // MARK: 명언 공유 버튼 액션 정의
