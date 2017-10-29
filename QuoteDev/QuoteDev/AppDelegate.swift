@@ -37,7 +37,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // MARK: Firebase Auth 진행 코드
         // UserDefaults에 저장된 uid가 없을 경우, Firebase의 Auth signInAnonymously을 진행합니다.
         // Firebase의 익명 Auth는 앱을 지웠다 설치하더라도 같은 uid를 갖습니다. ( 디바이스 의존성 )
-        if UserDefaults.standard.string(forKey: Constants.userDefaults_Uid) == nil {
+        if UserDefaults.standard.string(forKey: Constants.userDefaultsUserUid) == nil {
             Auth.auth().signInAnonymously { (user, error) in
                 print("///// signInAnonymously user: ", user ?? "no user")
                 print("///// signInAnonymously user uid: ", user?.uid ?? "no user uid")
@@ -45,10 +45,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 
                 // SignIn 후, UserDefaults에 저장합니다.
                 guard let uid = user?.uid else { return }
-                UserDefaults.standard.set(uid, forKey: Constants.userDefaults_Uid)
+                UserDefaults.standard.set(uid, forKey: Constants.userDefaultsUserUid)
             }
         }
-        print("///// userDefaults uid: ", UserDefaults.standard.string(forKey: Constants.userDefaults_Uid) ?? "no data")
+        print("///// userDefaults uid: ", UserDefaults.standard.string(forKey: Constants.userDefaultsUserUid) ?? "no data")
+        
+        // MARK: Firebase의 닉네임 데이터를 UserDefaults에 저장
+        // 관리자가 닉네임을 삭제했거나 수정했을 케이스를 방지하는 목적입니다.
+        guard let realUid = Auth.auth().currentUser?.uid else { return true }
+        Database.database().reference().child(Constants.firebaseUsersRoot).child(realUid).child(Constants.firebaseUserNickname).observeSingleEvent(of: DataEventType.value, with: { (snapshot) in
+            print("///// snapshot- 8723: \n", snapshot)
+            if snapshot.exists() { // 존재할 경우, UserDefaults에 저장.
+                UserDefaults.standard.set(snapshot.value, forKey: Constants.userDefaultsUserNickname)
+            }else { // 비어 있을 경우, nil로 저장.
+                UserDefaults.standard.set(nil, forKey: Constants.userDefaultsUserNickname)
+            }
+            
+        }) { (error) in
+            print("///// error- 8723: \n", error.localizedDescription)
+        }
         
         return true
     }

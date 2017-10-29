@@ -15,12 +15,18 @@ class BoardDevListViewController: UIViewController {
     var likeCount: [String] = []
     var reference: DatabaseReference!
     @IBOutlet weak var boardTableView: UITableView!
+    
+    
+    /*******************************************/
+    //MARK:-        LifeCycle                  //
+    /*******************************************/
     override func viewDidLoad() {
         super.viewDidLoad()
         boardTableView.delegate = self
         boardTableView.dataSource = self
+        
         // UserDefaults에 사용자 닉네임이 없으면, 닉네임을 받습니다.
-        if UserDefaults.standard.string(forKey: Constants.userDefaults_UserNickname) == nil {
+        if UserDefaults.standard.string(forKey: Constants.userDefaultsUserNickname) == nil {
             
             // UIAlertController 생성
             let alertSetUserNickname:UIAlertController = UIAlertController(title: "닉네임 설정", message: "닉네임을 설정해주세요.", preferredStyle: .alert)
@@ -38,27 +44,22 @@ class BoardDevListViewController: UIViewController {
                 print("///// textField: ", textFieldNickname.text ?? "(no data)")
                 
                 // UserDefaults 에서 uid 호출 & 사용자가 텍스트필드에 입력한 텍스트 호출
-                guard let uid = UserDefaults.standard.string(forKey: Constants.userDefaults_Uid) else { return }
+                guard let uid = UserDefaults.standard.string(forKey: Constants.userDefaultsUserUid) else { return }
                 guard let userNickname = alertSetUserNickname!.textFields?[0].text else { return }
                 
                 let dicUserData:[String:Any] = [Constants.firebaseUserUid:uid, Constants.firebaseUserNickname:userNickname]
                 
                 // Firebase DB & UserDefaults에 저장
                 Database.database().reference().child(Constants.firebaseUsersRoot).child(uid).setValue(dicUserData)
-                UserDefaults.standard.set(userNickname, forKey: Constants.userDefaults_UserNickname)
-                
-                // 명언 댓글 뷰로 이동
-                // 닉네임이 있을 경우, 스토리보드 상에 선언된 show를 타서 이동합니다.
-//                let nextVC = self.storyboard?.instantiateViewController(withIdentifier: Constants.quoteCommentViewController) as! QuoteCommentViewController
-//                self.navigationController?.pushViewController(nextVC, animated: true)
-                
+                UserDefaults.standard.set(userNickname, forKey: Constants.userDefaultsUserNickname)
+
             }))
             
             self.present(alertSetUserNickname, animated: true, completion: nil)
         }
         // Do any additional setup after loading the view.
         // UserDefault에 저장된 uid 확인
-        print("UID:// ",UserDefaults.standard.string(forKey: Constants.userDefaults_Uid) ?? "no-data")
+        print("UID:// ",UserDefaults.standard.string(forKey: Constants.userDefaultsUserUid) ?? "no-data")
         reference = Database.database().reference()
 //        reference.child("board").observeSingleEvent(of: .value, with: { (dataSnap) in
 //
@@ -158,23 +159,32 @@ class BoardDevListViewController: UIViewController {
         }
         */
     }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         //self.likeCount = []
         //self.boardTableView.reloadData()
     }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
+    
+    /*******************************************/
+    //MARK:-         Functions                 //
+    /*******************************************/
     @IBAction func backBtnTouched(_ sender: UIBarButtonItem){
         self.dismiss(animated: true, completion: nil)
     }
 
-    
-
 }
+
+
+/*******************************************/
+//MARK:-         extenstion                //
+/*******************************************/
 extension BoardDevListViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

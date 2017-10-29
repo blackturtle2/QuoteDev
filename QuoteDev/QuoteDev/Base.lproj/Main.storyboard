@@ -100,7 +100,6 @@
                                                     <state key="normal" image="icon_button_comment"/>
                                                     <connections>
                                                         <action selector="buttonCommentAction:" destination="zcT-tT-xTD" eventType="touchUpInside" id="Vwl-6B-xlH"/>
-                                                        <segue destination="xuP-7E-1r0" kind="show" id="UXa-XX-AIg"/>
                                                     </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HCx-7b-gJQ">
@@ -110,7 +109,7 @@
                                                         <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </state>
                                                     <connections>
-                                                        <segue destination="xuP-7E-1r0" kind="show" id="3IO-KD-OGs"/>
+                                                        <action selector="buttonCommentCountAction:" destination="zcT-tT-xTD" eventType="touchUpInside" id="H9H-YJ-P35"/>
                                                     </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZGo-ke-Fik">
@@ -221,9 +220,6 @@ JS and GS</string>
                                                 <constraint firstItem="RPM-sv-snW" firstAttribute="leading" secondItem="Uuo-dV-gtI" secondAttribute="leading" constant="15" id="zNl-3k-tDX"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="xuP-7E-1r0" kind="show" id="h6z-8n-MG6"/>
-                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="moreCommentsButton" rowHeight="44" id="E5U-zE-ktv">
                                         <rect key="frame" x="0.0" y="398.5" width="375" height="44"/>
@@ -244,9 +240,6 @@ JS and GS</string>
                                                 <constraint firstItem="aVu-wc-6uL" firstAttribute="leading" secondItem="Jva-0z-KnA" secondAttribute="leading" constant="15" id="af6-zn-fH3"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="xuP-7E-1r0" kind="show" id="WUT-ls-PIf"/>
-                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="saveToPhotoAlbumButton" textLabel="n8p-G7-RLw" style="IBUITableViewCellStyleDefault" id="C2f-mu-drd">
                                         <rect key="frame" x="0.0" y="442.5" width="375" height="44"/>
@@ -763,10 +756,15 @@ JS and GS</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="P8n-ce-F3y">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <view key="tableFooterView" contentMode="scaleToFill" id="6tI-5G-hHR" userLabel="FooterView">
+                                    <rect key="frame" x="0.0" y="72" width="375" height="50"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </view>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="comment_cell" id="VbX-ME-Ynm">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="comment_cell" id="VbX-ME-Ynm" customClass="QuoteCommentTableViewCell" customModule="QuoteDev" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="VbX-ME-Ynm" id="Qwz-ev-u1f">
@@ -774,34 +772,54 @@ JS and GS</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="cAR-8i-yVB">
-                                                    <rect key="frame" x="0.0" y="10" width="0.0" height="122"/>
+                                                    <rect key="frame" x="16" y="10" width="343" height="262"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="# . . ." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xrg-lh-OVz">
-                                                            <rect key="frame" x="0.0" y="0.0" width="0.0" height="17"/>
-                                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="14"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pRC-48-CiC">
+                                                            <rect key="frame" x="0.0" y="0.0" width="343" height="157"/>
+                                                            <subviews>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="# . . ." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xrg-lh-OVz">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="33.5" height="157"/>
+                                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="14"/>
+                                                                    <nil key="textColor"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cdb-Zj-Bca">
+                                                                    <rect key="frame" x="323" y="67.5" width="20" height="22"/>
+                                                                    <state key="normal" image="icon_button_more_white_Background"/>
+                                                                    <connections>
+                                                                        <action selector="buttonCommentOption:" destination="VbX-ME-Ynm" eventType="touchUpInside" id="ZIR-ze-WLt"/>
+                                                                    </connections>
+                                                                </button>
+                                                            </subviews>
+                                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <constraints>
+                                                                <constraint firstItem="Cdb-Zj-Bca" firstAttribute="centerY" secondItem="pRC-48-CiC" secondAttribute="centerY" id="JHw-I4-8PW"/>
+                                                                <constraint firstItem="Xrg-lh-OVz" firstAttribute="top" secondItem="pRC-48-CiC" secondAttribute="top" id="OJl-x1-yVE"/>
+                                                                <constraint firstItem="Xrg-lh-OVz" firstAttribute="leading" secondItem="pRC-48-CiC" secondAttribute="leading" id="jP4-qs-Vyl"/>
+                                                                <constraint firstAttribute="trailing" secondItem="Cdb-Zj-Bca" secondAttribute="trailing" id="krJ-2M-Scv"/>
+                                                                <constraint firstAttribute="height" secondItem="Xrg-lh-OVz" secondAttribute="height" id="qDd-R4-WmL"/>
+                                                            </constraints>
+                                                        </view>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="by . . ." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g1U-Uw-f6G">
-                                                            <rect key="frame" x="0.0" y="25" width="0.0" height="14.5"/>
+                                                            <rect key="frame" x="0.0" y="165" width="343" height="14.5"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                             <color key="textColor" red="0.47450980392156861" green="0.47450980392156861" blue="0.47450980392156861" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=". . ." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hxU-EX-ewk">
-                                                            <rect key="frame" x="0.0" y="47.5" width="0.0" height="17"/>
+                                                            <rect key="frame" x="0.0" y="187.5" width="343" height="17"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="// 2017. . ." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3YY-LB-oFJ">
-                                                            <rect key="frame" x="0.0" y="72.5" width="0.0" height="14.5"/>
+                                                            <rect key="frame" x="0.0" y="212.5" width="343" height="14.5"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                             <color key="textColor" red="0.0" green="0.45490196078431372" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="828-D5-PON">
-                                                            <rect key="frame" x="0.0" y="95" width="0.0" height="27"/>
+                                                            <rect key="frame" x="0.0" y="235" width="343" height="27"/>
                                                             <subviews>
                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DW2-Te-eyu">
                                                                     <rect key="frame" x="0.0" y="0.0" width="30" height="27"/>
@@ -812,13 +830,19 @@ JS and GS</string>
                                                                     <state key="normal" title="like">
                                                                         <color key="titleColor" red="0.76862745098039209" green="0.10196078431372549" blue="0.086274509803921567" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     </state>
+                                                                    <connections>
+                                                                        <action selector="buttonCommentLikeAction:" destination="VbX-ME-Ynm" eventType="touchUpInside" id="mmg-gX-zFf"/>
+                                                                    </connections>
                                                                 </button>
                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HNg-ji-p44">
-                                                                    <rect key="frame" x="30" y="0.0" width="30" height="27"/>
+                                                                    <rect key="frame" x="38" y="0.0" width="30" height="27"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                                     <state key="normal" title=". . .">
                                                                         <color key="titleColor" red="0.76862745098039209" green="0.10196078431372549" blue="0.086274509803921567" alpha="1" colorSpace="calibratedRGB"/>
                                                                     </state>
+                                                                    <connections>
+                                                                        <action selector="buttonCommentLikeCountAction:" destination="VbX-ME-Ynm" eventType="touchUpInside" id="IpK-mC-7n9"/>
+                                                                    </connections>
                                                                 </button>
                                                             </subviews>
                                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -837,7 +861,7 @@ JS and GS</string>
                                                     </constraints>
                                                 </stackView>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dbg-jQ-sze">
-                                                    <rect key="frame" x="0.0" y="140" width="0.0" height="1"/>
+                                                    <rect key="frame" x="16" y="280" width="359" height="1"/>
                                                     <color key="backgroundColor" red="0.86274509803921573" green="0.85490196078431369" blue="0.85490196078431369" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="1" id="7vG-Pn-2gt"/>
@@ -854,13 +878,19 @@ JS and GS</string>
                                                 <constraint firstAttribute="trailing" secondItem="cAR-8i-yVB" secondAttribute="trailing" constant="16" id="xN4-g6-P99"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="labelCommentCreatedDate" destination="3YY-LB-oFJ" id="ssl-s6-Txs"/>
+                                            <outlet property="labelCommentNumberID" destination="Xrg-lh-OVz" id="d4I-im-8jG"/>
+                                            <outlet property="labelCommentText" destination="hxU-EX-ewk" id="Gcb-Zb-xdy"/>
+                                            <outlet property="labelCommentWriter" destination="g1U-Uw-f6G" id="OoT-pF-99b"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pc5-UG-dnY" userLabel="CommentView">
                                 <rect key="frame" x="0.0" y="617" width="375" height="50"/>
                                 <subviews>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="나는 개발자다-!" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Fq2-xT-r09">
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="나는 개발자다-!" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Fq2-xT-r09">
                                         <rect key="frame" x="8" y="10" width="311" height="30"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -869,6 +899,9 @@ JS and GS</string>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qGc-Jg-U32">
                                         <rect key="frame" x="327" y="10" width="35" height="30"/>
                                         <state key="normal" title="Push"/>
+                                        <connections>
+                                            <action selector="buttonCommentPushAction:" destination="xuP-7E-1r0" eventType="touchUpInside" id="I5B-Bk-bNh"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <constraints>
@@ -882,6 +915,7 @@ JS and GS</string>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="P8n-ce-F3y" firstAttribute="leading" secondItem="iL7-LY-yOf" secondAttribute="leading" id="BEg-d1-MzG"/>
                             <constraint firstItem="ZnW-cA-lWd" firstAttribute="top" secondItem="pc5-UG-dnY" secondAttribute="bottom" id="DcP-Go-vW9"/>
@@ -891,16 +925,24 @@ JS and GS</string>
                             <constraint firstItem="ZnW-cA-lWd" firstAttribute="top" secondItem="P8n-ce-F3y" secondAttribute="bottom" id="j4T-qI-TF5"/>
                             <constraint firstAttribute="trailing" secondItem="P8n-ce-F3y" secondAttribute="trailing" id="nlf-oM-O0F"/>
                         </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="NJB-KB-Lre" appends="YES" id="zdk-Sd-vWN"/>
+                        </connections>
                     </view>
                     <connections>
-                        <outlet property="constraintOfTableViewMain" destination="j4T-qI-TF5" id="Mp0-Fj-ldV"/>
                         <outlet property="constraintOfViewWritingCommentBox" destination="DcP-Go-vW9" id="HoV-8p-Cys"/>
                         <outlet property="tableViewMain" destination="P8n-ce-F3y" id="z9G-Ed-rCm"/>
+                        <outlet property="tapGestureTableViewMain" destination="NJB-KB-Lre" id="Tkg-ae-KHv"/>
                         <outlet property="textFieldWritingComment" destination="Fq2-xT-r09" id="LMa-Mv-hEO"/>
                         <outlet property="viewWritingCommentBox" destination="pc5-UG-dnY" id="2Nw-ae-RdR"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oK2-ER-HZR" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="NJB-KB-Lre">
+                    <connections>
+                        <action selector="tabGestureTableViewMain:" destination="xuP-7E-1r0" id="Pt3-x0-cTN"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="856.79999999999995" y="986.35682158920542"/>
         </scene>
@@ -940,12 +982,10 @@ JS and GS</string>
         <image name="icon_button_comment" width="22" height="20"/>
         <image name="icon_button_like" width="22" height="20"/>
         <image name="icon_button_more" width="24" height="6"/>
+        <image name="icon_button_more_white_Background" width="20" height="18"/>
         <image name="icon_button_move_board_dev" width="80" height="92"/>
         <image name="icon_button_share" width="19" height="25"/>
         <image name="temp_quote_background_image" width="640" height="361"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="UXa-XX-AIg"/>
-    </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
 </document>
