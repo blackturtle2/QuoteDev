@@ -16,6 +16,8 @@ class BoardDevWriteViewController: UIViewController {
     @IBOutlet weak var photoDeleteBtn: UIButton!
     @IBOutlet weak var textView: UITextView!
     
+    @IBOutlet weak var footerView: UIView!
+    @IBOutlet weak var footerViewBottomConstraint: NSLayoutConstraint!
     var reference: DatabaseReference!
     var imageUrlData: URL?
     var textIsEmpty: Bool = true
@@ -27,10 +29,16 @@ class BoardDevWriteViewController: UIViewController {
         super.viewDidLoad()
         imagePickerController.delegate = self
         textView.delegate = self
-        // UIButton 자체에 imageInset이 있어서 테스트 해볼예정입니다.
         
-        guard let uid = UserDefaults.standard.string(forKey: Constants.userDefaults_Uid), let nickName = UserDefaults.standard.string(forKey: Constants.userDefaults_UserNickname) else {return}
+        // NotificationCenter에 키보드 옵저버 등록
+        NotificationCenter.default.addObserver(self, selector: #selector(BoardDevWriteViewController.keyboardWillShowHide(notification:)), name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(BoardDevWriteViewController.keyboardWillShowHide(notification:)), name: .UIKeyboardWillHide, object: nil)
+        
+        // UIButton 자체에 imageInset이 있어서 테스트 해볼예정입니다.
+        print("///// userDefaults uid: ", UserDefaults.standard.string(forKey: Constants.userDefaults_Uid) ?? "no data")
+        guard let uid = UserDefaults.standard.string(forKey: Constants.userDefaults_Uid) else {return}
         user_uid = uid
+        guard let nickName = UserDefaults.standard.string(forKey: Constants.userDefaults_UserNickname) else {return}
         user_nickname = nickName
         
         let nowDate = Date()
@@ -40,8 +48,9 @@ class BoardDevWriteViewController: UIViewController {
         print("DATE:// ", date)
         
         
+        
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -70,6 +79,7 @@ class BoardDevWriteViewController: UIViewController {
             textView.textColor = UIColor.gray
             textIsEmpty = true
         }
+        NotificationCenter.default.post(name: .UIKeyboardWillHide, object: nil)
         
     }
     
@@ -102,27 +112,96 @@ class BoardDevWriteViewController: UIViewController {
         print("BoardUID:// ", board_uid)
         
         print("TEXT://", self.textView.text)
+ 
         
         // 현재 board 하위노드에 children 카운트측적을 위한 호출
-        reference.child("board").observeSingleEvent(of: .value, with: { (dataSnap) in
+        let autoId = reference.child("board").childByAutoId().key
+        reference.child("board").runTransactionBlock({ (currentData) -> TransactionResult in
+            
             var board_count = 0
-            if dataSnap.exists() {
-               board_count = Int(dataSnap.childrenCount)
+            print(currentData)
+            print(currentData.childrenCount)
+            if currentData.hasChildren() {
+                board_count = Int(currentData.childrenCount)
             }
+            var currentDataDic = currentData.value as? [String:Any] ?? [:]
             print(board_count)
             var insertData: [String:Any] = [:]
             insertData.updateValue(board_uid, forKey: "board_uid")
             insertData.updateValue(self.textView.text, forKey: "board_text")
-            insertData.updateValue("no-data", forKey: "board_img_url")
             insertData.updateValue(currentDate, forKey: "board_date") // date형식의경우 계속 시간이 변경됨
             insertData.updateValue(self.user_uid, forKey: "user_uid")
             insertData.updateValue(self.user_nickname, forKey: "user_nickname")
             insertData.updateValue(board_count, forKey: "board_count") // board_count(고유 글번호)
+            insertData.updateValue("urlStr", forKey: "board_img_url")
             
-            self.reference.child("board").childByAutoId().setValue(insertData)
-        }) { (error) in
-            print(error.localizedDescription)
+            if let boardImg = self.photoImageView.image {
+                let uploadImg = UIImageJPEGRepresentation(boardImg, 0.3)
+                // 이미지 저장
+                Storage.storage().reference().child("board_img").child(board_uid).putData(uploadImg!, metadata: nil, completion: { (metaData, error) in
+                    if let error = error {
+                        print("error// ", error)
+                        return
+                    }
+
+                    print("meta data :  ",metaData)
+                    guard let urlStr = metaData?.downloadURL()?.absoluteString else{return}
+
+                    insertData.updateValue(urlStr, forKey: "board_img_url")
+                    //self.reference.child("board").childByAutoId().setValue(insertData)
+                    currentDataDic.updateValue(insertData, forKey: autoId)
+                    currentData.value = currentDataDic
+                    self.reference.child("board").child(autoId).updateChildValues(insertData)
+                    
+
+                })
+
+            }else{
+                //self.reference.child("board").childByAutoId().setValue(insertData)
+                currentDataDic.updateValue(insertData, forKey: autoId)
+                currentData.value = currentDataDic
+
+            }
+            DispatchQueue.main.async {
+                
+                self.navigationController?.popViewController(animated: true)
+            }
+            return TransactionResult.success(withValue: currentData)
+        }) { (error, commit, datasnap) in
+            
+            
+            
         }
+     
+    }
+    
+    func keyboardWillShowHide(notification: Notification){
+        // guard-let으로 nil 값이면, 키보드를 내립니다.
+        guard let userInfo = notification.userInfo else {
+            self.textView.resignFirstResponder() // 키보드 내리기.
+            self.footerViewBottomConstraint.constant = 0 // 댓글 작성칸 내리기.
+            self.view.layoutIfNeeded() // UIView layout 새로고침.
+            return
+        }
+        
+        // notification.userInfo를 이용해 키보드와 UIView를 함께 올립니다.
+        print("///// userInfo: ", userInfo)
+        
+        let animationDuration: TimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as! NSNumber).doubleValue
+        let animationCurve = UIViewAnimationOptions(rawValue: (userInfo[UIKeyboardAnimationCurveUserInfoKey] as! NSNumber).uintValue << 16)
+        let frameEnd = (userInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        
+        UIView.animate(
+            withDuration: animationDuration,
+            delay: 0.0,
+            options: [.beginFromCurrentState, animationCurve],
+            animations: {
+                guard let window = self.view.window else {return}
+                self.footerViewBottomConstraint.constant = (self.view.bounds.maxY - window.convert(frameEnd, to: self.view).minY)
+                self.view.layoutIfNeeded()
+        },
+            completion: nil
+        )
     }
 }
 
@@ -151,7 +230,7 @@ extension BoardDevWriteViewController: UINavigationControllerDelegate, UIImagePi
             photoImageView.layer.cornerRadius = 20
             self.dismiss(animated: true, completion: nil)
         }else{
-            let alertController = UIAlertController(title: "경고", message: "동영상 파일은 첨부하실수 없습니다.", preferredStyle: .alert)
+            let alertController = UIAlertController(title: "주의", message: "동영상 파일은 첨부하실수 없습니다.", preferredStyle: .alert)
             let cancelAction = UIAlertAction(title: "Ok", style: .default, handler: { (action) in
                 self.dismiss(animated: true, completion: nil)
                 
