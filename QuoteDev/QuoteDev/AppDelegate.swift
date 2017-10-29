@@ -55,13 +55,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         guard let realUid = Auth.auth().currentUser?.uid else { return true }
         Database.database().reference().child(Constants.firebaseUsersRoot).child(realUid).child(Constants.firebaseUserNickname).observeSingleEvent(of: DataEventType.value, with: { (snapshot) in
             print("///// snapshot- 8723: \n", snapshot)
-            if snapshot.value as! String == "" {
-                UserDefaults.standard.set(nil, forKey: Constants.userDefaults_UserNickname)
-            }else if snapshot.exists() {
+            if snapshot.exists() { // 존재할 경우, UserDefaults에 저장.
                 UserDefaults.standard.set(snapshot.value, forKey: Constants.userDefaults_UserNickname)
-            }else {
+            }else { // 비어 있을 경우, nil로 저장.
                 UserDefaults.standard.set(nil, forKey: Constants.userDefaults_UserNickname)
             }
+            
         }) { (error) in
             print("///// error- 8723: \n", error.localizedDescription)
         }

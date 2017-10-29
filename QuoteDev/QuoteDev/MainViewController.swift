@@ -308,7 +308,16 @@ class MainViewController: UIViewController {
     
     // MARK: 명언 댓글 버튼 액션
     @IBAction func buttonCommentAction(_ sender: UIButton) {
-        
+        self.moveQuoteCommentViewController()
+    }
+    
+    // MARK: 명언 댓글 개수 버튼 액션
+    @IBAction func buttonCommentCountAction(_ sender: UIButton) {
+        self.moveQuoteCommentViewController()
+    }
+    
+    // MARK: 명언 댓글 뷰 이동 Function ( 명언 댓글 버튼이나 댓글 2개 나오는 테이블 뷰 셀, 댓글 더보기 버튼에서 사용 )
+    func moveQuoteCommentViewController() {
         // UserDefaults에 사용자 닉네임이 없으면, 닉네임을 받습니다.
         if UserDefaults.standard.string(forKey: Constants.userDefaults_UserNickname) == nil {
             
@@ -470,5 +479,20 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         // 터치한 표시를 제거하는 액션
         tableView.deselectRow(at: indexPath, animated: true)
         
+        switch indexPath.section {
+        case enumMainTableViewSection.quoteComment.rawValue:
+            switch indexPath.row{
+            case 0: //명언 댓글 첫번째
+                self.moveQuoteCommentViewController()
+            case 1: //명언 댓글 두번째
+                self.moveQuoteCommentViewController()
+            case 2: // 댓글 더보기 버튼
+                self.moveQuoteCommentViewController()
+            default:
+                self.moveQuoteCommentViewController()
+            }
+        default:
+            Toast.init(text: "준비중입니다.").show()
+        }
     }
 }

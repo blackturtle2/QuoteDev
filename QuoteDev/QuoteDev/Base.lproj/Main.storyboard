@@ -110,6 +110,7 @@
                                                         <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </state>
                                                     <connections>
+                                                        <action selector="buttonCommentCountAction:" destination="zcT-tT-xTD" eventType="touchUpInside" id="H9H-YJ-P35"/>
                                                         <segue destination="xuP-7E-1r0" kind="show" id="3IO-KD-OGs"/>
                                                     </connections>
                                                 </button>
@@ -221,9 +222,6 @@ JS and GS</string>
                                                 <constraint firstItem="RPM-sv-snW" firstAttribute="leading" secondItem="Uuo-dV-gtI" secondAttribute="leading" constant="15" id="zNl-3k-tDX"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="xuP-7E-1r0" kind="show" id="h6z-8n-MG6"/>
-                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="moreCommentsButton" rowHeight="44" id="E5U-zE-ktv">
                                         <rect key="frame" x="0.0" y="398.5" width="375" height="44"/>
@@ -244,9 +242,6 @@ JS and GS</string>
                                                 <constraint firstItem="aVu-wc-6uL" firstAttribute="leading" secondItem="Jva-0z-KnA" secondAttribute="leading" constant="15" id="af6-zn-fH3"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="xuP-7E-1r0" kind="show" id="WUT-ls-PIf"/>
-                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="saveToPhotoAlbumButton" textLabel="n8p-G7-RLw" style="IBUITableViewCellStyleDefault" id="C2f-mu-drd">
                                         <rect key="frame" x="0.0" y="442.5" width="375" height="44"/>
