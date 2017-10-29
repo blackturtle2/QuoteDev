@@ -352,7 +352,11 @@ class MainViewController: UIViewController {
                 UserDefaults.standard.set(userNickname, forKey: Constants.userDefaultsUserNickname)
                 
                 // 명언 댓글 뷰로 이동
+                guard let realQuoteText = self.labelQuoteText.text else { return }
+                guard let realQuoteAuthor = self.labelQuoteAuthor.text else { return }
                 let nextVC = self.storyboard?.instantiateViewController(withIdentifier: Constants.quoteCommentViewController) as! QuoteCommentViewController
+                nextVC.QuoteText = realQuoteText
+                nextVC.QuoteAuthor = realQuoteAuthor
                 self.navigationController?.pushViewController(nextVC, animated: true)
                 
             }))
@@ -360,8 +364,12 @@ class MainViewController: UIViewController {
             self.present(alertSetUserNickname, animated: true, completion: nil)
         }
         
-        let nextVC = self.storyboard?.instantiateViewController(withIdentifier: Constants.quoteCommentViewController)
-        self.navigationController?.pushViewController(nextVC!, animated: true)
+        guard let realQuoteText = self.labelQuoteText.text else { return }
+        guard let realQuoteAuthor = self.labelQuoteAuthor.text else { return }
+        let nextVC = self.storyboard?.instantiateViewController(withIdentifier: Constants.quoteCommentViewController) as! QuoteCommentViewController
+        nextVC.QuoteText = realQuoteText
+        nextVC.QuoteAuthor = realQuoteAuthor
+        self.navigationController?.pushViewController(nextVC, animated: true)
     }
     
     // MARK: 명언 공유 버튼 액션 정의

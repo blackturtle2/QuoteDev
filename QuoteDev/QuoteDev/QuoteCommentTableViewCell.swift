@@ -10,7 +10,7 @@ import UIKit
 
 class QuoteCommentTableViewCell: UITableViewCell {
     
-    @IBOutlet weak var labelCommentNumberID: UILabel!
+    @IBOutlet weak var labelCommentKeyID: UILabel!
     @IBOutlet weak var labelCommentWriter: UILabel!
     @IBOutlet weak var labelCommentText: UILabel!
     @IBOutlet weak var labelCommentCreatedDate: UILabel!

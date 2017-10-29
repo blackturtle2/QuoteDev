@@ -11,7 +11,14 @@ import Firebase
 import Toaster
 
 class QuoteCommentViewController: UIViewController {
-
+    
+    var QuoteText:String = ""
+    var QuoteAuthor:String = ""
+    
+    @IBOutlet weak var labelHeaderQuoteText: UILabel!
+    @IBOutlet weak var labelHeaderQuoteAuthor: UILabel!
+    @IBOutlet weak var buttonHeaderMoreComments: UIButton!
+    
     @IBOutlet weak var tableViewMain: UITableView! // 메인 테이블 뷰
     
     @IBOutlet weak var viewWritingCommentBox: UIView! // 댓글 작성 박스 뷰
@@ -24,9 +31,29 @@ class QuoteCommentViewController: UIViewController {
     var todayQuoteID: String?
     var userNickname: String?
     
+    var commentsList: [QuoteComment] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // 테이블헤더 뷰 UI 세팅
+        self.labelHeaderQuoteText.text = self.QuoteText
+        self.labelHeaderQuoteAuthor.text = self.QuoteAuthor
+        self.tableViewMain.tableHeaderView?.layoutIfNeeded()
 
+        if let headerView = self.tableViewMain.tableHeaderView {
+            // 테이블헤더 뷰에 데이터를 입력한 후, 헤더뷰의 높이를 재조정합니다.
+            let height = headerView.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height
+            var headerFrame = headerView.frame
+            
+            if height != headerFrame.size.height {
+                headerFrame.size.height = height
+                headerView.frame = headerFrame
+                self.tableViewMain.tableHeaderView = headerView
+            }
+        }
+
+        // Delegate & DataSource
         self.tableViewMain.delegate = self
         self.tableViewMain.dataSource = self
         
@@ -61,19 +88,22 @@ class QuoteCommentViewController: UIViewController {
         
         // Firebase에 댓글 노드가 없는 케이스 예외처리 - 댓글 노드를 만듭니다.
         guard let realTodayQuoteID = self.todayQuoteID else { return }
-        Database.database().reference().child(Constants.firebaseQuoteComments).child(realTodayQuoteID).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
+        Database.database().reference().child(Constants.firebaseQuoteComments).child(realTodayQuoteID).observeSingleEvent(of: DataEventType.value, with: { (snapshot) in
             
             if snapshot.exists() {
-                
+                self.findCommentDataToLastOf(itemsCount: 10, moveToLast: false)
             }else {
-                let dicInitialData:[String:Any] = ["use":true] // snapshot이 없을 경우, use 데이터 생성.
+                // snapshot이 없을 경우, use 데이터 생성.
+                // use는 DB 사용 여부 체크 목적 무의미한 데이터 / posts_count는 댓글 총 개수 카운트
+                let dicInitialData:[String:Any] = ["use":true, "posts_count":0]
                 Database.database().reference().child(Constants.firebaseQuoteComments).child(realTodayQuoteID).setValue(dicInitialData) // realTodayQuoteID의 노드 생성.
             }
             
         }) { (error) in
             print("///// error- 3130: \n", error.localizedDescription)
         }
-
+        
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -85,10 +115,49 @@ class QuoteCommentViewController: UIViewController {
     //MARK:-         Functions                 //
     /*******************************************/
     
+    // MARK: 최신 10개의 댓글 데이터 불러오기
+    func findCommentDataToLastOf(itemsCount: UInt, moveToLast: Bool) {
+       guard let realTodayQuoteID = self.todayQuoteID else { return }
+        Database.database().reference().child(Constants.firebaseQuoteComments).child(realTodayQuoteID).child(Constants.firebaseQuoteCommentsPosts).queryLimited(toLast: itemsCount).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
+            print("///// snapshot- 9843: \n", snapshot.value ?? "(no data)")
+            
+            // snapshot.value는 시간순으로 데이터가 오는데, guard-let을 통과하면서 정렬이 깨집니다.
+            // 따라서 sorde()를 이용해, 시간순으로 정렬합니다. - Firebase의 AutoID key 값은 자동으로 시간순 정렬입니다.
+            guard let realCommentsList = snapshot.value as? [String:Any] else { return }
+            let sortedRealCommentsList = realCommentsList.sorted(by: {$0.key < $1.key} )
+            
+            // 전역 변수에 댓글 데이터를 저장합니다.
+            for item in sortedRealCommentsList {
+                let oneCommentData = QuoteComment(dicData: item.value as! [String : Any])
+                self.commentsList.append(oneCommentData)
+                print("///// item(QuoteComment)- 9843: \n", oneCommentData)
+            }
+            print("///// self.commentsList- 9843: \n", self.commentsList)
+            
+            // 테이블 뷰 전체 리로드
+            DispatchQueue.main.async {
+                self.tableViewMain.reloadData()
+                
+                // 댓글을 작성하면, 테이블 뷰 맨 아래로 이동합니다.
+                if moveToLast {
+                    let lastIndexPath = IndexPath(row: self.commentsList.count-1, section: 0)
+                    self.tableViewMain.scrollToRow(at: lastIndexPath, at: UITableViewScrollPosition.bottom, animated: true)
+                }
+            }
+            
+        }) { (error) in
+            print("///// error- 9843: \n", error)
+        }
+    }
+    
+    // MARK: 댓글 더보기 버튼 액션 정의
+    @IBAction func buttonHeaderMoreCommentsAction(_ sender: UIButton) {
+        print("///// buttonHeaderMoreCommentsAction- 9723")
+    }
+    
     // MARK: 댓글 작성 완료 버튼(Push) 액션 정의
     @IBAction func buttonCommentPushAction(_ sender: UIButton) {
         NotificationCenter.default.post(name: .UIKeyboardWillHide, object: nil)
-        Toast.init(text: "댓글을 Push 합니다.").show()
         
         // 댓글 텍스트필드가 비어 있을 때의 예외처리
         if self.textFieldWritingComment.text?.isEmpty == true {
@@ -101,11 +170,32 @@ class QuoteCommentViewController: UIViewController {
             return
         }
         
+        Toast.init(text: "댓글을 Push 합니다.").show()
+        
+        self.postCommentData()
+    }
+    
+    // MARK: 댓글 Post Function 정의
+    func postCommentData() {
         guard let realUid = Auth.auth().currentUser?.uid else { return }
         guard let realTodayQuoteID = self.todayQuoteID else { return }
         guard let realUserNickname = self.userNickname else { return }
         
-        // 실제 통신 부분
+        // 댓글 카운트 데이터, 1 올리기
+        Database.database().reference().child(Constants.firebaseQuoteComments).child(realTodayQuoteID).child("posts_count").runTransactionBlock({ (currentData) -> TransactionResult in
+            guard var postCountData = currentData.value as? Int else { return TransactionResult.success(withValue: currentData) }
+            postCountData += 1
+            currentData.value = postCountData
+            
+            return TransactionResult.success(withValue: currentData)
+            
+        }) { (error, committed, snapshot) in
+            if let error = error {
+                print("///// error 4632: \n", error.localizedDescription)
+            }
+        }
+        
+        // 실제 Post 통신 부분
         let ref = Database.database().reference().child(Constants.firebaseQuoteComments).child(realTodayQuoteID)
         let key = ref.childByAutoId().key
         let post = [Constants.firebaseQuoteCommentsUserUid: realUid,
@@ -116,8 +206,9 @@ class QuoteCommentViewController: UIViewController {
         let childUpdates = ["/\(Constants.firebaseQuoteCommentsPosts)/\(key)": post]
         ref.updateChildValues(childUpdates)
         
+        // UI 새로고침
         self.textFieldWritingComment.text = ""
-        
+        self.findCommentDataToLastOf(itemsCount: 1, moveToLast: true)
     }
     
     // MARK: 탭제스쳐로 키보드 내리기
@@ -134,6 +225,7 @@ class QuoteCommentViewController: UIViewController {
             self.textFieldWritingComment.resignFirstResponder() // 키보드 내리기.
             self.constraintOfViewWritingCommentBox.constant = 0 // 댓글 작성칸 내리기.
             self.view.layoutIfNeeded() // UIView layout 새로고침.
+            self.tapGestureTableViewMain.isEnabled = false // 키보드가 올라왔을 때에만 탭제스쳐를 작동시킵니다.
             return
         }
         
@@ -172,7 +264,7 @@ class QuoteCommentViewController: UIViewController {
 extension QuoteCommentViewController: UITableViewDelegate, UITableViewDataSource {
     // MARK: tableView - row의 개수
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return self.commentsList.count
     }
     
     // MARK: tableView - row의 높이
@@ -183,6 +275,14 @@ extension QuoteCommentViewController: UITableViewDelegate, UITableViewDataSource
     // MARK: tableView - cell 그리기
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "comment_cell", for: indexPath) as! QuoteCommentTableViewCell
+        let commentData = self.commentsList[indexPath.row]
+        print("///// commentData- 4123:", commentData)
+        
+        let str = commentData.commentKeyID
+        cell.labelCommentKeyID.text = "# commit: " + str[str.index(after: String.Index.init(encodedOffset: 9))..<str.endIndex] // String 자르기
+        cell.labelCommentWriter.text = "by " + commentData.userNickname
+        cell.labelCommentText.text = commentData.commentText
+        cell.labelCommentCreatedDate.text = "// " + commentData.commentCreatedDate
         
         return cell
     }

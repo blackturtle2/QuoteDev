@@ -40,7 +40,7 @@ struct Constants {
     static let firebaseQuoteCommentsUserNickname:String = "user_nickname"
     static let firebaseQuoteCommentsCommentKeyID:String = "comment_key_id"
     static let firebaseQuoteCommentsCommentCreatedDate:String = "comment_created_date"
-    static let firebaseQuoteCommentsCommentText:String = "comment_Text"
+    static let firebaseQuoteCommentsCommentText:String = "comment_text"
     
     // setting
     static let firebaseAppVersion:String = "app_version"
