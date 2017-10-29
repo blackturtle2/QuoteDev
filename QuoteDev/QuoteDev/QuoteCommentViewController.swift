@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Firebase
+import Toaster
 
 class QuoteCommentViewController: UIViewController {
 
@@ -19,6 +21,7 @@ class QuoteCommentViewController: UIViewController {
     
     @IBOutlet var tapGestureTableViewMain: UITapGestureRecognizer! // 키보드 올리기 or 내리기 목적의 탭제스쳐
     
+    var todayQuoteID: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,10 +51,27 @@ class QuoteCommentViewController: UIViewController {
         
         // 타이틀에 오늘 날짜 나오도록 세팅
         let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy.MM.dd" // Firebase의 DB에 오늘 날짜(MMdd)에 맞춰서 오늘자 명언의 Key 값들이 저장되어 있습니다.
+        formatter.dateFormat = "yyyy.MM.dd"
         self.navigationItem.title = formatter.string(from: Date())
         
+        // 전역 변수의 QuoteID에 현재 CurrentQuoteID 저장
+        self.todayQuoteID = UserDefaults.standard.string(forKey: Constants.userDefaultsCurrentQuoteID)
         
+        // Firebase에 댓글 노드가 없는 케이스 예외처리
+        guard let realTodayQuoteID = self.todayQuoteID else { return }
+        Database.database().reference().child("quotes_comments").child(realTodayQuoteID).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
+            
+            if snapshot.exists() { // snapshot이 있을 경우, 바로 좋아요 기능 작동.
+                
+            }else {
+                let dicInitialData:[String:Any] = ["use":true] // snapshot이 없을 경우, use 데이터 생성.
+                Database.database().reference().child("quotes_comments").child(realTodayQuoteID).setValue(dicInitialData) // realTodayQuoteID의 노드 생성.
+            }
+            
+        }) { (error) in
+            print("///// error- 3130: \n", error.localizedDescription)
+        }
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -66,6 +86,34 @@ class QuoteCommentViewController: UIViewController {
     // MARK: 댓글 작성 완료 버튼(Push) 액션 정의
     @IBAction func buttonCommentPushAction(_ sender: UIButton) {
         NotificationCenter.default.post(name: .UIKeyboardWillHide, object: nil)
+        
+        // 댓글 텍스트필드가 비어 있을 때의 예외처리
+        if self.textFieldWritingComment.text?.isEmpty == true {
+            print("///// textFieldWritingComment.text == nil- 4123: \n")
+            let alert = UIAlertController(title: nil, message: "댓글을 작성해주세요.", preferredStyle: UIAlertControllerStyle.alert)
+            let alertAction = UIAlertAction(title: "확인", style: UIAlertActionStyle.cancel, handler: nil)
+            alert.addAction(alertAction)
+            self.present(alert, animated: true, completion: nil)
+            
+            return
+        }
+        
+        guard let realUid = Auth.auth().currentUser?.uid else { return }
+        guard let realTodayQuoteID = self.todayQuoteID else { return }
+        
+        // 실제 통신 부분
+        let ref = Database.database().reference().child("quotes_comments").child(realTodayQuoteID)
+        let key = ref.childByAutoId().key
+        let post = ["user_uid": realUid,
+                    "user_nickname": "nickname",
+                    "comment_keyID": key,
+                    "comment_created_date": String(describing: Date()),
+                    "comment_text": self.textFieldWritingComment.text ?? ""]
+        let childUpdates = ["/posts/\(key)": post]
+        ref.updateChildValues(childUpdates)
+        
+        self.textFieldWritingComment.text = ""
+        
     }
     
     // MARK: 탭제스쳐로 키보드 내리기

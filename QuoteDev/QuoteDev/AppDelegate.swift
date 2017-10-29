@@ -50,6 +50,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
         print("///// userDefaults uid: ", UserDefaults.standard.string(forKey: Constants.userDefaults_Uid) ?? "no data")
         
+        // MARK: Firebase의 닉네임 데이터를 UserDefaults에 저장
+        // 관리자가 닉네임을 삭제했거나 수정했을 케이스를 방지하는 목적입니다.
+        guard let realUid = Auth.auth().currentUser?.uid else { return true }
+        Database.database().reference().child(Constants.firebaseUsersRoot).child(realUid).child(Constants.firebaseUserNickname).observeSingleEvent(of: DataEventType.value, with: { (snapshot) in
+            print("///// snapshot- 8723: \n", snapshot)
+            if snapshot.exists() {
+                UserDefaults.standard.set(snapshot.value, forKey: Constants.userDefaults_UserNickname)
+            }else {
+                UserDefaults.standard.set(nil, forKey: Constants.userDefaults_UserNickname)
+            }
+        }) { (error) in
+            print("///// error- 8723: \n", error.localizedDescription)
+        }
+        
         return true
     }
 
