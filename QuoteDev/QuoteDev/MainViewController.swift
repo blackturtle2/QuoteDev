@@ -319,7 +319,7 @@ class MainViewController: UIViewController {
     // MARK: 명언 댓글 뷰 이동 Function ( 명언 댓글 버튼이나 댓글 2개 나오는 테이블 뷰 셀, 댓글 더보기 버튼에서 사용 )
     func moveQuoteCommentViewController() {
         // UserDefaults에 사용자 닉네임이 없으면, 닉네임을 받습니다.
-        if UserDefaults.standard.string(forKey: Constants.userDefaults_UserNickname) == nil {
+        if UserDefaults.standard.string(forKey: Constants.userDefaultsUserNickname) == nil {
             
             // UIAlertController 생성
             let alertSetUserNickname:UIAlertController = UIAlertController(title: "닉네임 설정", message: "닉네임을 설정해주세요.", preferredStyle: .alert)
@@ -342,17 +342,16 @@ class MainViewController: UIViewController {
                 }
                 
                 // UserDefaults 에서 uid 호출 & 사용자가 텍스트필드에 입력한 텍스트 호출
-                guard let uid = UserDefaults.standard.string(forKey: Constants.userDefaults_Uid) else { return }
+                guard let uid = UserDefaults.standard.string(forKey: Constants.userDefaultsUserUid) else { return }
                 guard let userNickname = alertSetUserNickname!.textFields?[0].text else { return }
                 
                 let dicUserData:[String:Any] = [Constants.firebaseUserUid:uid, Constants.firebaseUserNickname:userNickname]
                 
                 // Firebase DB & UserDefaults에 저장
                 Database.database().reference().child(Constants.firebaseUsersRoot).child(uid).setValue(dicUserData)
-                UserDefaults.standard.set(userNickname, forKey: Constants.userDefaults_UserNickname)
+                UserDefaults.standard.set(userNickname, forKey: Constants.userDefaultsUserNickname)
                 
                 // 명언 댓글 뷰로 이동
-                // 닉네임이 있을 경우, 스토리보드 상에 선언된 show를 타서 이동합니다.
                 let nextVC = self.storyboard?.instantiateViewController(withIdentifier: Constants.quoteCommentViewController) as! QuoteCommentViewController
                 self.navigationController?.pushViewController(nextVC, animated: true)
                 

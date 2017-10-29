@@ -57,7 +57,7 @@ class QuoteCommentViewController: UIViewController {
         
         // 전역 변수의 QuoteID에 현재 CurrentQuoteID 저장
         self.todayQuoteID = UserDefaults.standard.string(forKey: Constants.userDefaultsCurrentQuoteID)
-        self.userNickname = UserDefaults.standard.string(forKey: Constants.userDefaults_UserNickname)
+        self.userNickname = UserDefaults.standard.string(forKey: Constants.userDefaultsUserNickname)
         
         // Firebase에 댓글 노드가 없는 케이스 예외처리 - 댓글 노드를 만듭니다.
         guard let realTodayQuoteID = self.todayQuoteID else { return }

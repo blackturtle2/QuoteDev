@@ -11,8 +11,6 @@ import Firebase
 
 class BoardDevDetailHeaderView: UIView {
     
-    
-    
     @IBOutlet weak var boardCountLabel: UILabel!
     @IBOutlet weak var boardWriterLabel: UILabel!
     @IBOutlet weak var boardCotentsLabel: UILabel!
@@ -46,7 +44,7 @@ class BoardDevDetailHeaderView: UIView {
     // 좋아요 클릭한 데이터값이 존재 하면 숫자가 더해지고 한번 누른 상태에서 다시 누르면 감소해야한다
     @IBAction func likeBtnTouched(_ sender: UIButton){
         
-        guard let user_uid = UserDefaults.standard.string(forKey: Constants.userDefaults_Uid) else{return}
+        guard let user_uid = UserDefaults.standard.string(forKey: Constants.userDefaultsUserUid) else{return}
         reference = Database.database().reference()
 
         reference.child("board_like").child(boardUID).runTransactionBlock({ [unowned self] (currentLikeData) -> TransactionResult in

@@ -18,6 +18,10 @@ class BoardDevDetailViewController: UIViewController {
     
     var boardData: Board?
     var likeCount: String?
+    
+    /*******************************************/
+    //MARK:-        LifeCycle                  //
+    /*******************************************/
     override func viewDidLoad() {
         super.viewDidLoad()
         print("게시판 디테일 뷰디드 로드")
@@ -49,7 +53,7 @@ class BoardDevDetailViewController: UIViewController {
             boardHeaderView.layoutIfNeeded()
             
         }
-        // Do any additional setup after loading the view.
+        
     }
     
     // 뷰 컨트롤러 루트 뷰의 경계가 바뀔 때마다 재정의
@@ -111,15 +115,21 @@ class BoardDevDetailViewController: UIViewController {
         }
         
     }
+    
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         print("뷰윌")
     }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-    // 키보드 올리기 or 내리기
+    /*******************************************/
+    //MARK:-         Functions                 //
+    /*******************************************/
+    
+    // MARK: 키보드 올리기 or 내리기
     func keyboardWillShow(notification: Notification) {
         print("///// keyboardWillShowOrHide")
         
@@ -152,10 +162,14 @@ class BoardDevDetailViewController: UIViewController {
     }
 
 }
+
+/*******************************************/
+//MARK:-         extenstion                //
+/*******************************************/
 extension BoardDevDetailViewController: UITextFieldDelegate {
     
-    
 }
+
 extension BoardDevDetailViewController: UITableViewDataSource, UITableViewDelegate {
     
 //    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {

@@ -9,15 +9,16 @@
 import Foundation
 
 struct Constants {
-    static let userDefaults_Uid:String = "firebaseUserUid"       // UserDefaults에 저장하는 Uid의 UserDefaults Key값입니다.
-    static let userDefaults_UserNickname:String = "userNickname" //
-    
+    // storyboard
     static let quoteCommentViewController:String = "QuoteCommentViewController"
     
     // auth
-    static let firebaseUsersRoot:String = "Users"
-    static let firebaseUserUid:String = "userUid"
-    static let firebaseUserNickname:String = "userNickname"
+    static let userDefaultsUserUid:String = "firebaseUserUid" // UserDefaults에 저장하는 Uid의 Key값입니다.
+    static let userDefaultsUserNickname:String = "userNickname" // UserDefaults에 저장하는 Nickname의 Key값입니다.
+    
+    static let firebaseUsersRoot:String = "users"
+    static let firebaseUserUid:String = "user_uid"
+    static let firebaseUserNickname:String = "user_nickname"
     
     // quote main
     static let firebaseQuoteID:String = "quotes_id"

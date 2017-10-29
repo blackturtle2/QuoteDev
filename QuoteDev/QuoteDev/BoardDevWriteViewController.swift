@@ -25,6 +25,11 @@ class BoardDevWriteViewController: UIViewController {
     var user_uid: String = "#null"
     var user_nickname = "#null"
     var childCount: Int?
+    
+    
+    /*******************************************/
+    //MARK:-        LifeCycle                  //
+    /*******************************************/
     override func viewDidLoad() {
         super.viewDidLoad()
         imagePickerController.delegate = self
@@ -35,10 +40,10 @@ class BoardDevWriteViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(BoardDevWriteViewController.keyboardWillShowHide(notification:)), name: .UIKeyboardWillHide, object: nil)
         
         // UIButton 자체에 imageInset이 있어서 테스트 해볼예정입니다.
-        print("///// userDefaults uid: ", UserDefaults.standard.string(forKey: Constants.userDefaults_Uid) ?? "no data")
-        guard let uid = UserDefaults.standard.string(forKey: Constants.userDefaults_Uid) else {return}
+        print("///// userDefaults uid: ", UserDefaults.standard.string(forKey: Constants.userDefaultsUserUid) ?? "no data")
+        guard let uid = UserDefaults.standard.string(forKey: Constants.userDefaultsUserUid) else {return}
         user_uid = uid
-        guard let nickName = UserDefaults.standard.string(forKey: Constants.userDefaults_UserNickname) else {return}
+        guard let nickName = UserDefaults.standard.string(forKey: Constants.userDefaultsUserNickname) else {return}
         user_nickname = nickName
         
         let nowDate = Date()
@@ -46,9 +51,6 @@ class BoardDevWriteViewController: UIViewController {
         dateFormatter.dateFormat = "yyyymmddHHmm"
         let date = dateFormatter.string(from: nowDate)
         print("DATE:// ", date)
-        
-        
-        
     }
     
     override func didReceiveMemoryWarning() {
@@ -56,6 +58,10 @@ class BoardDevWriteViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    
+    /*******************************************/
+    //MARK:-         Functions                 //
+    /*******************************************/
     // 앨범 버트 클릭시 호출
     @IBAction func photoBtnTouched(_ sender: UIButton) {
         imagePickerController.allowsEditing = true
@@ -110,9 +116,9 @@ class BoardDevWriteViewController: UIViewController {
         let currentDate = dateFormatter.string(from: nowDate)
         let board_uid = "\(user_uid)\(currentDate)"
         print("BoardUID:// ", board_uid)
-        
         print("TEXT://", self.textView.text)
  
+        guard let textViewText = self.textView.text else { return }
         
         // 현재 board 하위노드에 children 카운트측적을 위한 호출
         let autoId = reference.child("board").childByAutoId().key
@@ -128,7 +134,7 @@ class BoardDevWriteViewController: UIViewController {
             print(board_count)
             var insertData: [String:Any] = [:]
             insertData.updateValue(board_uid, forKey: "board_uid")
-            insertData.updateValue(self.textView.text, forKey: "board_text")
+            insertData.updateValue(textViewText, forKey: "board_text")
             insertData.updateValue(currentDate, forKey: "board_date") // date형식의경우 계속 시간이 변경됨
             insertData.updateValue(self.user_uid, forKey: "user_uid")
             insertData.updateValue(self.user_nickname, forKey: "user_nickname")
@@ -143,33 +149,30 @@ class BoardDevWriteViewController: UIViewController {
                         print("error// ", error)
                         return
                     }
-
-                    print("meta data :  ",metaData)
+                    
+                    print("meta data :  ", metaData ?? "(no data)")
                     guard let urlStr = metaData?.downloadURL()?.absoluteString else{return}
-
+                    
                     insertData.updateValue(urlStr, forKey: "board_img_url")
                     //self.reference.child("board").childByAutoId().setValue(insertData)
                     currentDataDic.updateValue(insertData, forKey: autoId)
                     currentData.value = currentDataDic
                     self.reference.child("board").child(autoId).updateChildValues(insertData)
-                    
-
                 })
-
+                
             }else{
                 //self.reference.child("board").childByAutoId().setValue(insertData)
                 currentDataDic.updateValue(insertData, forKey: autoId)
                 currentData.value = currentDataDic
-
             }
+            
             DispatchQueue.main.async {
-                
                 self.navigationController?.popViewController(animated: true)
             }
+            
             return TransactionResult.success(withValue: currentData)
+            
         }) { (error, commit, datasnap) in
-            
-            
             
         }
      
@@ -205,6 +208,9 @@ class BoardDevWriteViewController: UIViewController {
     }
 }
 
+/*******************************************/
+//MARK:-         extenstion                //
+/*******************************************/
 extension BoardDevWriteViewController: UINavigationControllerDelegate, UIImagePickerControllerDelegate{
     
     // 이미지 선택시 호출
@@ -239,20 +245,12 @@ extension BoardDevWriteViewController: UINavigationControllerDelegate, UIImagePi
             imagePickerController.present(alertController, animated: true, completion: nil)
             
         }
-        
-        
-       
-        
-        
-        
-        
     }
     
 }
 
 extension BoardDevWriteViewController: UITextViewDelegate {
     func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
-        
         return true
     }
     func textViewDidBeginEditing(_ textView: UITextView) {
