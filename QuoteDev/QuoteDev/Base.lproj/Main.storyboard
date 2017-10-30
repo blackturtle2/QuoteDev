@@ -838,10 +838,10 @@ JS and GS</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="cAR-8i-yVB">
-                                                    <rect key="frame" x="0.0" y="10" width="0.0" height="158"/>
+                                                    <rect key="frame" x="16" y="10" width="343" height="158"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pRC-48-CiC">
-                                                            <rect key="frame" x="0.0" y="0.0" width="0.0" height="17"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="343" height="17"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="# . . ." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xrg-lh-OVz">
                                                                     <rect key="frame" x="0.0" y="0.0" width="33.5" height="17"/>
@@ -853,7 +853,7 @@ JS and GS</string>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cdb-Zj-Bca">
-                                                                    <rect key="frame" x="0.0" y="-2.5" width="20" height="22"/>
+                                                                    <rect key="frame" x="323" y="-2.5" width="20" height="22"/>
                                                                     <state key="normal" image="icon_button_more_white_Background"/>
                                                                     <connections>
                                                                         <action selector="buttonCommentOption:" destination="VbX-ME-Ynm" eventType="touchUpInside" id="ZIR-ze-WLt"/>
@@ -871,7 +871,7 @@ JS and GS</string>
                                                             </constraints>
                                                         </view>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="by . . ." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g1U-Uw-f6G">
-                                                            <rect key="frame" x="0.0" y="25" width="0.0" height="14.5"/>
+                                                            <rect key="frame" x="0.0" y="25" width="343" height="14.5"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="14.5" id="Abw-Jk-uyJ"/>
                                                             </constraints>
@@ -880,7 +880,7 @@ JS and GS</string>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=". . ." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hxU-EX-ewk">
-                                                            <rect key="frame" x="0.0" y="47.5" width="0.0" height="53"/>
+                                                            <rect key="frame" x="0.0" y="47.5" width="343" height="53"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" priority="250" constant="17" id="AMC-6a-ukL"/>
                                                             </constraints>
@@ -889,7 +889,7 @@ JS and GS</string>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="// 2017. . ." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3YY-LB-oFJ">
-                                                            <rect key="frame" x="0.0" y="108.5" width="0.0" height="14.5"/>
+                                                            <rect key="frame" x="0.0" y="108.5" width="343" height="14.5"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="14.5" id="hfT-ve-X3c"/>
                                                             </constraints>
@@ -898,7 +898,7 @@ JS and GS</string>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="828-D5-PON">
-                                                            <rect key="frame" x="0.0" y="131" width="0.0" height="27"/>
+                                                            <rect key="frame" x="0.0" y="131" width="343" height="27"/>
                                                             <subviews>
                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DW2-Te-eyu">
                                                                     <rect key="frame" x="0.0" y="0.0" width="30" height="27"/>
@@ -914,7 +914,7 @@ JS and GS</string>
                                                                     </connections>
                                                                 </button>
                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HNg-ji-p44">
-                                                                    <rect key="frame" x="30" y="0.0" width="30" height="27"/>
+                                                                    <rect key="frame" x="38" y="0.0" width="30" height="27"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                                     <state key="normal" title=". . .">
                                                                         <color key="titleColor" red="0.76862745098039209" green="0.10196078431372549" blue="0.086274509803921567" alpha="1" colorSpace="calibratedRGB"/>
@@ -946,7 +946,7 @@ JS and GS</string>
                                                     </constraints>
                                                 </stackView>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dbg-jQ-sze" userLabel="Separated Bottom View">
-                                                    <rect key="frame" x="0.0" y="176" width="0.0" height="1"/>
+                                                    <rect key="frame" x="16" y="176" width="359" height="1"/>
                                                     <color key="backgroundColor" red="0.86274509803921573" green="0.85490196078431369" blue="0.85490196078431369" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="1" id="7vG-Pn-2gt"/>
