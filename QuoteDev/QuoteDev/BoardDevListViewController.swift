@@ -89,7 +89,7 @@ class BoardDevListViewController: UIViewController {
 //        }
         
         // My top posts by number of stars
-        let myTopPostsQuery = reference.child("board").queryOrdered(byChild: "board_count")
+        let myTopPostsQuery = reference.child("board").child("board_data").queryOrdered(byChild: "board_count")
         print("쿼리://",myTopPostsQuery)
         myTopPostsQuery.observe(.value, with: { (data) in
             print(data.value as? [String:Any])
@@ -115,7 +115,7 @@ class BoardDevListViewController: UIViewController {
             
             DispatchQueue.main.async {
                 // query 정렬후 가져와서 클라단에서 정렬 해줍니다.(쿼리 정렬자체가 생각만큼 정렬이 안되는거 같네요.)
-                let sortingData = self.boardArrs.sorted(by: {$0.board_count > $1.board_count})
+                let sortingData = self.boardArrs.sorted(by: {$0.board_no > $1.board_no})
                 
                 self.boardArrs = sortingData
                 self.likeCount = []
@@ -193,7 +193,7 @@ extension BoardDevListViewController: UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let boardCell = tableView.dequeueReusableCell(withIdentifier: "boadrCell", for: indexPath) as! BoardDevListTableViewCell
         
-            boardCell.boardCountLabel.text = self.boardArrs[indexPath.row].board_count.description
+            boardCell.boardCountLabel.text = self.boardArrs[indexPath.row].board_no.description
             
             boardCell.boardCotentsLabel.text = self.boardArrs[indexPath.row].board_text
             

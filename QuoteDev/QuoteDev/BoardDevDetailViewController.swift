@@ -88,7 +88,7 @@ class BoardDevDetailViewController: UIViewController {
         
         guard  let boardDatas = boardData else { return }
         boardHeaderView.boardCotentsLabel.text = boardDatas.board_text
-        boardHeaderView.boardCountLabel.text = boardDatas.board_count.description
+        boardHeaderView.boardCountLabel.text = boardDatas.board_no.description
         boardHeaderView.boardWriterLabel.text = boardDatas.user_nickname
         boardHeaderView.boardCreateAtLabel.text = boardDatas.board_date
         
