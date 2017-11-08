@@ -301,6 +301,9 @@ extension QuoteCommentViewController: UITableViewDelegate, UITableViewDataSource
         cell.labelCommentWriter.text = "by " + commentData.userNickname
         cell.labelCommentText.text = commentData.commentText
         cell.labelCommentCreatedDate.text = "// " + commentData.commentCreatedDate
+        cell.buttonCommentLikeCount.setTitle("0", for: .normal)
+        
+        cell.commentKeyID = commentData.commentKeyID
         
         return cell
     }

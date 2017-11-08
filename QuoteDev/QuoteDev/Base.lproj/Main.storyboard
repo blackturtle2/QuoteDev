@@ -964,6 +964,7 @@ JS and GS</string>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="buttonCommentLikeCount" destination="HNg-ji-p44" id="uT3-jJ-Y28"/>
                                             <outlet property="labelCommentCreatedDate" destination="3YY-LB-oFJ" id="ssl-s6-Txs"/>
                                             <outlet property="labelCommentKeyID" destination="Xrg-lh-OVz" id="d4I-im-8jG"/>
                                             <outlet property="labelCommentText" destination="hxU-EX-ewk" id="Gcb-Zb-xdy"/>
