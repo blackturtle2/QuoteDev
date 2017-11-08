@@ -15,9 +15,11 @@ class QuoteCommentViewController: UIViewController {
     var QuoteText:String = ""
     var QuoteAuthor:String = ""
     
-    @IBOutlet weak var labelHeaderQuoteText: UILabel!
-    @IBOutlet weak var labelHeaderQuoteAuthor: UILabel!
-    @IBOutlet weak var buttonHeaderMoreComments: UIButton!
+    @IBOutlet weak var labelHeaderQuoteText: UILabel! // 명언 텍스트 레이블
+    @IBOutlet weak var labelHeaderQuoteAuthor: UILabel! // 명언 저자 레이블
+    @IBOutlet weak var viewMoreCommentsHorizontalLine: UIView! // 댓글 더보기 버튼 위 가로줄
+    @IBOutlet weak var buttonMoreComments: UIButton! // 댓글 더보기 버튼
+    @IBOutlet weak var constraintButtonMoreCommentsHeight: NSLayoutConstraint! // 댓글 더보기 버튼 높이 Constraints
     
     @IBOutlet weak var tableViewMain: UITableView! // 메인 테이블 뷰
     
@@ -35,6 +37,11 @@ class QuoteCommentViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // 댓글 더 보기 버튼 숨기기
+        self.buttonMoreComments.isHidden = true
+        self.viewMoreCommentsHorizontalLine.isHidden = true
+        self.constraintButtonMoreCommentsHeight.constant = 0
         
         // 테이블헤더 뷰 UI 세팅
         self.labelHeaderQuoteText.text = self.QuoteText
@@ -91,7 +98,7 @@ class QuoteCommentViewController: UIViewController {
         Database.database().reference().child(Constants.firebaseQuoteComments).child(realTodayQuoteID).observeSingleEvent(of: DataEventType.value, with: { (snapshot) in
             
             if snapshot.exists() {
-                self.findCommentDataToLastOf(itemsCount: 10, moveToLast: false)
+                self.findCommentDataToLastOf(itemsCount: 10, moveToLast: false) //itemCount로 10을 넣지만, 지금은 의미 없습니다.
             }else {
                 // snapshot이 없을 경우, use 데이터 생성.
                 // use는 DB 사용 여부 체크 목적 무의미한 데이터 / posts_count는 댓글 총 개수 카운트
@@ -115,14 +122,15 @@ class QuoteCommentViewController: UIViewController {
     //MARK:-         Functions                 //
     /*******************************************/
     
-    // MARK: 최신 10개의 댓글 데이터 불러오기
+    // MARK: 댓글 데이터 불러오기
     func findCommentDataToLastOf(itemsCount: UInt, moveToLast: Bool) {
        guard let realTodayQuoteID = self.todayQuoteID else { return }
-        Database.database().reference().child(Constants.firebaseQuoteComments).child(realTodayQuoteID).child(Constants.firebaseQuoteCommentsPosts).queryLimited(toLast: itemsCount).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
+       //.queryLimited(toLast: itemsCount) - 최신 10개의 댓글 데이터 불러오는 것은 추후에 해결하고, 지금은 댓글 전체 데이터를 불러옵니다.
+        Database.database().reference().child(Constants.firebaseQuoteComments).child(realTodayQuoteID).child(Constants.firebaseQuoteCommentsPosts).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
             print("///// snapshot- 9843: \n", snapshot.value ?? "(no data)")
             
             // snapshot.value는 시간순으로 데이터가 오는데, guard-let을 통과하면서 정렬이 깨집니다.
-            // 따라서 sorde()를 이용해, 시간순으로 정렬합니다. - Firebase의 AutoID key 값은 자동으로 시간순 정렬입니다.
+            // 따라서 sorted()를 이용해, 시간순으로 정렬합니다. - Firebase의 AutoID key 값은 자동으로 시간순 정렬입니다.
             guard let realCommentsList = snapshot.value as? [String:Any] else { return }
             let sortedRealCommentsList = realCommentsList.sorted(by: {$0.key < $1.key} )
             

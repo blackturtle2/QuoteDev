@@ -1016,13 +1016,15 @@ JS and GS</string>
                         </connections>
                     </view>
                     <connections>
-                        <outlet property="buttonHeaderMoreComments" destination="yIX-tS-mDg" id="B1F-dG-PgT"/>
+                        <outlet property="buttonMoreComments" destination="yIX-tS-mDg" id="B1F-dG-PgT"/>
+                        <outlet property="constraintButtonMoreCommentsHeight" destination="20I-EG-EeQ" id="rjG-JR-o3L"/>
                         <outlet property="constraintOfViewWritingCommentBox" destination="DcP-Go-vW9" id="HoV-8p-Cys"/>
                         <outlet property="labelHeaderQuoteAuthor" destination="zHV-Lg-JXc" id="6oJ-y2-lyX"/>
                         <outlet property="labelHeaderQuoteText" destination="7hb-Za-4PJ" id="Cvd-gu-aJm"/>
                         <outlet property="tableViewMain" destination="P8n-ce-F3y" id="z9G-Ed-rCm"/>
                         <outlet property="tapGestureTableViewMain" destination="NJB-KB-Lre" id="Tkg-ae-KHv"/>
                         <outlet property="textFieldWritingComment" destination="Fq2-xT-r09" id="LMa-Mv-hEO"/>
+                        <outlet property="viewMoreCommentsHorizontalLine" destination="Xb8-xA-SL3" id="OA1-49-5wN"/>
                         <outlet property="viewWritingCommentBox" destination="pc5-UG-dnY" id="2Nw-ae-RdR"/>
                     </connections>
                 </viewController>
