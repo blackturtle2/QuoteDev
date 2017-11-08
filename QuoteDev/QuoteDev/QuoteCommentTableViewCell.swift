@@ -17,7 +17,8 @@ class QuoteCommentTableViewCell: UITableViewCell {
     @IBOutlet weak var labelCommentCreatedDate: UILabel!
     @IBOutlet weak var buttonCommentLikeCount: UIButton!
     
-    var commentKeyID: String?
+    var todayQuoteID: String? // 명언 ID
+    var commentKeyID: String? // 댓글 Key ID
     
     
     override func awakeFromNib() {
@@ -36,15 +37,15 @@ class QuoteCommentTableViewCell: UITableViewCell {
         print("///// buttonCommentLikeAction- 5234")
         
         guard let realCommentKeyID = self.commentKeyID else { return }
-        
-        Database.database().reference().child(Constants.firebaseQuoteCommentsLikes).child(realCommentKeyID).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
+        guard let realTodayQuoteID = self.todayQuoteID else { return }
+        Database.database().reference().child(Constants.firebaseQuoteCommentsLikes).child(realTodayQuoteID).child(realCommentKeyID).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
             
             // 해당 명언 댓글에 대해 좋아요 데이터가 있는지 조회합니다.
             if snapshot.exists() { // snapshot이 있을 경우, 바로 좋아요 기능 작동.
                 self.postShowLikeQuoteDB()
             }else {
                 let dicInitData:[String:Any] = ["use":true] // 이니셜 데이터.
-                Database.database().reference().child(Constants.firebaseQuoteCommentsLikes).child(realCommentKeyID).setValue(dicInitData) // realCommentKeyID의 노드 생성.
+                Database.database().reference().child(Constants.firebaseQuoteCommentsLikes).child(realTodayQuoteID).child(realCommentKeyID).setValue(dicInitData) // realCommentKeyID의 노드 생성.
                 self.postShowLikeQuoteDB() // 좋아요 기능 작동.
             }
             
@@ -66,7 +67,8 @@ class QuoteCommentTableViewCell: UITableViewCell {
     func postShowLikeQuoteDB() {
         guard let realUid = Auth.auth().currentUser?.uid else { return }
         guard let realCommentKeyID = self.commentKeyID else { return }
-        Database.database().reference().child(Constants.firebaseQuoteCommentsLikes).child(realCommentKeyID).runTransactionBlock({[unowned self] (currentData) -> TransactionResult in
+        guard let realTodayQuoteID = self.todayQuoteID else { return }
+        Database.database().reference().child(Constants.firebaseQuoteCommentsLikes).child(realTodayQuoteID).child(realCommentKeyID).runTransactionBlock({[unowned self] (currentData) -> TransactionResult in
             print("///// try runTransactionBlock- 5234")
             
             if var post = currentData.value as? [String : AnyObject] {
