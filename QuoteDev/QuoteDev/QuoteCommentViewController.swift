@@ -98,7 +98,7 @@ class QuoteCommentViewController: UIViewController {
         Database.database().reference().child(Constants.firebaseQuoteComments).child(realTodayQuoteID).observeSingleEvent(of: DataEventType.value, with: { (snapshot) in
             
             if snapshot.exists() {
-                self.findCommentDataToLastOf(itemsCount: 10, moveToLast: false) //itemCount로 10을 넣지만, 지금은 의미 없습니다.
+                self.findCommentDataToLastOf(itemsCount: 10, moveToLast: false)
             }else {
                 // snapshot이 없을 경우, use 데이터 생성.
                 // use는 DB 사용 여부 체크 목적 무의미한 데이터 / posts_count는 댓글 총 개수 카운트
@@ -125,8 +125,7 @@ class QuoteCommentViewController: UIViewController {
     // MARK: 댓글 데이터 불러오기
     func findCommentDataToLastOf(itemsCount: UInt, moveToLast: Bool) {
        guard let realTodayQuoteID = self.todayQuoteID else { return }
-       //.queryLimited(toLast: itemsCount) - 최신 10개의 댓글 데이터 불러오는 것은 추후에 해결하고, 지금은 댓글 전체 데이터를 불러옵니다.
-        Database.database().reference().child(Constants.firebaseQuoteComments).child(realTodayQuoteID).child(Constants.firebaseQuoteCommentsPosts).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
+        Database.database().reference().child(Constants.firebaseQuoteComments).child(realTodayQuoteID).child(Constants.firebaseQuoteCommentsPosts).queryLimited(toLast: itemsCount).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
             print("///// snapshot- 9843: \n", snapshot.value ?? "(no data)")
             
             // snapshot.value는 시간순으로 데이터가 오는데, guard-let을 통과하면서 정렬이 깨집니다.
@@ -209,7 +208,7 @@ class QuoteCommentViewController: UIViewController {
         let post = [Constants.firebaseQuoteCommentsUserUid: realUid,
                     Constants.firebaseQuoteCommentsUserNickname: realUserNickname,
                     Constants.firebaseQuoteCommentsCommentKeyID: key,
-                    Constants.firebaseQuoteCommentsCommentCreatedDate: String(describing: Date()),
+                    Constants.firebaseQuoteCommentsCommentCreatedDate: getDateStringOf(date: Date()),
                     Constants.firebaseQuoteCommentsCommentText: self.textFieldWritingComment.text ?? ""]
         let childUpdates = ["/\(Constants.firebaseQuoteCommentsPosts)/\(key)": post]
         ref.updateChildValues(childUpdates)
@@ -217,6 +216,13 @@ class QuoteCommentViewController: UIViewController {
         // UI 새로고침
         self.textFieldWritingComment.text = ""
         self.findCommentDataToLastOf(itemsCount: 1, moveToLast: true)
+    }
+    
+    // MARK: Date 데이터를 입력하면, DateFormatter()를 거쳐서 String으로 반환하는 function
+    func getDateStringOf(date: Date ,format: String = "yyyy-MM-dd E HH:mm:ss") -> String {
+        let formmater = DateFormatter()
+        formmater.dateFormat = format
+        return formmater.string(from: date as Date)
     }
     
     // MARK: 탭제스쳐로 키보드 내리기
