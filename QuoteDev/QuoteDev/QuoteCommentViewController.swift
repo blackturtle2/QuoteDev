@@ -302,9 +302,10 @@ class QuoteCommentViewController: UIViewController {
                 // self.constraintOfViewWritingCommentBox.constant = (self.view.bounds.maxY - self.view.window!.convert(frameEnd, to: self.view).minY)
                 
                 // 아래 수정 코드: 키보드가 올라오면서 작아진 화면에서 댓글 목록이 자연스럽게 스크롤되도록 self.view의 height를 조정합니다.
-                self.view.frame.size.height -= (self.view.bounds.maxY - self.view.window!.convert(frameEnd, to: self.view).minY)
-                // self.tableViewMain.setContentOffset(CGPoint(x: 0, y: self.view.window!.convert(frameEnd, to: self.view).minY), animated: true) // 테이블 뷰 자동 스크롤
-                self.view.layoutIfNeeded()
+                if let realWindow = self.view.window { // self.view.window가 옵셔널이어서 바인딩 처리합니다.
+                    self.view.frame.size.height -= (self.view.bounds.maxY - realWindow.convert(frameEnd, to: self.view).minY)
+                    self.view.layoutIfNeeded()
+                }
                 
                 self.tapGestureTableViewMain.isEnabled = true // 키보드가 올라왔을 때에만 탭제스쳐를 작동시킵니다.
         },
