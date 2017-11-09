@@ -41,6 +41,8 @@ struct Constants {
     static let firebaseQuoteCommentsCommentKeyID:String = "comment_key_id"
     static let firebaseQuoteCommentsCommentCreatedDate:String = "comment_created_date"
     static let firebaseQuoteCommentsCommentText:String = "comment_text"
+    static let firebaseQuoteCommentsPostsCount = "posts_count"
+    static let firebaseQuoteCommentsBackupDeletes = "backup_deletes"
     
     static let firebaseQuoteCommentsLikes:String = "quotes_comments_likes"
     static let firebaseQuoteCommentsLikesData:String = "likes_data"

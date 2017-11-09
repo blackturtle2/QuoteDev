@@ -231,7 +231,7 @@ class QuoteCommentViewController: UIViewController {
         guard let realUserNickname = self.userNickname else { return }
         
         // 댓글 카운트 데이터, 1 올리기
-        Database.database().reference().child(Constants.firebaseQuoteComments).child(realTodayQuoteID).child("posts_count").runTransactionBlock({ (currentData) -> TransactionResult in
+        Database.database().reference().child(Constants.firebaseQuoteComments).child(realTodayQuoteID).child(Constants.firebaseQuoteCommentsPostsCount).runTransactionBlock({ (currentData) -> TransactionResult in
             guard var postCountData = currentData.value as? Int else { return TransactionResult.success(withValue: currentData) }
             postCountData += 1
             currentData.value = postCountData
@@ -314,12 +314,12 @@ class QuoteCommentViewController: UIViewController {
     
     //MARK: 댓글 신고 email 보내기 function
     // [주의] `MessageUI` import & MFMailComposeViewControllerDelegate 정의 필요
-    func sendEmailTo(emailAddress email:String, additionalText1: String, additionalText2: String) {
+    func sendReportEmailTo(emailAddress email:String, keyID: String, userNickName: String) {
         let userSystemVersion = UIDevice.current.systemVersion // 현재 사용자 iOS 버전
         let userAppVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String // 현재 사용자 앱 버전
         
         // 메일 쓰는 뷰컨트롤러 선언
-        let mailComposeViewController = configuredMailComposeViewController(emailAddress: email, systemVersion: userSystemVersion, appVersion: userAppVersion!, text1: additionalText1, text2: additionalText2)
+        let mailComposeViewController = configuredMailComposeViewController(emailAddress: email, systemVersion: userSystemVersion, appVersion: userAppVersion!, text1: keyID, text2: userNickName)
         
         // 사용자의 아이폰에 메일 주소가 세팅되어 있을 경우에만 mailComposeViewController()를 태웁니다.
         if MFMailComposeViewController.canSendMail() {
@@ -338,6 +338,43 @@ class QuoteCommentViewController: UIViewController {
         mailComposerVC.setMessageBody("• iOS Version: \(systemVersion) / App Version: \(appVersion)\n• Comment ID: \(text1)\n• User Nickname: \(text2)\n\n◼︎ Report reason: ", isHTML: false) // 메일 내용 설정
         
         return mailComposerVC
+    }
+    
+    // MARK: 댓글 삭제 function
+    func deleteCommentData(commentKeyID: String) {
+        guard let realTodayQuoteID = self.todayQuoteID else { return }
+        
+        // 댓글 카운트 데이터, 1 내리기
+        Database.database().reference().child(Constants.firebaseQuoteComments).child(realTodayQuoteID).child(Constants.firebaseQuoteCommentsPostsCount).runTransactionBlock({ (currentData) -> TransactionResult in
+            guard var postCountData = currentData.value as? Int else { return TransactionResult.success(withValue: currentData) }
+            postCountData -= 1
+            currentData.value = postCountData
+            
+            return TransactionResult.success(withValue: currentData)
+            
+        }) { (error, committed, snapshot) in
+            if let error = error {
+                print("///// error- 7234: \n", error.localizedDescription)
+            }
+        }
+        
+        // 실제 delete 통신 부분 - 삭제 댓글을 백업 데이터로 이전 시키고, 원본 댓글 데이터는 삭제합니다.
+        Database.database().reference().child(Constants.firebaseQuoteComments).child(realTodayQuoteID).child(Constants.firebaseQuoteCommentsPosts).child(commentKeyID).observeSingleEvent(of: DataEventType.value, with: { (snapshot) in
+            print("///// snapshot- 7832: \n", snapshot.value ?? "(no data)")
+            
+            // 원본 데이터를 백업 데이터로 이전
+            Database.database().reference().child(Constants.firebaseQuoteComments).child(realTodayQuoteID).child(Constants.firebaseQuoteCommentsBackupDeletes).child(commentKeyID).setValue(snapshot.value)
+            
+            // 원본 데이터 삭제
+            Database.database().reference().child(Constants.firebaseQuoteComments).child(realTodayQuoteID).child(Constants.firebaseQuoteCommentsPosts).child(commentKeyID).removeValue()
+        }) { (error) in
+            print("///// error- 7832: \n", error.localizedDescription)
+        }
+        
+        // UI 새로고침
+        Toast.init(text: "Your comment has been deleted.").show()
+        self.findCommentDataToLastOf(itemsCount: 10, moveToLast: true) // 댓글 데이터 가져오기
+        self.findShowCommentsLike() // 댓글 좋아요 데이터 가져오기
     }
     
 }
@@ -370,14 +407,17 @@ extension QuoteCommentViewController: UITableViewDelegate, UITableViewDataSource
         // QuoteCommentTableViewCellDelegate 등록
         cell.delegate = self
         
+        // UI
         let str = commentData.commentKeyID
         cell.labelCommentKeyID.text = "# commit: " + str[str.index(after: String.Index.init(encodedOffset: 9))..<str.endIndex] // String 자르기
         cell.labelCommentWriter.text = "by " + commentData.userNickname
         cell.labelCommentText.text = commentData.commentText
         cell.labelCommentCreatedDate.text = "// " + commentData.commentCreatedDate
         
-        cell.commentKeyID = commentData.commentKeyID
+        // Data
         cell.todayQuoteID = self.todayQuoteID
+        cell.commentKeyID = commentData.commentKeyID
+        cell.uid = commentData.userUid
         
         // 댓글 좋아요 카운트 표시 - 댓글 좋아요 카운트의 데이터가 없으면, 0으로 표시합니다. // findShowCommentsLike() 참고
         // Firebase에서 댓글 좋아요 데이터가 다른 노드를 타고 있어서 별도의 function과 로직을 타게 됩니다.
@@ -401,18 +441,31 @@ extension QuoteCommentViewController: UITableViewDelegate, UITableViewDataSource
 // MARK: extension - QuoteCommentTableViewCellDelegate
 // 명언 댓글 옵션 버튼 Delegate
 extension QuoteCommentViewController: QuoteCommentTableViewCellDelegate {
-    func buttonCommentOptionAlert(commentKeyID: String) {
+    func buttonCommentOptionAlert(commentKeyID: String, commentUserUid: String) {
         let alert = UIAlertController(title: nil, message: "You can delete only your comment.", preferredStyle: UIAlertControllerStyle.actionSheet)
         
         // 삭제 버튼
         let deleteCommentAction = UIAlertAction(title: "Delete", style: UIAlertActionStyle.default) {[unowned self] (action) in
-            
+            if Auth.auth().currentUser?.uid == commentUserUid {
+                let confirmAlert = UIAlertController(title: "Are you sure you want to delete the comment?", message: nil, preferredStyle: UIAlertControllerStyle.alert)
+                let deleteAction = UIAlertAction(title: "Delete", style: UIAlertActionStyle.destructive, handler: { (action) in
+                    self.deleteCommentData(commentKeyID: commentKeyID)
+                })
+                let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)
+                
+                confirmAlert.addAction(deleteAction)
+                confirmAlert.addAction(cancelAction)
+                
+                self.present(confirmAlert, animated: true, completion: nil)
+            }else {
+                Toast.init(text: "You can delete only your comment.").show()
+            }
         }
         
         // 신고 버튼
         let reportCommentAction = UIAlertAction(title: "Report", style: UIAlertActionStyle.destructive) {[unowned self] (action) in
             guard let realUserNickName = self.userNickname else { return }
-            self.sendEmailTo(emailAddress: "blackturtle2@gmail.com", additionalText1: commentKeyID, additionalText2: realUserNickName)
+            self.sendReportEmailTo(emailAddress: "blackturtle2@gmail.com", keyID: commentKeyID, userNickName: realUserNickName)
         }
         
         // 취소 버튼

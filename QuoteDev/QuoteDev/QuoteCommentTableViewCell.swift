@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 
 protocol QuoteCommentTableViewCellDelegate {
-    func buttonCommentOptionAlert(commentKeyID: String)
+    func buttonCommentOptionAlert(commentKeyID: String, commentUserUid: String)
 }
 
 class QuoteCommentTableViewCell: UITableViewCell {
@@ -25,6 +25,8 @@ class QuoteCommentTableViewCell: UITableViewCell {
     
     var todayQuoteID: String? // 명언 ID
     var commentKeyID: String? // 댓글 Key ID
+    var uid: String? // 댓글 작성자 uid - 댓글 삭제 기능에서 uid 일치 확인
+    
     
     
     /*******************************************/
@@ -123,7 +125,8 @@ class QuoteCommentTableViewCell: UITableViewCell {
     @IBAction func buttonCommentOption(_ sender: UIButton) {
         print("///// buttonCommentOption- 4783\n")
         guard let realCommentKeyID = self.commentKeyID else { return }
+        guard let realUid = self.uid else { return }
         
-        delegate?.buttonCommentOptionAlert(commentKeyID: realCommentKeyID)
+        delegate?.buttonCommentOptionAlert(commentKeyID: realCommentKeyID, commentUserUid: realUid)
     }
 }
