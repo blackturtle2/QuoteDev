@@ -9,7 +9,13 @@
 import UIKit
 import Firebase
 
+protocol QuoteCommentTableViewCellDelegate {
+    func buttonCommentOptionAlert(commentKeyID: String)
+}
+
 class QuoteCommentTableViewCell: UITableViewCell {
+    
+    var delegate: QuoteCommentTableViewCellDelegate?
     
     @IBOutlet weak var labelCommentKeyID: UILabel!
     @IBOutlet weak var labelCommentWriter: UILabel!
@@ -21,6 +27,9 @@ class QuoteCommentTableViewCell: UITableViewCell {
     var commentKeyID: String? // 댓글 Key ID
     
     
+    /*******************************************/
+    //MARK:-        LifeCycle                  //
+    /*******************************************/
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -31,6 +40,10 @@ class QuoteCommentTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
+    
+    /*******************************************/
+    //MARK:-         Functions                 //
+    /*******************************************/
     
     // MARK: 댓글 좋아요 버튼 액션
     @IBAction func buttonCommentLikeAction(_ sender: UIButton) {
@@ -109,5 +122,8 @@ class QuoteCommentTableViewCell: UITableViewCell {
     // MARK: 댓글 옵션 버튼 액션
     @IBAction func buttonCommentOption(_ sender: UIButton) {
         print("///// buttonCommentOption- 4783\n")
+        guard let realCommentKeyID = self.commentKeyID else { return }
+        
+        delegate?.buttonCommentOptionAlert(commentKeyID: realCommentKeyID)
     }
 }

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MessageUI
 import Firebase
 import Toaster
 
@@ -69,17 +70,7 @@ class QuoteCommentViewController: UIViewController {
         self.tapGestureTableViewMain.isEnabled = false // 댓글 작성 텍스트필드에 커서가 올라가서 키보드가 올라왔을 때에만 탭제스쳐가 작동하도록 설계합니다.
         
         // 댓글 작성 텍스트필드 터치 시, 키보드 올리기 위한 키보드 노티 옵저버 등록.
-        NotificationCenter.default.addObserver( // 키보드 올리기
-            self,
-            selector: #selector(QuoteCommentViewController.keyboardWillShowOrHide(notification:)),
-            name: .UIKeyboardWillShow,
-            object: nil)
-        
-        NotificationCenter.default.addObserver( // 키보드 내리기
-            self,
-            selector: #selector(QuoteCommentViewController.keyboardWillShowOrHide(notification:)),
-            name: .UIKeyboardWillHide,
-            object: nil)
+        self.addNotificationObserver()
         
         // UI 적용
         self.textFieldWritingComment.layer.borderColor = UIColor.black.cgColor
@@ -125,6 +116,21 @@ class QuoteCommentViewController: UIViewController {
     //MARK:-         Functions                 //
     /*******************************************/
     
+    // MARK: 댓글 작성 텍스트필드 터치 시, 키보드 올리기 위한 키보드 노티 옵저버 등록
+    func addNotificationObserver() {
+        NotificationCenter.default.addObserver( // 키보드 올리기
+            self,
+            selector: #selector(QuoteCommentViewController.keyboardWillShowOrHide(notification:)),
+            name: .UIKeyboardWillShow,
+            object: nil)
+        
+        NotificationCenter.default.addObserver( // 키보드 내리기
+            self,
+            selector: #selector(QuoteCommentViewController.keyboardWillShowOrHide(notification:)),
+            name: .UIKeyboardWillHide,
+            object: nil)
+    }
+    
     // MARK: 댓글 데이터 불러오기
     func findCommentDataToLastOf(itemsCount: UInt, moveToLast: Bool) {
        guard let realTodayQuoteID = self.todayQuoteID else { return }
@@ -166,7 +172,7 @@ class QuoteCommentViewController: UIViewController {
         guard let realTodayQuoteID = self.todayQuoteID else { return }
         
         // 댓글 좋아요 카운트는 Firebase에서 별도의 노드를 타고 있어서, 댓글 데이터와는 다른 로직을 타게 됩니다.
-        Database.database().reference().child(Constants.firebaseQuoteCommentsLikes).child(realTodayQuoteID).observeSingleEvent(of: DataEventType.value, with: { (snapshot) in
+        Database.database().reference().child(Constants.firebaseQuoteCommentsLikes).child(realTodayQuoteID).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
             guard let realCommentsLikesData = snapshot.value as? [String:Any] else { return } // 해당 명언의 댓글 좋아요 개수 전체 데이터 가져오기.
             
             for item in realCommentsLikesData {
@@ -306,6 +312,34 @@ class QuoteCommentViewController: UIViewController {
         )
     }
     
+    //MARK: 댓글 신고 email 보내기 function
+    // [주의] `MessageUI` import & MFMailComposeViewControllerDelegate 정의 필요
+    func sendEmailTo(emailAddress email:String, additionalText1: String, additionalText2: String) {
+        let userSystemVersion = UIDevice.current.systemVersion // 현재 사용자 iOS 버전
+        let userAppVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String // 현재 사용자 앱 버전
+        
+        // 메일 쓰는 뷰컨트롤러 선언
+        let mailComposeViewController = configuredMailComposeViewController(emailAddress: email, systemVersion: userSystemVersion, appVersion: userAppVersion!, text1: additionalText1, text2: additionalText2)
+        
+        // 사용자의 아이폰에 메일 주소가 세팅되어 있을 경우에만 mailComposeViewController()를 태웁니다.
+        if MFMailComposeViewController.canSendMail() {
+            NotificationCenter.default.removeObserver(self)
+            self.present(mailComposeViewController, animated: true, completion: nil)
+        } // else일 경우, iOS 에서 자체적으로 메일 주소를 세팅하라는 메시지를 띄웁니다.
+    }
+    
+    // MARK: 메일 보내는 뷰컨트롤러 속성 세팅
+    func configuredMailComposeViewController(emailAddress: String, systemVersion: String, appVersion: String, text1: String, text2: String) -> MFMailComposeViewController {
+        let mailComposerVC = MFMailComposeViewController()
+        mailComposerVC.mailComposeDelegate = self // 메일 보내기 Finish 이후의 액션 정의를 위한 Delegate 초기화.
+        
+        mailComposerVC.setToRecipients([emailAddress]) // 받는 사람 설정
+        mailComposerVC.setSubject("[QuoteDev] Comment's Report") // 메일 제목 설정
+        mailComposerVC.setMessageBody("• iOS Version: \(systemVersion) / App Version: \(appVersion)\n• Comment ID: \(text1)\n• User Nickname: \(text2)\n\n◼︎ Report reason: ", isHTML: false) // 메일 내용 설정
+        
+        return mailComposerVC
+    }
+    
 }
 
 /*******************************************/
@@ -333,6 +367,9 @@ extension QuoteCommentViewController: UITableViewDelegate, UITableViewDataSource
         let commentData = self.commentsList[indexPath.row]
         print("///// commentData- 4123:", commentData)
         
+        // QuoteCommentTableViewCellDelegate 등록
+        cell.delegate = self
+        
         let str = commentData.commentKeyID
         cell.labelCommentKeyID.text = "# commit: " + str[str.index(after: String.Index.init(encodedOffset: 9))..<str.endIndex] // String 자르기
         cell.labelCommentWriter.text = "by " + commentData.userNickname
@@ -359,4 +396,42 @@ extension QuoteCommentViewController: UITableViewDelegate, UITableViewDataSource
         return cell
     }
     
+}
+
+// MARK: extension - QuoteCommentTableViewCellDelegate
+// 명언 댓글 옵션 버튼 Delegate
+extension QuoteCommentViewController: QuoteCommentTableViewCellDelegate {
+    func buttonCommentOptionAlert(commentKeyID: String) {
+        let alert = UIAlertController(title: nil, message: "You can delete only your comment.", preferredStyle: UIAlertControllerStyle.actionSheet)
+        
+        // 삭제 버튼
+        let deleteCommentAction = UIAlertAction(title: "Delete", style: UIAlertActionStyle.default) {[unowned self] (action) in
+            
+        }
+        
+        // 신고 버튼
+        let reportCommentAction = UIAlertAction(title: "Report", style: UIAlertActionStyle.destructive) {[unowned self] (action) in
+            guard let realUserNickName = self.userNickname else { return }
+            self.sendEmailTo(emailAddress: "blackturtle2@gmail.com", additionalText1: commentKeyID, additionalText2: realUserNickName)
+        }
+        
+        // 취소 버튼
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)
+        
+        alert.addAction(deleteCommentAction)
+        alert.addAction(reportCommentAction)
+        alert.addAction(cancelAction)
+        
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+}
+
+
+// MARK: extension - MFMailComposeViewControllerDelegate
+extension QuoteCommentViewController: MFMailComposeViewControllerDelegate {
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        self.addNotificationObserver()
+        controller.dismiss(animated: true, completion: nil)
+    }
 }
