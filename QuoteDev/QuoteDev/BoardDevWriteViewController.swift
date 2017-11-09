@@ -18,6 +18,9 @@ class BoardDevWriteViewController: UIViewController {
     
     @IBOutlet weak var footerView: UIView!
     @IBOutlet weak var footerViewBottomConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
     var reference: DatabaseReference!
     var imageUrlData: URL?
     var textIsEmpty: Bool = true
@@ -51,6 +54,8 @@ class BoardDevWriteViewController: UIViewController {
         dateFormatter.dateFormat = "yyyymmddHHmm"
         let date = dateFormatter.string(from: nowDate)
         print("DATE:// ", date)
+        activityIndicator.isHidden = true
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -112,69 +117,201 @@ class BoardDevWriteViewController: UIViewController {
         let nowDate = Date()
         
         let dateFormatter: DateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyymmddHHmm"
+        dateFormatter.dateFormat = "yyyyMMddHHmmss"
         let currentDate = dateFormatter.string(from: nowDate)
         let board_uid = "\(user_uid)\(currentDate)"
         print("BoardUID:// ", board_uid)
         print("TEXT://", self.textView.text)
- 
+        var imgflag = false
+        var img: UIImage?
+        let autoID = reference.child("board").child("datas").childByAutoId().key
         guard let textViewText = self.textView.text else { return }
-        
-        // 현재 board 하위노드에 children 카운트측적을 위한 호출
-        let autoId = reference.child("board").childByAutoId().key
-        reference.child("board").runTransactionBlock({ (currentData) -> TransactionResult in
+        if let photoImg = self.photoImageView.image {
+            imgflag = true
+            img = photoImg
             
-            var board_count = 0
-            print(currentData)
-            print(currentData.childrenCount)
-            if currentData.hasChildren() {
-                board_count = Int(currentData.childrenCount)
-            }
-            var currentDataDic = currentData.value as? [String:Any] ?? [:]
-            print(board_count)
-            var insertData: [String:Any] = [:]
-            insertData.updateValue(board_uid, forKey: "board_uid")
-            insertData.updateValue(textViewText, forKey: "board_text")
-            insertData.updateValue(currentDate, forKey: "board_date") // date형식의경우 계속 시간이 변경됨
-            insertData.updateValue(self.user_uid, forKey: "user_uid")
-            insertData.updateValue(self.user_nickname, forKey: "user_nickname")
-            insertData.updateValue(board_count, forKey: "board_count") // board_count(고유 글번호)
-            insertData.updateValue("urlStr", forKey: "board_img_url")
+            self.activityIndicator.isHidden = false
+            self.view.backgroundColor = UIColor.black
+            self.view.alpha = 0.5
+            self.activityIndicator.startAnimating()
             
-            if let boardImg = self.photoImageView.image {
-                let uploadImg = UIImageJPEGRepresentation(boardImg, 0.3)
-                // 이미지 저장
-                Storage.storage().reference().child("board_img").child(board_uid).putData(uploadImg!, metadata: nil, completion: { (metaData, error) in
-                    if let error = error {
-                        print("error// ", error)
-                        return
-                    }
-                    
-                    print("meta data :  ", metaData ?? "(no data)")
-                    guard let urlStr = metaData?.downloadURL()?.absoluteString else{return}
-                    
-                    insertData.updateValue(urlStr, forKey: "board_img_url")
-                    //self.reference.child("board").childByAutoId().setValue(insertData)
-                    currentDataDic.updateValue(insertData, forKey: autoId)
-                    currentData.value = currentDataDic
-                    self.reference.child("board").child(autoId).updateChildValues(insertData)
-                })
+            // 이미지 저장
+            let uploadImg = UIImageJPEGRepresentation(img!, 0.3)
+            
+            Storage.storage().reference().child("board_img").child(board_uid).putData(uploadImg!, metadata: nil, completion: { (metaData, error) in
+                if let error = error {
+                    print("error// ", error)
+                    return
+                }
                 
-            }else{
-                //self.reference.child("board").childByAutoId().setValue(insertData)
-                currentDataDic.updateValue(insertData, forKey: autoId)
-                currentData.value = currentDataDic
+                print("meta data :  ", metaData ?? "(no data)")
+                guard let urlStr = metaData?.downloadURL()?.absoluteString else{return}
+                
+                self.reference.child("board").runTransactionBlock({ (currentData) -> TransactionResult in
+                    
+                    //if var datas = currentData.value as? [String:AnyObject]{
+                    var currentBoard = currentData.value as? [String:Any] ?? [:]
+                    print(currentBoard)
+                    var boardCount = currentBoard["board_count"] as? Int ?? 0
+                    var boardData =  currentBoard["board_data"] as? [String:Any] ?? [:]
+                    print("보드 데이터://",boardData)
+                    var newBoard: [String:Any] = [:]
+                    print("보드 카운트://1:", boardData.count)
+                    //게시글이 하나 이상일때 증감
+                    if boardData.count >= 1{
+                        boardCount += 1
+                    }
+                    print("보드 카운트://2:", boardData.count)
+                    newBoard["board_count"] = boardCount
+                    
+                    
+                    var insertData: [String:Any] = [:]
+                    insertData.updateValue(board_uid, forKey: "board_uid")
+                    insertData.updateValue(textViewText, forKey: "board_text")
+                    insertData.updateValue(currentDate, forKey: "board_date") // date형식의경우 계속 시간이 변경됨
+                    insertData.updateValue(self.user_uid, forKey: "user_uid")
+                    insertData.updateValue(self.user_nickname, forKey: "user_nickname")
+                    insertData.updateValue(boardCount, forKey: "board_no") // board_count(고유 글번호)
+                    insertData.updateValue(urlStr, forKey: "board_img_url")
+                   
+                    boardData.updateValue(insertData, forKey: autoID)
+                    //boardDatas.updateValue(currentDataDic, forKey: "datas")
+                    newBoard["board_data"] = boardData
+                    currentData.value = newBoard
+                    
+                    return TransactionResult.success(withValue: currentData)
+                }) { (error, commit, datasnap) in
+                    DispatchQueue.main.async {
+                        self.activityIndicator.stopAnimating()
+                        self.activityIndicator.isHidden = true
+                        self.navigationController?.popViewController(animated: true)
+                        
+                    }
+                }
+            })
+        }else{
+            reference.child("board").runTransactionBlock({ (currentData) -> TransactionResult in
+                
+                //if var datas = currentData.value as? [String:AnyObject]{
+                var currentBoard = currentData.value as? [String:Any] ?? [:]
+                print(currentBoard)
+                var boardCount = currentBoard["board_count"] as? Int ?? 0
+                var boardData =  currentBoard["board_data"] as? [String:Any] ?? [:]
+                print("보드 데이터://",boardData)
+                var newBoard: [String:Any] = [:]
+                print("보드 카운트://1:", boardData.count)
+                //게시글이 하나 이상일때 증감
+                if boardData.count >= 1{
+                    boardCount += 1
+                }
+                print("보드 카운트://2:", boardData.count)
+                newBoard["board_count"] = boardCount
+                
+                
+                var insertData: [String:Any] = [:]
+                insertData.updateValue(board_uid, forKey: "board_uid")
+                insertData.updateValue(textViewText, forKey: "board_text")
+                insertData.updateValue(currentDate, forKey: "board_date") // date형식의경우 계속 시간이 변경됨
+                insertData.updateValue(self.user_uid, forKey: "user_uid")
+                insertData.updateValue(self.user_nickname, forKey: "user_nickname")
+                insertData.updateValue(boardCount, forKey: "board_no") // board_count(고유 글번호)
+                
+                
+                boardData.updateValue(insertData, forKey: autoID)
+                //boardDatas.updateValue(currentDataDic, forKey: "datas")
+                newBoard["board_data"] = boardData
+                currentData.value = newBoard
+                
+                return TransactionResult.success(withValue: currentData)
+            }) { (error, commit, datasnap) in
+                DispatchQueue.main.async {
+                    self.navigationController?.popViewController(animated: true)
+                }
             }
-            
-            DispatchQueue.main.async {
-                self.navigationController?.popViewController(animated: true)
-            }
-            
-            return TransactionResult.success(withValue: currentData)
-            
-        }) { (error, commit, datasnap) in
             
         }
+ 
+        
+       
+        
+        // 현재 board 하위노드에 children 카운트측적을 위한 호출
+        //let autoID = reference.child("board").child("datas").childByAutoId().key
+//        reference.child("board").runTransactionBlock({ (currentData) -> TransactionResult in
+//
+//            //if var datas = currentData.value as? [String:AnyObject]{
+//            var currentBoard = currentData.value as? [String:Any] ?? [:]
+//            print(currentBoard)
+//            var boardCount = currentBoard["board_count"] as? Int ?? 0
+//            var boardData =  currentBoard["board_data"] as? [String:Any] ?? [:]
+//            print("보드 데이터://",boardData)
+//            var newBoard: [String:Any] = [:]
+//            print("보드 카운트://1:", boardData.count)
+//            //게시글이 하나 이상일때 증감
+//            if boardData.count >= 1{
+//                boardCount += 1
+//            }
+//            print("보드 카운트://2:", boardData.count)
+//            newBoard["board_count"] = boardCount
+//
+//
+//            var insertData: [String:Any] = [:]
+//            insertData.updateValue(board_uid, forKey: "board_uid")
+//            insertData.updateValue(textViewText, forKey: "board_text")
+//            insertData.updateValue(currentDate, forKey: "board_date") // date형식의경우 계속 시간이 변경됨
+//            insertData.updateValue(self.user_uid, forKey: "user_uid")
+//            insertData.updateValue(self.user_nickname, forKey: "user_nickname")
+//            insertData.updateValue(boardCount, forKey: "board_no") // board_count(고유 글번호)
+//
+//
+//            if imgflag {
+//
+//                let uploadImg = UIImageJPEGRepresentation(img!, 0.3)
+//                // 이미지 저장
+//                Storage.storage().reference().child("board_img").child(board_uid).putData(uploadImg!, metadata: nil, completion: { (metaData, error) in
+//                    if let error = error {
+//                        print("error// ", error)
+//                        return
+//                    }
+//
+//                    print("meta data :  ", metaData ?? "(no data)")
+//                    guard let urlStr = metaData?.downloadURL()?.absoluteString else{return}
+//
+//                    insertData.updateValue(urlStr, forKey: "board_img_url")
+//
+//                    //self.reference.child("board").childByAutoId().setValue(insertData)
+////                    boardData.updateValue(insertData, forKey: autoID)
+//                    print("IMG://", boardCount)
+////                    self.reference.child("board").updateChildValues(["board_count" : boardCount])
+//                    //boardDatas.updateValue(currentDataDic, forKey: "datas")
+//
+//                    self.reference.child("board").child("board_data").child(autoID).updateChildValues(insertData)
+//                })
+//
+//            }else{
+//                //self.reference.child("board").childByAutoId().setValue(insertData)
+//                boardData.updateValue(insertData, forKey: autoID)
+//                //boardDatas.updateValue(currentDataDic, forKey: "datas")
+//                newBoard["board_data"] = boardData
+//                currentData.value = newBoard
+//            }
+//
+//            boardData.updateValue(insertData, forKey: autoID)
+//            //boardDatas.updateValue(currentDataDic, forKey: "datas")
+//            newBoard["board_data"] = boardData
+//            currentData.value = newBoard
+//            DispatchQueue.main.async {
+//                self.navigationController?.popViewController(animated: true)
+//            }
+//            return TransactionResult.success(withValue: currentData)
+//        }) { (error, commit, datasnap) in
+////            guard let dataSnap = datasnap?.value as? [String:Any] else {return}
+////            var count = dataSnap["board_count"] as? Int ?? 0
+////            if imgflag {
+////                count += 1
+////                self.reference.child("board").updateChildValues(["board_count" : count])
+////
+////            }
+//        }
      
     }
     
