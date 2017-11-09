@@ -75,43 +75,7 @@ class BoardDevDetailHeaderView: UIView {
                 
             }
             currentLikeData.value = likeData
-            /*
-            print("SELF.USERUID://,", user_uid)
-            // 1. currentLikeData에 값이 있는지 판다.
-            if var likeData = currentLikeData.value as? [String:Any]{
-                
-                // 2. likeData에 키값으로 사용자 useruid를 포함하는지 비교
-                if likeData.contains(where: { (key,value) -> Bool in
-                    return key == user_uid
-                }) {
-                    print(likeData)
-                    likeData.removeValue(forKey: user_uid)
-                    print(likeData)
-                    currentLikeData.value = likeData
-                    
-                }else{ // 3. 포함하지 않는 경우
-                    //boardLikeData.updateValue(ServerValue.timestamp(), forKey: user_uid)
-                    // 생성한 데이터를 다시 currentLikeData에 할당
-                    currentLikeData.value = likeData.updateValue(ServerValue.timestamp(), forKey: user_uid)
-                    // currentLikeData.setValue(ServerValue.timestamp(), forKey: user_uid)
-                }
-                
-                
-            }
-            else{ // 4. currentLikeData에 값이 없을 경우(게시글에 좋아요 한 데이터가 존재 하지 않는 경우 - 최초)
-                var boardLikeData: [String:Any] = [:]
-                boardLikeData.updateValue(ServerValue.timestamp(), forKey: user_uid)
-                // 생성한 데이터를 다시 currentLikeData에 할당
-                currentLikeData.value = boardLikeData
-                
-            }
-           
-            print("파이어베이스 서버시간://", ServerValue.timestamp())
-            // 리턴이 필수!
-            DispatchQueue.main.async {
-                self.boardLikeCountLabel.text = "\(currentLikeData.childrenCount)"
-            }
- */
+     
             DispatchQueue.main.async {
                 self.boardLikeCountLabel.text = "\(currentLikeData.childrenCount)"
             }

@@ -12,8 +12,8 @@ class BoardDevListViewController: UIViewController {
     // 게시글들을 가진 구조체
     var boardDatas: BoardLists?
     var boardArrs: [Board] = []
-    var likeCount: [String] = []
     var reference: DatabaseReference!
+    var user_uid: String = ""
     @IBOutlet weak var boardTableView: UITableView!
     
     
@@ -60,6 +60,8 @@ class BoardDevListViewController: UIViewController {
         // Do any additional setup after loading the view.
         // UserDefault에 저장된 uid 확인
         print("UID:// ",UserDefaults.standard.string(forKey: Constants.userDefaultsUserUid) ?? "no-data")
+        guard let userUID =  UserDefaults.standard.string(forKey: Constants.userDefaultsUserUid) else {return}
+        user_uid = userUID
         reference = Database.database().reference()
 //        reference.child("board").observeSingleEvent(of: .value, with: { (dataSnap) in
 //
@@ -92,7 +94,7 @@ class BoardDevListViewController: UIViewController {
         let myTopPostsQuery = reference.child("board").child("board_data").queryOrdered(byChild: "board_count")
         print("쿼리://",myTopPostsQuery)
         myTopPostsQuery.observe(.value, with: { (data) in
-            print(data.value as? [String:Any])
+            
             guard let boardsArr = data.value as? [String:Any] else{return}
             
             print("boardsArr 카운트:// ", boardsArr.count)
@@ -118,7 +120,7 @@ class BoardDevListViewController: UIViewController {
                 let sortingData = self.boardArrs.sorted(by: {$0.board_no > $1.board_no})
                 
                 self.boardArrs = sortingData
-                self.likeCount = []
+//                self.likeCount = []
                 self.boardTableView.reloadData()
             }
         }) { (error) in
@@ -199,16 +201,30 @@ extension BoardDevListViewController: UITableViewDelegate, UITableViewDataSource
             
             boardCell.boardWriterLabel.text = self.boardArrs[indexPath.row].user_nickname
         
+            boardCell.boardCreateAtLabel.text = self.boardArrs[indexPath.row].board_date
+        
+        if let _ = boardArrs[indexPath.row].board_img_url {
+            boardCell.imageResultLabel.text = "image is true"
+            boardCell.imageResultImgView.isHidden = false
+        }else{
+            boardCell.imageResultLabel.text = "image is false"
+            boardCell.imageResultImgView.isHidden = true
+        }
         
         self.reference.child("board_like").child(self.boardArrs[indexPath.row].board_uid).observe(.value, with: { (dataSnap) in
             boardCell.boardLikeCountLabel.text = "\(dataSnap.childrenCount)"
-            self.likeCount.append(dataSnap.childrenCount.description)
+//            self.likeCount.append(dataSnap.childrenCount.description)
 
         }, withCancel: { (error) in
 
         })
-    
         
+        self.reference.child("board_comment").child(self.boardArrs[indexPath.row].board_uid).observe(.value, with: { (dataSnap) in
+            boardCell.boardReqCountLabel.text = "\(dataSnap.childrenCount)"
+        }) { (error) in
+            
+        }
+    
         return boardCell
     }
     
@@ -229,9 +245,53 @@ extension BoardDevListViewController: UITableViewDelegate, UITableViewDataSource
         let selectCell = tableView.cellForRow(at: indexPath) as? BoardDevListTableViewCell
         
         nextViewController.likeCount = selectCell?.boardLikeCountLabel.text
+        nextViewController.reqCount = selectCell?.boardReqCountLabel.text
         tableView.deselectRow(at: indexPath, animated: true)
         self.navigationController?.pushViewController(nextViewController, animated: true)
         
     }
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        var returnAction: [UITableViewRowAction] = []
+        let deleteBoardUid = self.boardArrs[indexPath.row].board_uid
+        
+        let delAction = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "Delete") { (action, index) in
+            self.boardArrs.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
+            
+            self.reference.child("board").child("board_data").runTransactionBlock({ (currentData) -> TransactionResult in
+                if var boardDatas = currentData.value as? [String:Any] {
+                    print(boardDatas)
+                    print(boardDatas.count)
+                    //var updateBoardDatas: [String:Any] = [:]
+                    for boardDetail in boardDatas {
+                        let oneBoardData = Board(inDictionary: boardDetail.value as? [String:Any] ?? [:], boardKey: boardDetail.key)
+                        
+                        print(oneBoardData)
+                        print(boardDetail)
+                        if oneBoardData.board_uid == deleteBoardUid {
+                            boardDatas.removeValue(forKey: oneBoardData.boardAutoIdKey)
+                        }
+                    }
+                    print(boardDatas)
+                    print(boardDatas.count)
+                    currentData.value = boardDatas
+                }
+                return TransactionResult.success(withValue: currentData)
+            })
+        }
+        delAction.backgroundColor = UIColor.orange
+        
+        // 본인이 작성한 게시글에 대해서만 삭제가능하도록 분기처리
+        if boardArrs[indexPath.row].user_uid == user_uid {
+            
+            
+            returnAction.append(delAction)
+        }else{
+            returnAction = []
+        }
+        return returnAction
+    }
+    
+
     
 }

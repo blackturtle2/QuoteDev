@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import Firebase
 class BoardDevDetailViewController: UIViewController {
     
     @IBOutlet weak var boardDetailTableView: UITableView!
@@ -18,7 +18,11 @@ class BoardDevDetailViewController: UIViewController {
     
     var boardData: Board?
     var likeCount: String?
-    
+    var reqCount: String?
+    var commentData: [Comment] = []
+    var reference: DatabaseReference!
+    var user_uid = ""
+    var user_nickname = "#null"
     /*******************************************/
     //MARK:-        LifeCycle                  //
     /*******************************************/
@@ -27,12 +31,79 @@ class BoardDevDetailViewController: UIViewController {
         print("게시판 디테일 뷰디드 로드")
         boardDetailTableView.delegate = self
         boardDetailTableView.dataSource = self
+        
         //commentTextField.delegate = self
+        reference = Database.database().reference()
+        guard let boardLikeCount = likeCount else {return}
+        guard let boardReqCount = reqCount else {return}
         
-        guard  let boardLikeCount = likeCount else {return}
-        boardHeaderView.boardLikeCountLabel.text = "\(boardLikeCount)"
+        boardHeaderView.boardLikeCountLabel.text = boardLikeCount
+        boardHeaderView.boardReqCountLabel.text = boardReqCount
+        guard let boardDatas = boardData else { return }
+        print(boardDatas.board_uid)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(BoardDevDetailViewController.keyboardWillShow(notification:)), name: .UIKeyboardWillShow, object: nil)
+        // 댓글 데이터 조회 queryOrdered(byChild: "board_count")
+//        reference.child("board_comment").child(boardDatas.board_uid).observe(.value, with: { (data) in
+//            print(data.value as? [String:Any] ?? "")
+//            guard let commentArrs = data.value as? [String:Any] else{return}
+//
+//            var commentDataArr: [Comment] = []
+//
+//            for comment in commentArrs {
+//                print("LIST COMENT:// ",comment)
+//
+//                guard let boardData = comment.value as? [String:Any]  else {return}// board 구조체 사용예정
+//                let commnetDetail = Comment(inDictionary: boardData)
+//                print("LIST BOARD detail board:// ",commnetDetail)
+//                commentDataArr.append(commnetDetail)
+//
+//            }
+//            print("CommentDIC:// ", commentDataArr)
+//            self.commentData = commentDataArr
+//
+//
+//            DispatchQueue.main.async {
+//
+//                self.boardDetailTableView.reloadData()
+//
+//            }
+//        }) { (error) in
+//
+//        }
+        // 댓글 데이터 조회하여 정렬
+        reference.child("board_comment").child(boardDatas.board_uid).queryOrdered(byChild: "comment_date").observe(.value, with: { (data) in
+            print(data.value as? [String:Any] ?? "")
+            guard let commentArrs = data.value as? [String:Any] else{return}
+            
+            var commentDataArr: [Comment] = []
+            
+            for comment in commentArrs {
+                print("LIST COMENT:// ",comment)
+                
+                guard let boardData = comment.value as? [String:Any]  else {return}// board 구조체 사용예정
+                let commnetDetail = Comment(inDictionary: boardData)
+                print("LIST BOARD detail board:// ",commnetDetail)
+                commentDataArr.append(commnetDetail)
+                
+            }
+            print("CommentDIC:// ", commentDataArr)
+            self.commentData = commentDataArr
+            
+            DispatchQueue.main.async {
+                // query 정렬후 가져와서 클라단에서 정렬 해줍니다.(쿼리 정렬자체가 생각만큼 정렬이 안되는거 같네요.)
+                let sortingData = self.commentData.sorted(by: {$0.comment_date > $1.comment_date})
+                
+                self.commentData = sortingData
+                
+                self.boardDetailTableView.reloadData()
+            }
+            
+        }) { (error) in
+            
+        }
+        NotificationCenter.default.addObserver(self, selector: #selector(BoardDevDetailViewController.keyboardWillShowHide(notification:)), name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(BoardDevDetailViewController.keyboardWillShowHide(notification:)), name: .UIKeyboardWillHide, object: nil)
+        
         if let imgUrlStr = boardData?.board_img_url, let imgUrl = URL(string: imgUrlStr){
             print("이미지 존재")
             URLSession.shared.dataTask(with: imgUrl, completionHandler: { (data, response, error) in
@@ -54,6 +125,10 @@ class BoardDevDetailViewController: UIViewController {
             
         }
         
+        guard let uid = UserDefaults.standard.string(forKey: Constants.userDefaultsUserUid) else {return}
+        user_uid = uid
+        guard let nickName = UserDefaults.standard.string(forKey: Constants.userDefaultsUserNickname) else {return}
+        user_nickname = nickName
     }
     
     // 뷰 컨트롤러 루트 뷰의 경계가 바뀔 때마다 재정의
@@ -125,20 +200,76 @@ class BoardDevDetailViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    
+    /*******************************************/
+    //MARK:-         IBActions                 //
+    /*******************************************/
+    
+    // MARK: 댓글 등록 버튼
+    @IBAction func pushBtnTouched(_ sender: UIButton){
+        guard let boardData = boardData, let comment = commentTextField.text else {return}
+        print(boardData.board_uid)
+        print(commentTextField.text ?? "no-text")
+        
+        let nowDate = Date()
+        let dateFormatter: DateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyyMMddHHmm"
+        let currentDate = dateFormatter.string(from: nowDate)
+        let commnet_uid = "\(user_uid)\(currentDate)"
+        
+        
+        let autoID = reference.child("board_comment").child(boardData.board_uid).childByAutoId().key
+        reference.child("board_comment").child(boardData.board_uid).runTransactionBlock({ (currentData) -> TransactionResult in
+            var commentData = currentData.value as? [String:Any] ?? [:]
+            var insertData: [String:Any] = [:]
+            insertData.updateValue(self.user_uid, forKey: "user_uid")
+            insertData.updateValue(comment, forKey: "comment_text")
+            insertData.updateValue(self.user_nickname, forKey: "user_nickname") // date형식의경우 계속 시간이 변경됨
+            insertData.updateValue(self.user_uid, forKey: "user_uid")
+            insertData.updateValue(currentDate, forKey: "comment_date")
+            insertData.updateValue(commnet_uid, forKey: "comment_uid") // board_count(고유 글번호)
+            
+            commentData.updateValue(insertData, forKey: autoID)
+            currentData.value = commentData
+            
+            NotificationCenter.default.post(name: .UIKeyboardWillHide, object: nil)
+            
+            
+            return TransactionResult.success(withValue: currentData)
+        }) { (error, commit, dataSnap) in
+            guard let reqCount = dataSnap?.childrenCount else {return}
+            
+            DispatchQueue.main.async {
+                self.boardDetailTableView.reloadData()
+                self.boardHeaderView.boardReqCountLabel.text = "\(reqCount)"
+            }
+        }
+    }
+    
+    // MARK: 테이블뷰 탭 제스쳐
+    @IBAction func tableViewTapGesture(_ sender: UITapGestureRecognizer) {
+        NotificationCenter.default.post(name: .UIKeyboardWillHide, object: nil)
+    }
+    
+   
     /*******************************************/
     //MARK:-         Functions                 //
     /*******************************************/
     
     // MARK: 키보드 올리기 or 내리기
-    func keyboardWillShow(notification: Notification) {
+    func keyboardWillShowHide(notification: Notification) {
         print("///// keyboardWillShowOrHide")
         
         // guard-let으로 nil 값이면, 키보드를 내립니다.
         guard let userInfo = notification.userInfo else {
-            self.commentTextField.resignFirstResponder() // 키보드 내리기.
+            
+            DispatchQueue.main.async {
+                self.commentTextField.resignFirstResponder() // 키보드 내리기.
+                self.commentTextField.text = ""
+                self.commentViewBottomConstraint.constant = 0 // 댓글 작성칸 내리기.
+                self.view.layoutIfNeeded() // UIView layout 새로고침.
+            }
 
-            self.commentViewBottomConstraint.constant = 0 // 댓글 작성칸 내리기.
-            self.view.layoutIfNeeded() // UIView layout 새로고침.
             return
         }
         
@@ -154,7 +285,8 @@ class BoardDevDetailViewController: UIViewController {
             delay: 0.0,
             options: [.beginFromCurrentState, animationCurve],
             animations: {
-                self.commentViewBottomConstraint.constant = (self.view.bounds.maxY - self.view.window!.convert(frameEnd, to: self.view).minY)
+                guard let window = self.view.window else {return}
+                self.commentViewBottomConstraint.constant = (self.view.bounds.maxY - window.convert(frameEnd, to: self.view).minY)
                 self.view.layoutIfNeeded()
         },
             completion: nil
@@ -166,29 +298,27 @@ class BoardDevDetailViewController: UIViewController {
 /*******************************************/
 //MARK:-         extenstion                //
 /*******************************************/
-extension BoardDevDetailViewController: UITextFieldDelegate {
-    
-}
 
 extension BoardDevDetailViewController: UITableViewDataSource, UITableViewDelegate {
     
-//    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//        let headerCell = tableView.dequeueReusableCell(withIdentifier: "BoardDevDetailHeaderCell") as! BoardDevDetailHeaderCell
-//
-//        return headerCell
-//    }
-//    func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
-//        return UITableViewAutomaticDimension
-//    }
-//    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-//        return UITableViewAutomaticDimension
-//    }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        return commentData.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "BoardDevDetailCommentCell", for: indexPath) as! BoardDevDetailCommentCell
         
+        cell.userNickNameLabel.text = commentData[indexPath.row].user_nickname
+        cell.commentTextLabel.text = commentData[indexPath.row].comment_text
+        cell.commentCreateAtLabel.text = commentData[indexPath.row].comment_date
+        cell.commentUID = commentData[indexPath.row].comment_uid
+        
+        self.reference.child("board_comment_like").child(self.commentData[indexPath.row].comment_uid).observe(.value, with: { (dataSnap) in
+            cell.commentLikeLabel.text = "\(dataSnap.childrenCount)"
+            
+            
+        }, withCancel: { (error) in
+            
+        })
         return cell
     }
     

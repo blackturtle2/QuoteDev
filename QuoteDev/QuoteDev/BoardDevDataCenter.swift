@@ -44,3 +44,21 @@ struct BoardLists {
     
     
 }
+struct Comment {
+    
+    let user_uid: String
+    let user_nickname: String
+    let comment_text: String
+    let comment_date: String
+    let comment_uid: String
+    
+    init(inDictionary dictData: [String:Any]) {
+    
+        self.user_uid = dictData["user_uid"] as? String ?? "no-useruid"
+        self.user_nickname = dictData["user_nickname"] as? String ?? "no-nickname"
+        self.comment_text = dictData["comment_text"] as? String ?? "no-text"
+        self.comment_date = dictData["comment_date"] as? String ?? "no-date"
+        self.comment_uid = dictData["comment_uid"] as? String ?? "no-commnetuid"
+        
+    }
+}
