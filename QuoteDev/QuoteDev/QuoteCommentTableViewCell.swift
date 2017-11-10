@@ -128,5 +128,7 @@ class QuoteCommentTableViewCell: UITableViewCell {
         guard let realUid = self.uid else { return }
         
         delegate?.buttonCommentOptionAlert(commentKeyID: realCommentKeyID, commentUserUid: realUid)
+        // TODO - UIApplication.shared.keyWindow 활용해서 Delegate 제거하기 ( 코드 가독성이 떨어짐.. )
+        // example: UIApplication.shared.keyWindow?.rootViewController?.present(safariViewController, animated: true, completion: nil)
     }
 }
