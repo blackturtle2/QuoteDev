@@ -37,7 +37,6 @@
 /* Begin PBXFileReference section */
 		4C26BE161F7B46C80013A8A8 /* BoardDevWriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardDevWriteViewController.swift; sourceTree = "<group>"; };
 		4C26BE1A1F7C9FA00013A8A8 /* delete_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = delete_icon.png; sourceTree = "<group>"; };
-		4C26BE1B1F7CA09F0013A8A8 /* camera_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera_icon.png; sourceTree = "<group>"; };
 		4C26BE1E1F7CA1970013A8A8 /* photo_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = photo_icon.png; sourceTree = "<group>"; };
 		4C7732DB1F7A2CDE007F0E6D /* BoardDevListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardDevListViewController.swift; sourceTree = "<group>"; };
 		4C7732DD1F7A2CF3007F0E6D /* BoardDevListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardDevListTableViewCell.swift; sourceTree = "<group>"; };
@@ -133,7 +132,6 @@
 				FE7EC3AE1F6A555400696041 /* SettingView */,
 				FE7EC3A91F6A536300696041 /* BoardDev */,
 				4C26BE1A1F7C9FA00013A8A8 /* delete_icon.png */,
-				4C26BE1B1F7CA09F0013A8A8 /* camera_icon.png */,
 				4C26BE1E1F7CA1970013A8A8 /* photo_icon.png */,
 				FE7EC3A71F6A51BD00696041 /* GoogleService-Info.plist */,
 				FE7EC3A11F6A4E1000696041 /* Info.plist */,

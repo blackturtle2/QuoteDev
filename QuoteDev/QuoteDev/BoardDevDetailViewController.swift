@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+
 class BoardDevDetailViewController: UIViewController {
     
     @IBOutlet weak var boardDetailTableView: UITableView!
@@ -42,90 +43,18 @@ class BoardDevDetailViewController: UIViewController {
         guard let boardDatas = boardData else { return }
         print(boardDatas.board_uid)
         
-        // 댓글 데이터 조회 queryOrdered(byChild: "board_count")
-//        reference.child("board_comment").child(boardDatas.board_uid).observe(.value, with: { (data) in
-//            print(data.value as? [String:Any] ?? "")
-//            guard let commentArrs = data.value as? [String:Any] else{return}
-//
-//            var commentDataArr: [Comment] = []
-//
-//            for comment in commentArrs {
-//                print("LIST COMENT:// ",comment)
-//
-//                guard let boardData = comment.value as? [String:Any]  else {return}// board 구조체 사용예정
-//                let commnetDetail = Comment(inDictionary: boardData)
-//                print("LIST BOARD detail board:// ",commnetDetail)
-//                commentDataArr.append(commnetDetail)
-//
-//            }
-//            print("CommentDIC:// ", commentDataArr)
-//            self.commentData = commentDataArr
-//
-//
-//            DispatchQueue.main.async {
-//
-//                self.boardDetailTableView.reloadData()
-//
-//            }
-//        }) { (error) in
-//
-//        }
-        // 댓글 데이터 조회하여 정렬
-        reference.child("board_comment").child(boardDatas.board_uid).queryOrdered(byChild: "comment_date").observe(.value, with: { (data) in
-            print(data.value as? [String:Any] ?? "")
-            guard let commentArrs = data.value as? [String:Any] else{return}
-            
-            var commentDataArr: [Comment] = []
-            
-            for comment in commentArrs {
-                print("LIST COMENT:// ",comment)
-                
-                guard let boardData = comment.value as? [String:Any]  else {return}// board 구조체 사용예정
-                let commnetDetail = Comment(inDictionary: boardData)
-                print("LIST BOARD detail board:// ",commnetDetail)
-                commentDataArr.append(commnetDetail)
-                
-            }
-            print("CommentDIC:// ", commentDataArr)
-            self.commentData = commentDataArr
-            
-            DispatchQueue.main.async {
-                // query 정렬후 가져와서 클라단에서 정렬 해줍니다.(쿼리 정렬자체가 생각만큼 정렬이 안되는거 같네요.)
-                let sortingData = self.commentData.sorted(by: {$0.comment_date > $1.comment_date})
-                
-                self.commentData = sortingData
-                
-                self.boardDetailTableView.reloadData()
-            }
-            
-        }) { (error) in
-            
-        }
+        // 최초 댓글 데이터 조회
+        commentDataload(boardUID: boardDatas.board_uid)
+        
+        // 키보드 올리기 내리기 옵저버 등록
         NotificationCenter.default.addObserver(self, selector: #selector(BoardDevDetailViewController.keyboardWillShowHide(notification:)), name: .UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(BoardDevDetailViewController.keyboardWillShowHide(notification:)), name: .UIKeyboardWillHide, object: nil)
         
-        if let imgUrlStr = boardData?.board_img_url, let imgUrl = URL(string: imgUrlStr){
-            print("이미지 존재")
-            URLSession.shared.dataTask(with: imgUrl, completionHandler: { (data, response, error) in
-                guard let imgData = data else {return}
-                // 시점 고려하고 코너가 안먹넹
-                DispatchQueue.main.async {
-                    self.boardHeaderView.boardImgView.layer.cornerRadius = 20
-                    self.boardHeaderView.boardImgView.image = UIImage(data: imgData)
-                    
-                }
-            }).resume()
-        }else{
-            print("이미지 없다")
-            // 디테일뷰로 넘어올때 이미지 정보가 없을경우 화면에 이미지뷰를 제거하여 priority 설정에 따라 제거후 오토레이아웃 적용
-            // 헤더뷰를 다시 그린다.
-            boardHeaderView.boardImgView.removeFromSuperview()
-            boardHeaderView.setNeedsLayout()
-            boardHeaderView.layoutIfNeeded()
-            
-        }
+        // 이미지 존재 여부 체크
+        imgDataValidation(url: boardData?.board_img_url)
         
-        guard let uid = UserDefaults.standard.string(forKey: Constants.userDefaultsUserUid) else {return}
+        // 파이어베이스 Auth를 통한 현재 유자 아이디 값 할당
+        guard let uid =  Auth.auth().currentUser?.uid else { return }
         user_uid = uid
         guard let nickName = UserDefaults.standard.string(forKey: Constants.userDefaultsUserNickname) else {return}
         user_nickname = nickName
@@ -135,31 +64,6 @@ class BoardDevDetailViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         print("게시판 디테일 뷰 디드 LayouSubView 호출")
-        // 현재 테이블 뷰의 헤더뷰 존재 여부 판단
-        //guard  let headerView = boardDetailTableView.tableHeaderView as? BoardDevDetailHeaderView else { return }
-        
-        
-//        if let imgUrlStr = boardData?.board_img_url, let imgUrl = URL(string: imgUrlStr){
-//            print("이미지 존재")
-//            URLSession.shared.dataTask(with: imgUrl, completionHandler: { (data, response, error) in
-//                guard let imgData = data else {return}
-//                // 시점 고려하고 코너가 안먹넹
-//                DispatchQueue.main.async {
-//                    self.boardHeaderView.boardImgView.layer.cornerRadius = 20
-//                    self.boardHeaderView.boardImgView.image = UIImage(data: imgData)
-//
-//                }
-//            }).resume()
-//        }else{
-//            print("이미지 없다")
-//            // 디테일뷰로 넘어올때 이미지 정보가 없을경우 화면에 이미지뷰를 제거하여 priority 설정에 따라 제거후 오토레이아웃 적용
-//            // 헤더뷰를 다시 그린다.
-//            boardHeaderView.boardImgView.removeFromSuperview()
-//            boardHeaderView.setNeedsLayout()
-//            boardHeaderView.layoutIfNeeded()
-//
-//        }
-//
         
         guard  let boardDatas = boardData else { return }
         boardHeaderView.boardCotentsLabel.text = boardDatas.board_text
@@ -167,10 +71,8 @@ class BoardDevDetailViewController: UIViewController {
         boardHeaderView.boardWriterLabel.text = boardDatas.user_nickname
         boardHeaderView.boardCreateAtLabel.text = boardDatas.board_date
         
-        
-        
         boardHeaderView.boardUID = boardDatas.board_uid
-        //boardHeaderView.userUID = boardDatas.user_uid
+        
         
         // 헤더뷰의 최소크기 할당
         // systemLayoutSizeFitting(_ targetSize: CGSize): 뷰가 유지하는 제약을 채우는 뷰의 사이즈를 돌려줍니다.
@@ -190,7 +92,13 @@ class BoardDevDetailViewController: UIViewController {
         }
         
     }
-    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        // 키보드 옵저버 등록 해제
+        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
+        
+    }
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         print("뷰윌")
     }
@@ -207,41 +115,54 @@ class BoardDevDetailViewController: UIViewController {
     
     // MARK: 댓글 등록 버튼
     @IBAction func pushBtnTouched(_ sender: UIButton){
-        guard let boardData = boardData, let comment = commentTextField.text else {return}
-        print(boardData.board_uid)
-        print(commentTextField.text ?? "no-text")
         
-        let nowDate = Date()
-        let dateFormatter: DateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyyMMddHHmm"
-        let currentDate = dateFormatter.string(from: nowDate)
-        let commnet_uid = "\(user_uid)\(currentDate)"
+        guard let commentText = commentTextField.text else {return}
+        guard let boardData = boardData else {return}
         
-        
-        let autoID = reference.child("board_comment").child(boardData.board_uid).childByAutoId().key
-        reference.child("board_comment").child(boardData.board_uid).runTransactionBlock({ (currentData) -> TransactionResult in
-            var commentData = currentData.value as? [String:Any] ?? [:]
-            var insertData: [String:Any] = [:]
-            insertData.updateValue(self.user_uid, forKey: "user_uid")
-            insertData.updateValue(comment, forKey: "comment_text")
-            insertData.updateValue(self.user_nickname, forKey: "user_nickname") // date형식의경우 계속 시간이 변경됨
-            insertData.updateValue(self.user_uid, forKey: "user_uid")
-            insertData.updateValue(currentDate, forKey: "comment_date")
-            insertData.updateValue(commnet_uid, forKey: "comment_uid") // board_count(고유 글번호)
+        if commentText.isEmpty {
+            // UIAlertController 생성
+            let alertTextEmpty:UIAlertController = UIAlertController(title: "댓글 작성", message: "댓글을 입력해주세요.", preferredStyle: .alert)
             
-            commentData.updateValue(insertData, forKey: autoID)
-            currentData.value = commentData
+            // OK 버튼 Action 추가
+            alertTextEmpty.addAction(UIAlertAction(title: "확인", style: .cancel, handler: {[unowned self](_) in
+                self.commentTextField.becomeFirstResponder()
+            }))
+            self.present(alertTextEmpty, animated: true, completion: nil)
+        }else{
+            print(boardData.board_uid)
+            print(commentTextField.text ?? "no-text")
+            let nowDate = Date()
+            let dateFormatter: DateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyyMMddHHmmss"
+            let currentDate = dateFormatter.string(from: nowDate)
+            let commnet_uid = "\(user_uid)\(currentDate)"
             
-            NotificationCenter.default.post(name: .UIKeyboardWillHide, object: nil)
             
-            
-            return TransactionResult.success(withValue: currentData)
-        }) { (error, commit, dataSnap) in
-            guard let reqCount = dataSnap?.childrenCount else {return}
-            
-            DispatchQueue.main.async {
-                self.boardDetailTableView.reloadData()
-                self.boardHeaderView.boardReqCountLabel.text = "\(reqCount)"
+            let autoID = reference.child("board_comment").child(boardData.board_uid).childByAutoId().key
+            reference.child("board_comment").child(boardData.board_uid).runTransactionBlock({[unowned self] (currentData) -> TransactionResult in
+                var commentData = currentData.value as? [String:Any] ?? [:]
+                var insertData: [String:Any] = [:]
+                insertData.updateValue(self.user_uid, forKey: "user_uid")
+                insertData.updateValue(commentText, forKey: "comment_text")
+                insertData.updateValue(self.user_nickname, forKey: "user_nickname")
+                insertData.updateValue(self.user_uid, forKey: "user_uid")
+                insertData.updateValue(currentDate, forKey: "comment_date")
+                insertData.updateValue(commnet_uid, forKey: "comment_uid")
+                
+                commentData.updateValue(insertData, forKey: autoID)
+                currentData.value = commentData
+                
+                NotificationCenter.default.post(name: .UIKeyboardWillHide, object: nil)
+                
+                
+                return TransactionResult.success(withValue: currentData)
+            }) { (error, commit, dataSnap) in
+                guard let reqCount = dataSnap?.childrenCount else {return}
+                
+                DispatchQueue.main.async {
+                    self.boardDetailTableView.reloadData()
+                    self.boardHeaderView.boardReqCountLabel.text = "\(reqCount)"
+                }
             }
         }
     }
@@ -251,12 +172,71 @@ class BoardDevDetailViewController: UIViewController {
         NotificationCenter.default.post(name: .UIKeyboardWillHide, object: nil)
     }
     
-   
+    
     /*******************************************/
     //MARK:-         Functions                 //
     /*******************************************/
+    // MARK: 댓글 데이터 조회 메서드
+    func commentDataload(boardUID: String){
+        
+        // 댓글 데이터 조회하여 정렬 - 싱글옵저버 변경
+        reference.child("board_comment").child(boardUID).queryOrdered(byChild: "comment_date").observe(.value, with: { [unowned self] (data) in
+            print(data.value as? [String:Any] ?? "")
+            guard let commentArrs = data.value as? [String:Any] else{return}
+            
+            var commentDataArr: [Comment] = []
+            
+            for comment in commentArrs {
+                print("LIST COMENT:// ",comment)
+                
+                guard let boardData = comment.value as? [String:Any]  else {return}// board 구조체 사용예정
+                let commnetDetail = Comment(inDictionary: boardData)
+                print("LIST BOARD detail board:// ",commnetDetail)
+                commentDataArr.append(commnetDetail)
+                
+            }
+            print("CommentDIC:// ", commentDataArr)
+            self.commentData = commentDataArr
+            // query 정렬후 가져와서 클라단에서 정렬 해줍니다.(쿼리 정렬자체가 생각만큼 정렬이 안되는거 같네요.)
+            let sortingData = self.commentData.sorted(by: {$0.comment_date > $1.comment_date})
+            
+            self.commentData = sortingData
+            DispatchQueue.main.async {
+                
+                self.boardDetailTableView.reloadData()
+            }
+            
+        }) { (error) in
+            
+        }
+
+    }
     
-    // MARK: 키보드 올리기 or 내리기
+    // MARK: 이미지 존재 여부에 따른 UI작업 메서드
+    func imgDataValidation(url imgURL: String?){
+        if let imgUrlStr = imgURL, let imgUrl = URL(string: imgUrlStr){
+            print("이미지 존재")
+            URLSession.shared.dataTask(with: imgUrl, completionHandler: { (data, response, error) in
+                guard let imgData = data else {return}
+                // 시점 고려하고 코너가 안먹넹
+                DispatchQueue.main.async {
+                    self.boardHeaderView.boardImgView.layer.cornerRadius = 20
+                    self.boardHeaderView.boardImgView.image = UIImage(data: imgData)
+                    
+                }
+            }).resume()
+        }else{
+            print("이미지 없다")
+            // 디테일뷰로 넘어올때 이미지 정보가 없을경우 화면에 이미지뷰를 제거하여 priority 설정에 따라 제거후 오토레이아웃 적용
+            // 헤더뷰를 다시 그린다.
+            boardHeaderView.boardImgView.removeFromSuperview()
+            boardHeaderView.setNeedsLayout()
+            boardHeaderView.layoutIfNeeded()
+            
+        }
+    }
+    
+    // MARK: 키보드 올리기 or 내리기 메서드
     func keyboardWillShowHide(notification: Notification) {
         print("///// keyboardWillShowOrHide")
         
@@ -266,9 +246,9 @@ class BoardDevDetailViewController: UIViewController {
             DispatchQueue.main.async {
                 self.commentTextField.resignFirstResponder() // 키보드 내리기.
                 self.commentTextField.text = ""
-                self.commentViewBottomConstraint.constant = 0 // 댓글 작성칸 내리기.
                 self.view.layoutIfNeeded() // UIView layout 새로고침.
             }
+            self.commentViewBottomConstraint.constant = 0 // 댓글 작성칸 내리기.
 
             return
         }

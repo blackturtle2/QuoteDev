@@ -687,7 +687,6 @@
                                                         <color key="titleColor" red="1" green="0.23325139240000001" blue="0.1502133524" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </state>
                                                     <connections>
-                                                        <action selector="likeBtnTouched:" destination="ybe-n2-3LQ" eventType="touchUpInside" id="NXR-Zd-OJf"/>
                                                         <action selector="likeBtnTouched:" destination="5R2-mC-FdS" eventType="touchUpInside" id="eaI-yc-dTy"/>
                                                     </connections>
                                                 </button>

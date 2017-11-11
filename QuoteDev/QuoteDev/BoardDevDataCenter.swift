@@ -19,6 +19,7 @@ class BoardDevDataCenter {
     
 }
 
+// MARK: 게시판 구조체
 struct Board {
     let boardAutoIdKey: String
     let board_uid: String
@@ -40,10 +41,8 @@ struct Board {
         self.board_no = dictData["board_no"] as? Int ?? 0
     }
 }
-struct BoardLists {
-    
-    
-}
+
+// MARK: 댓글 구조체
 struct Comment {
     
     let user_uid: String

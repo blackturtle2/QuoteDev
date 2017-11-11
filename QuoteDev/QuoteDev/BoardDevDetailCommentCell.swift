@@ -30,8 +30,8 @@ class BoardDevDetailCommentCell: UITableViewCell {
     @IBAction func likeBtnTouched(_ sender: UIButton){
         guard let user_uid = UserDefaults.standard.string(forKey: Constants.userDefaultsUserUid) else{return}
         let reference = Database.database().reference()
-        
-        reference.child("board_comment_like").child(commentUID).runTransactionBlock({ [unowned self] (currentLikeData) -> TransactionResult in
+        print(commentUID)
+        reference.child("board_comment_like").child(commentUID).runTransactionBlock({(currentLikeData) -> TransactionResult in
             // #. 코드 리펙토링 필요 간결하게 구성할것. 일단은 구동먼저
             
             // boardUID값 하위에 키값으로 useruid를 가지고 생성일을 value에 할당한 딕셔너리 구조로 데이터 생성
@@ -62,7 +62,7 @@ class BoardDevDetailCommentCell: UITableViewCell {
             currentLikeData.value = likeData
             
             DispatchQueue.main.async {
-                self.commentLikeLabel.text = "\(currentLikeData.childrenCount)"
+               // self.commentLikeLabel.text = "\(currentLikeData.childrenCount)"
             }
             return TransactionResult.success(withValue: currentLikeData)
         }) { (error, commit, dataSnapShot) in
