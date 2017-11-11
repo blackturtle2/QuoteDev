@@ -37,24 +37,31 @@
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cO4-gW-JKr" userLabel="Segmented Background View">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="45"/>
+                                            <subviews>
+                                                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="2Kj-mG-9O9">
+                                                    <rect key="frame" x="105" y="8" width="165" height="29"/>
+                                                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="28" id="csn-z1-hgz"/>
+                                                        <constraint firstAttribute="width" constant="165" id="gnZ-Zf-961"/>
+                                                    </constraints>
+                                                    <segments>
+                                                        <segment title="진지 모드"/>
+                                                        <segment title="유쾌 모드"/>
+                                                    </segments>
+                                                    <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <connections>
+                                                        <action selector="segmentedControlQuoteModeAction:" destination="zcT-tT-xTD" eventType="valueChanged" id="O4B-uW-SLB"/>
+                                                    </connections>
+                                                </segmentedControl>
+                                            </subviews>
                                             <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803915" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </view>
-                                        <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="2Kj-mG-9O9">
-                                            <rect key="frame" x="105" y="8" width="165" height="29"/>
-                                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="28" id="csn-z1-hgz"/>
-                                                <constraint firstAttribute="width" constant="165" id="gnZ-Zf-961"/>
+                                                <constraint firstItem="2Kj-mG-9O9" firstAttribute="centerX" secondItem="cO4-gW-JKr" secondAttribute="centerX" id="FW1-Kg-JDZ"/>
+                                                <constraint firstItem="2Kj-mG-9O9" firstAttribute="centerY" secondItem="cO4-gW-JKr" secondAttribute="centerY" id="Rr1-2i-QCe"/>
+                                                <constraint firstAttribute="height" constant="45" id="m8R-Ds-kcT"/>
                                             </constraints>
-                                            <segments>
-                                                <segment title="진지 모드"/>
-                                                <segment title="유쾌 모드"/>
-                                            </segments>
-                                            <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            <connections>
-                                                <action selector="segmentedControlQuoteModeAction:" destination="zcT-tT-xTD" eventType="valueChanged" id="O4B-uW-SLB"/>
-                                            </connections>
-                                        </segmentedControl>
+                                        </view>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="temp_quote_background_image" translatesAutoresizingMaskIntoConstraints="NO" id="LrG-3z-qMg" userLabel="Quote Background Image View">
                                             <rect key="frame" x="0.0" y="45" width="375" height="211"/>
                                             <constraints>
@@ -148,12 +155,10 @@
                                         <constraint firstItem="eZ3-F5-42t" firstAttribute="trailing" secondItem="ca4-rS-U3f" secondAttribute="trailing" id="OK6-Oi-iak"/>
                                         <constraint firstItem="eZ3-F5-42t" firstAttribute="leading" secondItem="ca4-rS-U3f" secondAttribute="leading" id="Prd-MT-euZ"/>
                                         <constraint firstItem="eZ3-F5-42t" firstAttribute="top" secondItem="JpR-xn-itO" secondAttribute="bottom" constant="8" id="RPj-Lu-Vpv"/>
-                                        <constraint firstItem="2Kj-mG-9O9" firstAttribute="centerX" secondItem="kcY-Hy-Bda" secondAttribute="centerX" id="Wph-xZ-QB9"/>
                                         <constraint firstItem="JpR-xn-itO" firstAttribute="centerY" secondItem="ca4-rS-U3f" secondAttribute="centerY" id="Zb0-iP-TR8"/>
                                         <constraint firstAttribute="bottom" secondItem="n9g-TF-v2l" secondAttribute="bottom" priority="750" id="aHF-mL-Q71"/>
                                         <constraint firstItem="JpR-xn-itO" firstAttribute="leading" secondItem="ca4-rS-U3f" secondAttribute="leading" id="cRy-aw-d6d"/>
                                         <constraint firstItem="cO4-gW-JKr" firstAttribute="leading" secondItem="kcY-Hy-Bda" secondAttribute="leading" id="d0O-do-veZ"/>
-                                        <constraint firstItem="2Kj-mG-9O9" firstAttribute="top" secondItem="kcY-Hy-Bda" secondAttribute="top" constant="8" id="fqA-2c-2bD"/>
                                         <constraint firstItem="n9g-TF-v2l" firstAttribute="leading" secondItem="kcY-Hy-Bda" secondAttribute="leading" id="gRP-Qn-oR4"/>
                                         <constraint firstItem="cO4-gW-JKr" firstAttribute="top" secondItem="kcY-Hy-Bda" secondAttribute="top" id="l1t-ba-PQ2"/>
                                         <constraint firstItem="JpR-xn-itO" firstAttribute="trailing" secondItem="ca4-rS-U3f" secondAttribute="trailing" id="nDi-4k-uwV"/>
@@ -189,7 +194,7 @@ JS and GS</string>
                                     </constraints>
                                 </view>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="quoteComment" rowHeight="52" id="g4U-cn-4ge">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="quoteCommentCell" rowHeight="52" id="g4U-cn-4ge" customClass="MainQuoteCommentCell" customModule="QuoteDev" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="355.5" width="375" height="52"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="g4U-cn-4ge" id="Uuo-dV-gtI">
@@ -225,8 +230,12 @@ JS and GS</string>
                                                 <constraint firstItem="RPM-sv-snW" firstAttribute="leading" secondItem="Uuo-dV-gtI" secondAttribute="leading" constant="15" id="zNl-3k-tDX"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="labelCommentText" destination="RPM-sv-snW" id="K8K-3F-TtW"/>
+                                            <outlet property="labelNickName" destination="UrC-6J-hh7" id="axg-Oy-EpR"/>
+                                        </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="moreCommentsButton" rowHeight="44" id="E5U-zE-ktv">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="moreCommentsButtonCell" rowHeight="44" id="E5U-zE-ktv">
                                         <rect key="frame" x="0.0" y="407.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="E5U-zE-ktv" id="Jva-0z-KnA">

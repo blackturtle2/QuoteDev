@@ -22,6 +22,7 @@
 		FE15F6B91F72602C008E9A42 /* DataCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE15F6B81F72602C008E9A42 /* DataCenter.swift */; };
 		FE15F6BB1F726A41008E9A42 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE15F6BA1F726A41008E9A42 /* Constants.swift */; };
 		FE15F6BD1F726F85008E9A42 /* QuoteCommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE15F6BC1F726F85008E9A42 /* QuoteCommentViewController.swift */; };
+		FE685FCD1FB57DCC00731BE3 /* MainQuoteCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE685FCC1FB57DCC00731BE3 /* MainQuoteCommentCell.swift */; };
 		FE7EC3961F6A4E1000696041 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE7EC3951F6A4E1000696041 /* AppDelegate.swift */; };
 		FE7EC3981F6A4E1000696041 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE7EC3971F6A4E1000696041 /* MainViewController.swift */; };
 		FE7EC39B1F6A4E1000696041 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FE7EC3991F6A4E1000696041 /* Main.storyboard */; };
@@ -55,6 +56,7 @@
 		FE15F6B81F72602C008E9A42 /* DataCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataCenter.swift; sourceTree = "<group>"; };
 		FE15F6BA1F726A41008E9A42 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		FE15F6BC1F726F85008E9A42 /* QuoteCommentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuoteCommentViewController.swift; sourceTree = "<group>"; };
+		FE685FCC1FB57DCC00731BE3 /* MainQuoteCommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainQuoteCommentCell.swift; sourceTree = "<group>"; };
 		FE7EC3921F6A4E1000696041 /* QuoteDev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QuoteDev.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE7EC3951F6A4E1000696041 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FE7EC3971F6A4E1000696041 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -126,6 +128,7 @@
 				FE15F6BA1F726A41008E9A42 /* Constants.swift */,
 				FE15F6B81F72602C008E9A42 /* DataCenter.swift */,
 				FE7EC3971F6A4E1000696041 /* MainViewController.swift */,
+				FE685FCC1FB57DCC00731BE3 /* MainQuoteCommentCell.swift */,
 				FEF7AB5C1F795F290071D2F7 /* SettingViewController.swift */,
 				FEAE97641F8E66DC0055D30E /* SettingHowToSetWidgetViewController.swift */,
 				FE15F6BC1F726F85008E9A42 /* QuoteCommentViewController.swift */,
@@ -321,6 +324,7 @@
 				4C903C731F6A5D17003ECEA4 /* BoardDevMainViewController.swift in Sources */,
 				FE7EC3961F6A4E1000696041 /* AppDelegate.swift in Sources */,
 				FEAE97651F8E66DC0055D30E /* SettingHowToSetWidgetViewController.swift in Sources */,
+				FE685FCD1FB57DCC00731BE3 /* MainQuoteCommentCell.swift in Sources */,
 				FE15F6BB1F726A41008E9A42 /* Constants.swift in Sources */,
 				4CD9A89C1F944DD800623E01 /* BoardDevDetailHeaderView.swift in Sources */,
 				4C7732E01F7A32BB007F0E6D /* BoardDevDataCenter.swift in Sources */,

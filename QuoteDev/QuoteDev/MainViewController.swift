@@ -23,11 +23,13 @@ class MainViewController: UIViewController {
     @IBOutlet var buttonComment : UIButton! //명언 댓글 버튼
     @IBOutlet var buttonCommentsCount : UIButton! //명언 댓글 버튼
     
-    var currentQuoteID: String?
+    var todayQuoteID: String?
     var todayJoyfulQuoteID: String?
     
     var quoteSeriousKey: String? //오늘 날짜에 해당하는 진지모드 명언 키 값을 저장하는 변수
     var quoteJoyfulKey: String? //오늘 날짜에 해당하는 유쾌모드 명언 키 값을 저장하는 변수
+    
+    var commentsList: [QuoteComment] = [] // 최신 2개 댓글 데이터 저장용
     
     
     /*******************************************/
@@ -43,7 +45,10 @@ class MainViewController: UIViewController {
         self.segmentedControlQuoteMode.layer.cornerRadius = 5;
         
         // UI: 스크롤 뷰의 initial position을 조정해서 명언 모드 Segmented Control이 처음에는 보이지 않게 합니다.
-        self.tableViewMain.contentOffset = CGPoint(x: 0, y: 50)
+        DispatchQueue.main.async {
+            // 메인 뷰에서 댓글을 가져오는 통신을 하면서, reload를 하다보니, main queue를 태워야 원활하게 작동하였습니다.
+            self.tableViewMain.contentOffset = CGPoint(x: 0, y: 50)
+        }
         
         // 기본 명언 모드를 세팅합니다. 앱 최초 실행으로 저장되어 있지 않으면, 강제로 진지모드로 설정(UserDefaults)합니다.
         if UserDefaults.standard.string(forKey: Constants.settingDefaultQuoteMode) == nil {
@@ -152,7 +157,7 @@ class MainViewController: UIViewController {
             }
             
             // 전역 변수와 UserDefaults에 현재 보여지는 명언 ID를 저장합니다.
-            self.currentQuoteID = quoteID
+            self.todayQuoteID = quoteID
             UserDefaults.standard.set(quoteID, forKey: Constants.userDefaultsCurrentQuoteID)
             
             // 좋아요 개수를 가져오고, UI에 반영합니다.
@@ -161,7 +166,10 @@ class MainViewController: UIViewController {
             // 사용자가 좋아요를 눌렀는지 체크하고, UI에 반영합니다.
             self.findShowQuoteMyLikeOf(quoteID: quoteID)
             
+            // 댓글 개수를 가져오고, UI에 반영합니다.
             self.findShowQuoteCommentCountOf(quoteID: quoteID)
+            
+            self.findShowCommentDataToLastOf(itemsCount: 2)
             
         }) { (error) in
             print("///// firebase error- 2341: \n", error)
@@ -240,9 +248,39 @@ class MainViewController: UIViewController {
         }
     }
     
+    // MARK: 최신 댓글 n개 데이터 가져오고, UI 새로고침
+    func findShowCommentDataToLastOf(itemsCount: UInt) {
+        guard let realTodayQuoteID = self.todayQuoteID else { return }
+        Database.database().reference().child(Constants.firebaseQuoteComments).child(realTodayQuoteID).child(Constants.firebaseQuoteCommentsPosts).queryLimited(toLast: itemsCount).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
+            print("///// snapshot- 9843: \n", snapshot.value ?? "(no data)")
+            
+            // snapshot.value는 시간순으로 데이터가 오는데, guard-let을 통과하면서 정렬이 깨집니다.
+            // 따라서 sorted()를 이용해, 시간순으로 정렬합니다. - Firebase의 AutoID key 값은 자동으로 시간순 정렬입니다.
+            guard let realCommentsList = snapshot.value as? [String:Any] else { return }
+            let sortedRealCommentsList = realCommentsList.sorted(by: {$0.key < $1.key} )
+            
+            // 전역 변수에 댓글 데이터를 저장합니다.
+            for item in sortedRealCommentsList {
+                let oneCommentData = QuoteComment(dicData: item.value as! [String : Any])
+                self.commentsList.append(oneCommentData)
+                print("///// item(QuoteComment)- 9843: \n", oneCommentData)
+            }
+            print("///// self.commentsList- 9843: \n", self.commentsList)
+            
+            // 댓글 Cell만 리로드
+            DispatchQueue.main.async {
+                self.tableViewMain.reloadSections(IndexSet(integersIn: 0...0), with: .automatic)
+            }
+            
+        }) { (error) in
+            print("///// error- 9843: \n", error)
+        }
+        
+    }
+    
     // MARK: 명언 좋아요 버튼 액션
     @IBAction func buttonLikeAction(_ sender: UIButton) {
-        guard let realTodayQuoteID = self.currentQuoteID else { return }
+        guard let realTodayQuoteID = self.todayQuoteID else { return }
         
         // 오늘의 명언에 대해 최초로 좋아요를 눌렀을 케이스 예외처리입니다.
         Database.database().reference().child(Constants.firebaseQuoteLikes).child(realTodayQuoteID).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
@@ -266,7 +304,7 @@ class MainViewController: UIViewController {
     // realTodayQuoteID 노드가 있다는 전제로 좋아요 기능이 작동됩니다.
     func postShowLikeQuoteDB() {
         guard let realUid = Auth.auth().currentUser?.uid else { return }
-        guard let realTodayQuoteID = self.currentQuoteID else { return }
+        guard let realTodayQuoteID = self.todayQuoteID else { return }
         Database.database().reference().child(Constants.firebaseQuoteLikes).child(realTodayQuoteID).runTransactionBlock({[unowned self] (currentData) -> TransactionResult in
             print("///// try runTransactionBlock- ")
             
@@ -423,7 +461,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case enumMainTableViewSection.quoteComment.rawValue:
-            return 3 //명언 댓글 리스트
+            return self.commentsList.count + 1 //명언 댓글 리스트
         case enumMainTableViewSection.save.rawValue:
             return 2 //사진으로 저장, 배경화면으로 저장
         case enumMainTableViewSection.archive.rawValue:
@@ -451,13 +489,27 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         case enumMainTableViewSection.quoteComment.rawValue:
             switch indexPath.row{
             case 0: //명언 댓글 첫번째
-                return tableView.dequeueReusableCell(withIdentifier: "quoteComment", for: indexPath)
+                if self.commentsList.count == 0 {
+                    let moreCommentsButtonCell = tableView.dequeueReusableCell(withIdentifier: "moreCommentsButtonCell", for: indexPath)
+                    return moreCommentsButtonCell
+                }else {
+                    let quoteCommentCell = tableView.dequeueReusableCell(withIdentifier: "quoteCommentCell", for: indexPath) as! MainQuoteCommentCell
+                    quoteCommentCell.labelNickName.text = self.commentsList[indexPath.row].userNickname
+                    quoteCommentCell.labelCommentText.text = self.commentsList[indexPath.row].commentText
+                    return quoteCommentCell
+                }
             case 1: //명언 댓글 두번째
-                return tableView.dequeueReusableCell(withIdentifier: "quoteComment", for: indexPath)
-            case 2: // 댓글 더보기 버튼
-                return tableView.dequeueReusableCell(withIdentifier: "moreCommentsButton", for: indexPath)
-            default:
-                return basicCell
+                if self.commentsList.count == 1 {
+                    let moreCommentsButtonCell = tableView.dequeueReusableCell(withIdentifier: "moreCommentsButtonCell", for: indexPath)
+                    return moreCommentsButtonCell
+                }else {
+                    let quoteCommentCell = tableView.dequeueReusableCell(withIdentifier: "quoteCommentCell", for: indexPath) as! MainQuoteCommentCell
+                    quoteCommentCell.labelNickName.text = self.commentsList[indexPath.row].userNickname
+                    quoteCommentCell.labelCommentText.text = self.commentsList[indexPath.row].commentText
+                    return quoteCommentCell
+                }
+            default: // 댓글 더보기 버튼
+                return tableView.dequeueReusableCell(withIdentifier: "moreCommentsButtonCell", for: indexPath)
             }
         case enumMainTableViewSection.save.rawValue:
             switch indexPath.row{
