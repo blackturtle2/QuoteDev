@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import Kingfisher
 
 class BoardDevDetailViewController: UIViewController {
     
@@ -59,7 +60,9 @@ class BoardDevDetailViewController: UIViewController {
         guard let nickName = UserDefaults.standard.string(forKey: Constants.userDefaultsUserNickname) else {return}
         user_nickname = nickName
     }
-    
+    override func viewDidAppear(_ animated: Bool) {
+//        commentDataload(boardUID: boardDatas.board_uid)
+    }
     // 뷰 컨트롤러 루트 뷰의 경계가 바뀔 때마다 재정의
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -160,7 +163,7 @@ class BoardDevDetailViewController: UIViewController {
                 guard let reqCount = dataSnap?.childrenCount else {return}
                 
                 DispatchQueue.main.async {
-                    self.boardDetailTableView.reloadData()
+                    self.commentDataload(boardUID: boardData.board_uid)
                     self.boardHeaderView.boardReqCountLabel.text = "\(reqCount)"
                 }
             }
@@ -180,7 +183,7 @@ class BoardDevDetailViewController: UIViewController {
     func commentDataload(boardUID: String){
         
         // 댓글 데이터 조회하여 정렬 - 싱글옵저버 변경
-        reference.child("board_comment").child(boardUID).queryOrdered(byChild: "comment_date").observe(.value, with: { [unowned self] (data) in
+        reference.child("board_comment").child(boardUID).queryOrdered(byChild: "comment_date").observeSingleEvent(of: .value, with: {[unowned self]  (data) in
             print(data.value as? [String:Any] ?? "")
             guard let commentArrs = data.value as? [String:Any] else{return}
             
@@ -205,7 +208,6 @@ class BoardDevDetailViewController: UIViewController {
                 
                 self.boardDetailTableView.reloadData()
             }
-            
         }) { (error) in
             
         }
@@ -215,18 +217,12 @@ class BoardDevDetailViewController: UIViewController {
     // MARK: 이미지 존재 여부에 따른 UI작업 메서드
     func imgDataValidation(url imgURL: String?){
         if let imgUrlStr = imgURL, let imgUrl = URL(string: imgUrlStr){
-            print("이미지 존재")
-            URLSession.shared.dataTask(with: imgUrl, completionHandler: { (data, response, error) in
-                guard let imgData = data else {return}
-                // 시점 고려하고 코너가 안먹넹
-                DispatchQueue.main.async {
-                    self.boardHeaderView.boardImgView.layer.cornerRadius = 20
-                    self.boardHeaderView.boardImgView.image = UIImage(data: imgData)
-                    
-                }
-            }).resume()
+            
+            // Kingfisher로 변경
+            boardHeaderView.boardImgView.layer.cornerRadius = 20
+            boardHeaderView.boardImgView.kf.setImage(with: imgUrl)
         }else{
-            print("이미지 없다")
+            
             // 디테일뷰로 넘어올때 이미지 정보가 없을경우 화면에 이미지뷰를 제거하여 priority 설정에 따라 제거후 오토레이아웃 적용
             // 헤더뷰를 다시 그린다.
             boardHeaderView.boardImgView.removeFromSuperview()

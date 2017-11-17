@@ -44,7 +44,7 @@
                                                     <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mi7-so-2K8">
                                                         <rect key="frame" x="79" y="-5" width="46" height="33"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        <state key="normal" backgroundImage="icon_button_delete_image"/>
+                                                        <state key="normal" backgroundImage="delete"/>
                                                     </button>
                                                 </subviews>
                                                 <gestureRecognizers/>
@@ -806,8 +806,8 @@
     </scenes>
     <resources>
         <image name="camera" width="64" height="64"/>
+        <image name="delete" width="64" height="64"/>
         <image name="icon_button_camera" width="25" height="20"/>
-        <image name="icon_button_delete_image" width="24" height="24"/>
         <image name="icon_button_photo" width="24" height="24"/>
     </resources>
 </document>

@@ -63,13 +63,12 @@ class BoardDevListViewController: UIViewController {
         guard let userUID =  UserDefaults.standard.string(forKey: Constants.userDefaultsUserUid) else {return}
         user_uid = userUID
         
-        // 최초 게시판 글 정보 조회 메서드 호출
-        boardLoadData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+        // 글 정보 조회 메서드 호출
+        boardLoadData()
     }
     
     override func didReceiveMemoryWarning() {
@@ -94,8 +93,34 @@ class BoardDevListViewController: UIViewController {
         
         let myTopPostsQuery = reference.child("board").child("board_data").queryOrdered(byChild: "board_count")
         
-        myTopPostsQuery.observe(.value, with: { (data) in
-            
+//        myTopPostsQuery.observe(.value, with: { (data) in
+//
+//            guard let boardsArr = data.value as? [String:Any] else{return}
+//
+//            var boardArrDicData: [Board] = []
+//
+//            for board in boardsArr {
+//                guard let boardData = board.value as? [String:Any]  else {return}// board 구조체 사용예정
+//                let boardDetail = Board(inDictionary: boardData, boardKey: board.key)
+//                boardArrDicData.append(boardDetail)
+//
+//            }
+//
+//            self.boardArrs = boardArrDicData
+//
+//
+//            DispatchQueue.main.async {
+//                // query 정렬후 가져와서 클라단에서 정렬 해줍니다.(쿼리 정렬자체가 생각만큼 정렬이 안되는거 같네요.)
+//                let sortingData = self.boardArrs.sorted(by: {$0.board_no > $1.board_no})
+//
+//                self.boardArrs = sortingData
+//
+//                self.boardTableView.reloadData()
+//            }
+//        }) { (error) in
+//
+//        }
+        myTopPostsQuery.observeSingleEvent(of: .value, with: { (data) in
             guard let boardsArr = data.value as? [String:Any] else{return}
             
             var boardArrDicData: [Board] = []
@@ -152,17 +177,15 @@ extension BoardDevListViewController: UITableViewDelegate, UITableViewDataSource
             boardCell.imageResultLabel.text = "image is false"
             boardCell.imageResultImgView.isHidden = true
         }
-        
-        self.reference.child("board_like").child(self.boardArrs[indexPath.row].board_uid).observe(.value, with: { (dataSnap) in
+    self.reference.child("board_like").child(self.boardArrs[indexPath.row].board_uid).observeSingleEvent(of: .value, with: { (dataSnap) in
             boardCell.boardLikeCountLabel.text = "\(dataSnap.childrenCount)"
-        }, withCancel: { (error) in
-
-        })
-        
-        self.reference.child("board_comment").child(self.boardArrs[indexPath.row].board_uid).observe(.value, with: { (dataSnap) in
+        }) { (error) in
+            
+        }
+    self.reference.child("board_comment").child(self.boardArrs[indexPath.row].board_uid).observeSingleEvent(of: .value, with: { (dataSnap) in
             boardCell.boardReqCountLabel.text = "\(dataSnap.childrenCount)"
         }) { (error) in
-            print(error.localizedDescription)
+            
         }
     
         return boardCell
