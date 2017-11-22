@@ -344,6 +344,11 @@ JS and GS</string>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="QuoteDev" id="9Zd-Hu-WHV">
+                        <barButtonItem key="leftBarButtonItem" systemItem="refresh" id="LkH-PH-6RC">
+                            <connections>
+                                <action selector="actionRefreshButton:" destination="zcT-tT-xTD" id="bb1-Tg-cpf"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Item" image="icon_button_more" id="J1l-OP-npX">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>

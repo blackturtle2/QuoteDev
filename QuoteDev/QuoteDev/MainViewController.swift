@@ -73,6 +73,17 @@ class MainViewController: UIViewController {
     /*******************************************/
     //MARK:-         Functions                 //
     /*******************************************/
+    // MARK: 명언 새로고침 버튼 액션 정의
+    @IBAction func actionRefreshButton(_ sender: Any) {
+        switch self.segmentedControlQuoteMode.selectedSegmentIndex {
+        case 0: // 진지 모드
+            self.getTodaysQuoteKeyAndShowData(selectedQuoteMode: Constants.settingQuoteModeSerious, todayDate: Date())
+        case 1: // 유쾌 모드
+            self.getTodaysQuoteKeyAndShowData(selectedQuoteMode: Constants.settingQuoteModeJoyful, todayDate: Date())
+        default:
+            self.viewDidLoad()
+        }
+    }
     
     // MARK: 명언 모드 Segmented Control 액션 정의
     // 오늘의 명언 키 값을 이미 갖고 있느냐 아니냐에 따라 로직이 달라집니다.
