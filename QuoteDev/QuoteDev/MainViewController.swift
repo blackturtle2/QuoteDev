@@ -75,9 +75,16 @@ class MainViewController: UIViewController {
     /*******************************************/
     // MARK: 명언 새로고침 버튼 액션 정의
     @IBAction func actionRefreshButton(_ sender: Any) {
+        // UI
+        DispatchQueue.main.async {
+            // Segmented Control 보이지 않게 하기
+            self.mainTableView.contentOffset = CGPoint(x: 0, y: 50)
+        }
+        
         switch self.segmentedControlQuoteMode.selectedSegmentIndex {
         case 0: // 진지 모드
             self.getTodaysQuoteKeyAndShowData(selectedQuoteMode: Constants.settingQuoteModeSerious, todayDate: Date())
+            
         case 1: // 유쾌 모드
             self.getTodaysQuoteKeyAndShowData(selectedQuoteMode: Constants.settingQuoteModeJoyful, todayDate: Date())
         default:
