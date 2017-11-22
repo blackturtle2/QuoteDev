@@ -359,8 +359,8 @@ JS and GS</string>
                         <outlet property="buttonLikeCount" destination="U2J-mH-U3b" id="lFr-a1-ik2"/>
                         <outlet property="labelQuoteAuthor" destination="eZ3-F5-42t" id="uDv-Cg-5bE"/>
                         <outlet property="labelQuoteText" destination="JpR-xn-itO" id="Nzh-lV-2Wb"/>
+                        <outlet property="mainTableView" destination="PST-9y-snG" id="9md-Ev-UBg"/>
                         <outlet property="segmentedControlQuoteMode" destination="2Kj-mG-9O9" id="Svw-We-zEp"/>
-                        <outlet property="tableViewMain" destination="PST-9y-snG" id="9md-Ev-UBg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C6O-O6-Zno" userLabel="First Responder" sceneMemberID="firstResponder"/>
