@@ -19,9 +19,9 @@ class MainViewController: UIViewController {
     @IBOutlet var labelQuoteAuthor : UILabel! //명언 출처 or 저자 레이블
     
     @IBOutlet var buttonLike : UIButton! //명언 좋아요 버튼
-    @IBOutlet var buttonLikeCount : UIButton! //명언 좋아요 버튼
+    @IBOutlet var buttonLikeCount : UIButton! //명언 좋아요 개수 버튼
     @IBOutlet var buttonComment : UIButton! //명언 댓글 버튼
-    @IBOutlet var buttonCommentsCount : UIButton! //명언 댓글 버튼
+    @IBOutlet var buttonCommentsCount : UIButton! //명언 댓글 개수 버튼
     
     var currentQuoteID: String? // 현재의 명언 ID 저장 변수 - 좋아요, 댓글 개수, 댓글 목록 등에 활용합니다.
     
@@ -306,6 +306,7 @@ class MainViewController: UIViewController {
     // MARK: [좋아요] 명언 좋아요 버튼 액션
     @IBAction func buttonLikeAction(_ sender: UIButton) {
         guard let realTodayQuoteID = self.currentQuoteID else { return }
+        sender.isEnabled = false // 좋아요 버튼 연타 방지 예외처리
         
         // 오늘의 명언에 대해 최초로 좋아요를 눌렀을 케이스 예외처리입니다.
         Database.database().reference().child(Constants.firebaseQuoteLikes).child(realTodayQuoteID).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
@@ -331,7 +332,7 @@ class MainViewController: UIViewController {
         guard let realUid = Auth.auth().currentUser?.uid else { return }
         guard let realTodayQuoteID = self.currentQuoteID else { return }
         Database.database().reference().child(Constants.firebaseQuoteLikes).child(realTodayQuoteID).runTransactionBlock({[unowned self] (currentData) -> TransactionResult in
-            print("///// try runTransactionBlock- ")
+            print("///// try runTransactionBlock- 6839")
             
             if var post = currentData.value as? [String : AnyObject] {
                 var likes = post[Constants.firebaseQuoteLikesData] as? [String : Bool] ?? [:]
@@ -344,6 +345,7 @@ class MainViewController: UIViewController {
                     DispatchQueue.main.async {
                         self.buttonLike.setImage(#imageLiteral(resourceName: "icon_button_like"), for: .normal) // 좋아요 버튼 이미지 업데이트
                         self.buttonLikeCount.setTitle(String(likeCount), for: .normal) // 좋아요 카운트 버튼 타이틀 업데이트
+                        self.buttonLike.isEnabled = true // 좋아요 버튼 연타 방지 예외처리
                     }
                 } else {
                     // 좋아요 추가
@@ -352,6 +354,7 @@ class MainViewController: UIViewController {
                     DispatchQueue.main.async {
                         self.buttonLike.setImage(#imageLiteral(resourceName: "icon_button_like_black"), for: .normal)
                         self.buttonLikeCount.setTitle(String(likeCount), for: .normal)
+                        self.buttonLike.isEnabled = true // 좋아요 버튼 연타 방지 예외처리
                     }
                 }
                 post[Constants.firebaseQuoteLikesData] = likes as AnyObject?
