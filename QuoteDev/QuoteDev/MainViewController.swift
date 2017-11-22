@@ -165,10 +165,19 @@ class MainViewController: UIViewController {
             let quoteText = data[Constants.firebaseQuoteText] as! String
             let quoteAuthor = data[Constants.firebaseQuoteAuthor] as! String
             
-            // UI 적용
+            // UI
             DispatchQueue.main.async {
                 self.labelQuoteText.text = "“" + quoteText + "”"
                 self.labelQuoteAuthor.text = "- " + quoteAuthor + " -"
+                
+                // 값이 없으면, 특수문자 표시하지 않기
+                if quoteText == "" {
+                    self.labelQuoteText.text = quoteText
+                }
+                
+                if quoteAuthor == "" {
+                    self.labelQuoteAuthor.text = quoteAuthor
+                }
             }
             
             // 전역 변수와 UserDefaults에 현재 보여지는 명언 ID를 저장합니다.

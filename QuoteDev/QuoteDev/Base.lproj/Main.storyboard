@@ -72,17 +72,35 @@
                                             <rect key="frame" x="0.0" y="45" width="375" height="211"/>
                                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         </view>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="명언 찾는 중.." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JpR-xn-itO">
-                                            <rect key="frame" x="0.0" y="138.5" width="375" height="24"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JpR-xn-itO">
+                                            <rect key="frame" x="8" y="139.5" width="359" height="23.5"/>
+                                            <attributedString key="attributedText">
+                                                <fragment content="명언 찾는 중..">
+                                                    <attributes>
+                                                        <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <font key="NSFont" size="19" name="AppleSDGothicNeo-Medium"/>
+                                                        <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="8" tighteningFactorForTruncation="0.0"/>
+                                                    </attributes>
+                                                </fragment>
+                                            </attributedString>
                                             <nil key="highlightedColor"/>
+                                            <color key="shadowColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <size key="shadowOffset" width="0.0" height="0.5"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="- 명언 말해주는 개발자 찾는 중.. -" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eZ3-F5-42t">
-                                            <rect key="frame" x="0.0" y="170.5" width="375" height="18"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eZ3-F5-42t">
+                                            <rect key="frame" x="8" y="171" width="359" height="18.5"/>
+                                            <attributedString key="attributedText">
+                                                <fragment content="- 명언 말해주는 개발자 찾는 중.. -">
+                                                    <attributes>
+                                                        <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <font key="NSFont" size="15" name="AppleSDGothicNeo-UltraLight"/>
+                                                        <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="4" tighteningFactorForTruncation="0.0"/>
+                                                    </attributes>
+                                                </fragment>
+                                            </attributedString>
                                             <nil key="highlightedColor"/>
+                                            <color key="shadowColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <size key="shadowOffset" width="0.0" height="0.5"/>
                                         </label>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n9g-TF-v2l" userLabel="like_mother_view">
                                             <rect key="frame" x="0.0" y="256" width="375" height="44"/>
@@ -152,16 +170,16 @@
                                         <constraint firstAttribute="trailing" secondItem="LrG-3z-qMg" secondAttribute="trailing" id="Goo-Zx-3Od"/>
                                         <constraint firstItem="ca4-rS-U3f" firstAttribute="leading" secondItem="LrG-3z-qMg" secondAttribute="leading" id="IUl-E1-cYI"/>
                                         <constraint firstItem="LrG-3z-qMg" firstAttribute="top" secondItem="cO4-gW-JKr" secondAttribute="bottom" id="LPO-Fo-Byb"/>
-                                        <constraint firstItem="eZ3-F5-42t" firstAttribute="trailing" secondItem="ca4-rS-U3f" secondAttribute="trailing" id="OK6-Oi-iak"/>
-                                        <constraint firstItem="eZ3-F5-42t" firstAttribute="leading" secondItem="ca4-rS-U3f" secondAttribute="leading" id="Prd-MT-euZ"/>
+                                        <constraint firstItem="eZ3-F5-42t" firstAttribute="trailing" secondItem="ca4-rS-U3f" secondAttribute="trailing" constant="-8" id="OK6-Oi-iak"/>
+                                        <constraint firstItem="eZ3-F5-42t" firstAttribute="leading" secondItem="ca4-rS-U3f" secondAttribute="leading" constant="8" id="Prd-MT-euZ"/>
                                         <constraint firstItem="eZ3-F5-42t" firstAttribute="top" secondItem="JpR-xn-itO" secondAttribute="bottom" constant="8" id="RPj-Lu-Vpv"/>
                                         <constraint firstItem="JpR-xn-itO" firstAttribute="centerY" secondItem="ca4-rS-U3f" secondAttribute="centerY" id="Zb0-iP-TR8"/>
                                         <constraint firstAttribute="bottom" secondItem="n9g-TF-v2l" secondAttribute="bottom" priority="750" id="aHF-mL-Q71"/>
-                                        <constraint firstItem="JpR-xn-itO" firstAttribute="leading" secondItem="ca4-rS-U3f" secondAttribute="leading" id="cRy-aw-d6d"/>
+                                        <constraint firstItem="JpR-xn-itO" firstAttribute="leading" secondItem="ca4-rS-U3f" secondAttribute="leading" constant="8" id="cRy-aw-d6d"/>
                                         <constraint firstItem="cO4-gW-JKr" firstAttribute="leading" secondItem="kcY-Hy-Bda" secondAttribute="leading" id="d0O-do-veZ"/>
                                         <constraint firstItem="n9g-TF-v2l" firstAttribute="leading" secondItem="kcY-Hy-Bda" secondAttribute="leading" id="gRP-Qn-oR4"/>
                                         <constraint firstItem="cO4-gW-JKr" firstAttribute="top" secondItem="kcY-Hy-Bda" secondAttribute="top" id="l1t-ba-PQ2"/>
-                                        <constraint firstItem="JpR-xn-itO" firstAttribute="trailing" secondItem="ca4-rS-U3f" secondAttribute="trailing" id="nDi-4k-uwV"/>
+                                        <constraint firstItem="JpR-xn-itO" firstAttribute="trailing" secondItem="ca4-rS-U3f" secondAttribute="trailing" constant="-8" id="nDi-4k-uwV"/>
                                         <constraint firstAttribute="trailing" secondItem="n9g-TF-v2l" secondAttribute="trailing" id="s5x-tF-UPD"/>
                                         <constraint firstItem="n9g-TF-v2l" firstAttribute="top" secondItem="LrG-3z-qMg" secondAttribute="bottom" id="va3-oF-7Qs"/>
                                     </constraints>
@@ -206,7 +224,7 @@ JS and GS</string>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="17" id="zfi-AE-k7R"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -215,7 +233,7 @@ JS and GS</string>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="17" id="ylN-VB-6Lb"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <color key="textColor" red="0.5607843137254902" green="0.55686274509803924" blue="0.58039215686274503" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -345,6 +363,7 @@ JS and GS</string>
                     </view>
                     <navigationItem key="navigationItem" title="QuoteDev" id="9Zd-Hu-WHV">
                         <barButtonItem key="leftBarButtonItem" systemItem="refresh" id="LkH-PH-6RC">
+                            <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>
                                 <action selector="actionRefreshButton:" destination="zcT-tT-xTD" id="bb1-Tg-cpf"/>
                             </connections>
