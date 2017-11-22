@@ -17,6 +17,9 @@ class BoardDevListTableViewCell: UITableViewCell {
     @IBOutlet weak var boardLikeCountLabel: UILabel!
     @IBOutlet weak var boardReqCountLabel: UILabel!
     
+    @IBOutlet weak var imageResultLabel: UILabel!
+    @IBOutlet weak var imageResultImgView: UIImageView!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

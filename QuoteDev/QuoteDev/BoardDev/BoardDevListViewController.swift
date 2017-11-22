@@ -9,11 +9,10 @@
 import UIKit
 import Firebase
 class BoardDevListViewController: UIViewController {
-    // 게시글들을 가진 구조체
-    var boardDatas: BoardLists?
+    
     var boardArrs: [Board] = []
-    var likeCount: [String] = []
     var reference: DatabaseReference!
+    var user_uid: String = ""
     @IBOutlet weak var boardTableView: UITableView!
     
     
@@ -24,6 +23,7 @@ class BoardDevListViewController: UIViewController {
         super.viewDidLoad()
         boardTableView.delegate = self
         boardTableView.dataSource = self
+        reference = Database.database().reference()
         
         // UserDefaults에 사용자 닉네임이 없으면, 닉네임을 받습니다.
         if UserDefaults.standard.string(forKey: Constants.userDefaultsUserNickname) == nil {
@@ -43,8 +43,8 @@ class BoardDevListViewController: UIViewController {
                 let textFieldNickname = alertSetUserNickname!.textFields![0] // 위에서 직접 추가한 텍스트필드이므로 옵셔널 바인딩은 스킵.
                 print("///// textField: ", textFieldNickname.text ?? "(no data)")
                 
-                // UserDefaults 에서 uid 호출 & 사용자가 텍스트필드에 입력한 텍스트 호출
-                guard let uid = UserDefaults.standard.string(forKey: Constants.userDefaultsUserUid) else { return }
+                // Auth 에서 uid 호출 & 사용자가 텍스트필드에 입력한 텍스트 호출
+                guard let uid = Auth.auth().currentUser?.uid else { return }
                 guard let userNickname = alertSetUserNickname!.textFields?[0].text else { return }
                 
                 let dicUserData:[String:Any] = [Constants.firebaseUserUid:uid, Constants.firebaseUserNickname:userNickname]
@@ -60,110 +60,15 @@ class BoardDevListViewController: UIViewController {
         // Do any additional setup after loading the view.
         // UserDefault에 저장된 uid 확인
         print("UID:// ",UserDefaults.standard.string(forKey: Constants.userDefaultsUserUid) ?? "no-data")
-        reference = Database.database().reference()
-//        reference.child("board").observeSingleEvent(of: .value, with: { (dataSnap) in
-//
-//            guard let boardsArr = dataSnap.value as? [String:Any] else{return}
-//
-//            print("boardsArr 카운트:// ", boardsArr.count)
-//
-//
-//            var boardArrDicData: [Board] = []
-//            for board in boardsArr {
-//                print("LIST BOARD:// ",board)
-//                print("LIST BOARD KEY:// ", board.key)
-//                guard let boardData = board.value as? [String:Any]  else {return}// board 구조체 사용예정
-//                let board = Board(inDictionary: boardData, boardKey: board.key)
-//                print("LIST BOARD detail board:// ",board)
-//                boardArrDicData.append(board)
-//                // autoid 자체가 시간순으로 들어오다보니 데이터 를 가져올때 정렬할필요있다.
-//            }
-//            print("BOARDARRDIC:// ", boardArrDicData)
-//            self.boardArrs = boardArrDicData
-//            DispatchQueue.main.async {
-//
-//                self.boardTableView.reloadData()
-//            }
-//        }) { (error) in
-//
-//        }
+        guard let userUID =  UserDefaults.standard.string(forKey: Constants.userDefaultsUserUid) else {return}
+        user_uid = userUID
         
-        // My top posts by number of stars
-        let myTopPostsQuery = reference.child("board").queryOrdered(byChild: "board_count")
-        print("쿼리://",myTopPostsQuery)
-        myTopPostsQuery.observe(.value, with: { (data) in
-            print(data.value as? [String:Any])
-            guard let boardsArr = data.value as? [String:Any] else{return}
-            
-            print("boardsArr 카운트:// ", boardsArr.count)
-            
-            
-            var boardArrDicData: [Board] = []
-            
-            for board in boardsArr {
-                print("LIST BOARD:// ",board)
-                print("LIST BOARD KEY:// ", board.key)
-                guard let boardData = board.value as? [String:Any]  else {return}// board 구조체 사용예정
-                let boardDetail = Board(inDictionary: boardData, boardKey: board.key)
-                print("LIST BOARD detail board:// ",boardDetail)
-                boardArrDicData.append(boardDetail)
-                
-            }
-            print("BOARDARRDIC:// ", boardArrDicData)
-            self.boardArrs = boardArrDicData
-            
-            
-            DispatchQueue.main.async {
-                // query 정렬후 가져와서 클라단에서 정렬 해줍니다.(쿼리 정렬자체가 생각만큼 정렬이 안되는거 같네요.)
-                let sortingData = self.boardArrs.sorted(by: {$0.board_count > $1.board_count})
-                
-                self.boardArrs = sortingData
-                self.likeCount = []
-                self.boardTableView.reloadData()
-            }
-        }) { (error) in
-            
-        }
-        // singleEvent가이닌 observe를 사용하여 체크
-        // autoid 자체가 시간순으로 들어오다보니 데이터 를 가져올때 정렬할필요있다.
-        /*
-        reference.child("board").observe(.value, with: {[unowned self] (dataSnap) in
-            guard let boardsArr = dataSnap.value as? [String:Any] else{return}
-            
-            print("boardsArr 카운트:// ", boardsArr.count)
-            
-            
-            var boardArrDicData: [Board] = []
-            
-            for board in boardsArr {
-                print("LIST BOARD:// ",board)
-                print("LIST BOARD KEY:// ", board.key)
-                guard let boardData = board.value as? [String:Any]  else {return}// board 구조체 사용예정
-                let boardDetail = Board(inDictionary: boardData, boardKey: board.key)
-                print("LIST BOARD detail board:// ",boardDetail)
-                boardArrDicData.append(boardDetail)
-            
-            }
-            print("BOARDARRDIC:// ", boardArrDicData)
-            self.boardArrs = boardArrDicData
-            
-            
-            DispatchQueue.main.async {
-            
-                
-                self.likeCount = []
-                self.boardTableView.reloadData()
-            }
-        }) { (error) in
-            
-        }
-        */
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        //self.likeCount = []
-        //self.boardTableView.reloadData()
+        // 글 정보 조회 메서드 호출
+        boardLoadData()
     }
     
     override func didReceiveMemoryWarning() {
@@ -173,10 +78,74 @@ class BoardDevListViewController: UIViewController {
     
     
     /*******************************************/
-    //MARK:-         Functions                 //
+    //MARK:-          IBActions                //
     /*******************************************/
+    // MARK: 뒤로가기 버튼 클릭
     @IBAction func backBtnTouched(_ sender: UIBarButtonItem){
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    /*******************************************/
+    //MARK:-         Functions                 //
+    /*******************************************/
+    // MARK: 게시판 글 정보 조회 메서드
+    func boardLoadData(){
+        
+        let myTopPostsQuery = reference.child("board").child("board_data").queryOrdered(byChild: "board_count")
+        
+//        myTopPostsQuery.observe(.value, with: { (data) in
+//
+//            guard let boardsArr = data.value as? [String:Any] else{return}
+//
+//            var boardArrDicData: [Board] = []
+//
+//            for board in boardsArr {
+//                guard let boardData = board.value as? [String:Any]  else {return}// board 구조체 사용예정
+//                let boardDetail = Board(inDictionary: boardData, boardKey: board.key)
+//                boardArrDicData.append(boardDetail)
+//
+//            }
+//
+//            self.boardArrs = boardArrDicData
+//
+//
+//            DispatchQueue.main.async {
+//                // query 정렬후 가져와서 클라단에서 정렬 해줍니다.(쿼리 정렬자체가 생각만큼 정렬이 안되는거 같네요.)
+//                let sortingData = self.boardArrs.sorted(by: {$0.board_no > $1.board_no})
+//
+//                self.boardArrs = sortingData
+//
+//                self.boardTableView.reloadData()
+//            }
+//        }) { (error) in
+//
+//        }
+        myTopPostsQuery.observeSingleEvent(of: .value, with: { (data) in
+            guard let boardsArr = data.value as? [String:Any] else{return}
+            
+            var boardArrDicData: [Board] = []
+            
+            for board in boardsArr {
+                guard let boardData = board.value as? [String:Any]  else {return}// board 구조체 사용예정
+                let boardDetail = Board(inDictionary: boardData, boardKey: board.key)
+                boardArrDicData.append(boardDetail)
+                
+            }
+            
+            self.boardArrs = boardArrDicData
+            
+            
+            DispatchQueue.main.async {
+                // query 정렬후 가져와서 클라단에서 정렬 해줍니다.(쿼리 정렬자체가 생각만큼 정렬이 안되는거 같네요.)
+                let sortingData = self.boardArrs.sorted(by: {$0.board_no > $1.board_no})
+                
+                self.boardArrs = sortingData
+                
+                self.boardTableView.reloadData()
+            }
+        }) { (error) in
+            
+        }
     }
 
 }
@@ -193,22 +162,32 @@ extension BoardDevListViewController: UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let boardCell = tableView.dequeueReusableCell(withIdentifier: "boadrCell", for: indexPath) as! BoardDevListTableViewCell
         
-            boardCell.boardCountLabel.text = self.boardArrs[indexPath.row].board_count.description
+            boardCell.boardCountLabel.text = self.boardArrs[indexPath.row].board_no.description
             
             boardCell.boardCotentsLabel.text = self.boardArrs[indexPath.row].board_text
             
             boardCell.boardWriterLabel.text = self.boardArrs[indexPath.row].user_nickname
         
+            boardCell.boardCreateAtLabel.text = self.boardArrs[indexPath.row].board_date
         
-        self.reference.child("board_like").child(self.boardArrs[indexPath.row].board_uid).observe(.value, with: { (dataSnap) in
+        if let _ = boardArrs[indexPath.row].board_img_url {
+            boardCell.imageResultLabel.text = "image is true"
+            boardCell.imageResultImgView.isHidden = false
+        }else{
+            boardCell.imageResultLabel.text = "image is false"
+            boardCell.imageResultImgView.isHidden = true
+        }
+    self.reference.child("board_like").child(self.boardArrs[indexPath.row].board_uid).observeSingleEvent(of: .value, with: { (dataSnap) in
             boardCell.boardLikeCountLabel.text = "\(dataSnap.childrenCount)"
-            self.likeCount.append(dataSnap.childrenCount.description)
-
-        }, withCancel: { (error) in
-
-        })
+        }) { (error) in
+            
+        }
+    self.reference.child("board_comment").child(self.boardArrs[indexPath.row].board_uid).observeSingleEvent(of: .value, with: { (dataSnap) in
+            boardCell.boardReqCountLabel.text = "\(dataSnap.childrenCount)"
+        }) { (error) in
+            
+        }
     
-        
         return boardCell
     }
     
@@ -229,9 +208,51 @@ extension BoardDevListViewController: UITableViewDelegate, UITableViewDataSource
         let selectCell = tableView.cellForRow(at: indexPath) as? BoardDevListTableViewCell
         
         nextViewController.likeCount = selectCell?.boardLikeCountLabel.text
+        nextViewController.reqCount = selectCell?.boardReqCountLabel.text
         tableView.deselectRow(at: indexPath, animated: true)
         self.navigationController?.pushViewController(nextViewController, animated: true)
         
     }
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        var returnAction: [UITableViewRowAction] = []
+        let deleteBoardUid = self.boardArrs[indexPath.row].board_uid
+        
+        let delAction = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "Delete") { (action, index) in
+            self.boardArrs.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
+            
+            self.reference.child("board").child("board_data").runTransactionBlock({ (currentData) -> TransactionResult in
+                if var boardDatas = currentData.value as? [String:Any] {
+                    print(boardDatas)
+                    print(boardDatas.count)
+                    //var updateBoardDatas: [String:Any] = [:]
+                    for boardDetail in boardDatas {
+                        let oneBoardData = Board(inDictionary: boardDetail.value as? [String:Any] ?? [:], boardKey: boardDetail.key)
+                        
+                        print(oneBoardData)
+                        print(boardDetail)
+                        if oneBoardData.board_uid == deleteBoardUid {
+                            boardDatas.removeValue(forKey: oneBoardData.boardAutoIdKey)
+                        }
+                    }
+                    print(boardDatas)
+                    print(boardDatas.count)
+                    currentData.value = boardDatas
+                }
+                return TransactionResult.success(withValue: currentData)
+            })
+        }
+        delAction.backgroundColor = UIColor.orange
+        
+        // 본인이 작성한 게시글에 대해서만 삭제가능하도록 분기처리
+        if boardArrs[indexPath.row].user_uid == user_uid {
+            returnAction.append(delAction)
+        }else{
+            returnAction = []
+        }
+        return returnAction
+    }
+    
+
     
 }
