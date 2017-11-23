@@ -54,6 +54,7 @@ struct Constants {
     static let firebaseAppForcedUpdateVersion:String = "forced_update_version"
     
     static let settingAlarmTime:String = "settingAlarmTime"
+    static let settingAlarmTimeDateFormat:String = "settingAlarmTimeDateFormat"
     static let settingDefaultQuoteMode:String = "settingDefaultQuoteMode"
     static let settingQuoteModeSerious:String = "quotes_data_kor_serious"
     static let settingQuoteModeJoyful:String = "quotes_data_kor_joyful"

@@ -354,7 +354,7 @@ JS and GS</string>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="PST-9y-snG" firstAttribute="leading" secondItem="bP2-H9-mmQ" secondAttribute="leading" id="3YC-6K-uYe"/>
-                            <constraint firstItem="Q4S-CD-HqG" firstAttribute="top" secondItem="PST-9y-snG" secondAttribute="bottom" id="7PQ-9D-cEx"/>
+                            <constraint firstAttribute="bottom" secondItem="PST-9y-snG" secondAttribute="bottom" id="7PQ-9D-cEx"/>
                             <constraint firstItem="Q4S-CD-HqG" firstAttribute="top" secondItem="xqe-5V-VKT" secondAttribute="bottom" constant="16" id="ASg-2n-e9B"/>
                             <constraint firstAttribute="trailing" secondItem="xqe-5V-VKT" secondAttribute="trailing" constant="16" id="Cuw-RC-hLq"/>
                             <constraint firstItem="PST-9y-snG" firstAttribute="top" secondItem="Fg7-gw-yvf" secondAttribute="bottom" id="GWp-UD-J1C"/>
@@ -434,7 +434,7 @@ JS and GS</string>
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="알림 설정" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AaW-yf-yM8">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="알림 설정" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AaW-yf-yM8">
                                                     <rect key="frame" x="15" y="11" width="64" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -442,6 +442,9 @@ JS and GS</string>
                                                 </label>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rhb-Xt-Cgo">
                                                     <rect key="frame" x="313" y="6.5" width="51" height="31"/>
+                                                    <connections>
+                                                        <action selector="actionSwitchAlarmSetting:" destination="Q5b-aO-IzD" eventType="valueChanged" id="bXU-rD-MkH"/>
+                                                    </connections>
                                                 </switch>
                                             </subviews>
                                             <constraints>
@@ -650,9 +653,9 @@ JS and GS</string>
                             <constraint firstItem="oEE-Yu-vEF" firstAttribute="top" secondItem="SDL-aO-jD8" secondAttribute="bottom" id="U7t-Py-1nz"/>
                             <constraint firstItem="oEE-Yu-vEF" firstAttribute="leading" secondItem="SXN-7W-0rD" secondAttribute="leading" id="Z5Y-dR-6oG"/>
                             <constraint firstItem="OB3-v5-emJ" firstAttribute="centerX" secondItem="SXN-7W-0rD" secondAttribute="centerX" id="noK-D7-cEz"/>
-                            <constraint firstItem="F01-8M-c5y" firstAttribute="top" secondItem="oEE-Yu-vEF" secondAttribute="bottom" id="sgm-bH-N5M"/>
+                            <constraint firstAttribute="bottom" secondItem="oEE-Yu-vEF" secondAttribute="bottom" id="sgm-bH-N5M"/>
                             <constraint firstAttribute="trailing" secondItem="oEE-Yu-vEF" secondAttribute="trailing" id="siV-Qf-56x"/>
-                            <constraint firstItem="F01-8M-c5y" firstAttribute="top" secondItem="OB3-v5-emJ" secondAttribute="bottom" id="uko-xi-gbU"/>
+                            <constraint firstAttribute="bottom" secondItem="OB3-v5-emJ" secondAttribute="bottom" id="uko-xi-gbU"/>
                         </constraints>
                     </view>
                     <size key="freeformSize" width="375" height="750"/>
@@ -1009,7 +1012,7 @@ JS and GS</string>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pc5-UG-dnY" userLabel="CommentView">
                                 <rect key="frame" x="0.0" y="617" width="375" height="50"/>
                                 <subviews>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="나는 개발자다-!" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Fq2-xT-r09">
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="I am your developer." minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Fq2-xT-r09">
                                         <rect key="frame" x="8" y="10" width="300" height="30"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>

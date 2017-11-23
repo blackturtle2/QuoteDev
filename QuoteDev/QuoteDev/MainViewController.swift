@@ -227,7 +227,6 @@ class MainViewController: UIViewController {
     func getAndShowQuoteMyLikeOf(quoteID:String) {
         guard let realUid = Auth.auth().currentUser?.uid else { return }
         Database.database().reference().child(Constants.firebaseQuoteLikes).child(quoteID).child(Constants.firebaseQuoteLikesData).child(realUid).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
-            print("///// snapshot- 8473:\n", snapshot)
             
             // 좋아요 false
             guard let data = snapshot.value as? Bool else {
@@ -258,7 +257,6 @@ class MainViewController: UIViewController {
     // MARK: [댓글] 명언 댓글 개수 확인 & UI 적용
     func getAndShowQuoteCommentCountOf(quoteID:String) {
         Database.database().reference().child(Constants.firebaseQuoteComments).child(quoteID).child(Constants.firebaseQuoteCommentsCount).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
-            print("///// snapshot- 6234:\n", snapshot)
             
             // 댓글이 1개도 없을 때
             guard let data = snapshot.value as? Int else {

@@ -71,6 +71,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
+        
+//        if #available(iOS 10.0, *) {
+//            // 사용자로부터 알림이 허용되어 있는지 체크합니다
+//            let setting = application.currentUserNotificationSettings
+//            guard setting?.types != .none else {
+//                print("Can't Schedule")
+//                return
+//            }
+//            
+//            // 알림 콘텐츠 객체
+//            let nContent = UNMutableNotificationContent()
+//            
+//            nContent.badge = 1
+//            nContent.body = "어서어서 들어오세요!"
+//            nContent.title = "로컬 알림 메시지"
+//            nContent.subtitle = "서브 타이틀"
+//            nContent.sound = UNNotificationSound.default()
+//            
+//            // 알림 발송 조건 객체 (5초뒤 한번만)
+//            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+//            
+//            // 알림 요청 객체 ("wakeup"은 알림 요청을 취소할 때 사용)
+//            let request = UNNotificationRequest(identifier: "wakeup", content: nContent, trigger: trigger)
+//            
+//            // 노티피케이션 센터에 추가
+//            UNUserNotificationCenter.current().add(request)
+//        } else {
+//            // 구 방식의 로컬 알림(UILocalNotification)
+//        }
+        
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
