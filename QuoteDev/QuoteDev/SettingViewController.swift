@@ -30,12 +30,13 @@ class SettingViewController: UIViewController {
         mainTableView.delegate = self
         mainTableView.dataSource = self
 
+        // UI
+        // DatePicker를 사용자가 설정해 놓은 알림 시간으로 설정하거나 기본 세팅으로 설정합니다.
         if UserDefaults.standard.value(forKey: Constants.settingAlarmTimeDateFormat) != nil {
             self.datePickerSetAlarmTime.date = UserDefaults.standard.value(forKey: Constants.settingAlarmTimeDateFormat) as! Date
         }else {
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat =  "HH:mm"
-            
             self.datePickerSetAlarmTime.date = dateFormatter.date(from: "09:00")!
         }
         
