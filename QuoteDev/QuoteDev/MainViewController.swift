@@ -471,13 +471,16 @@ class MainViewController: UIViewController {
 extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     enum enumMainTableViewSection : Int {
         case quoteComment = 0
-        case save = 1
-        case archive = 2
+        case save = 1 // 사진-배경화면으로 저장 기능은 다음 스펙으로 연기
+        case archive = 2 // 사진-배경화면으로 저장 기능은 다음 스펙으로 연기
+//        case save = 3 // 아래 소스 보존을 위한 무의미한 Int 값 추가
+//        case archive = 1
     }
     
     // MARK: tableView - section의 개수
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
+        return 3 // 사진-배경화면으로 저장 기능은 다음 스펙으로 연기
+//        return 2
     }
     
     // MARK: tableView - section의 타이틀
