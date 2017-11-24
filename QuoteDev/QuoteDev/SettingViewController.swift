@@ -36,7 +36,7 @@ class SettingViewController: UIViewController {
             self.datePickerSetAlarmTime.date = UserDefaults.standard.value(forKey: Constants.settingAlarmTimeDateFormat) as! Date
         }else {
             let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat =  "HH:mm"
+            dateFormatter.dateFormat = "HH:mm"
             self.datePickerSetAlarmTime.date = dateFormatter.date(from: "09:00")!
         }
         
@@ -129,19 +129,19 @@ class SettingViewController: UIViewController {
         
         // Notification 세팅 시작
         if #available(iOS 10.0, *) {
-// 01. UNMutableNotificationContent
+            // 01. UNMutableNotificationContent
             let notificationContent = UNMutableNotificationContent()
             // notiContent.title = "" // 타이틀은 없습니다.
             notificationContent.body = "오늘의 개발자 명언이 도착했습니다."
             notificationContent.sound = UNNotificationSound.default()
             
-// 02. UNTimeIntervalNotificationTrigger
+            // 02. UNTimeIntervalNotificationTrigger
             let notificationTrigger = UNCalendarNotificationTrigger(dateMatching: notificationDateComponents, repeats: true)
             
-// 03. UNNotificationRequest
+            // 03. UNNotificationRequest
             let request: UNNotificationRequest = UNNotificationRequest(identifier: "dailyQuoteDev", content: notificationContent, trigger: notificationTrigger)
             
-// 04. UNUserNotificationCenter
+            // 04. UNUserNotificationCenter
             UNUserNotificationCenter.current().add(request, withCompletionHandler: { [unowned self](_) in
                 self.dismiss(animated: true, completion: nil)
                 

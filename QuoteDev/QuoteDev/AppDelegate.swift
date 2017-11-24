@@ -20,18 +20,44 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         FirebaseApp.configure()
         
-        // 로컬 및 원격 통지에 대한 권한을 요청
+        // MARK: Notification 권한 요청
         if #available(iOS 10.0, *) {
-            let center = UNUserNotificationCenter.current()
+            let center = UNUserNotificationCenter.current() // 로컬 및 원격 Notification에 대한 권한 요청
             center.delegate = self
             
+            // 앱 첫 실행 후, dailyQuoteDev 초기 알림 세팅 ( 오전 9시 )
             UNUserNotificationCenter.current().requestAuthorization(options: [.alert,.sound], completionHandler: { (flag, err) in
-                
+                print("///// UNUserNotificationCenter flag \n", flag)
+                if flag && UserDefaults.standard.value(forKey: Constants.settingAlarmTimeDateFormat) == nil {
+                    // 01. UNMutableNotificationContent
+                    let notificationContent = UNMutableNotificationContent()
+                    notificationContent.body = "오늘의 개발자 명언이 도착했습니다."
+                    notificationContent.sound = UNNotificationSound.default()
+                    
+                    // 02. UNTimeIntervalNotificationTrigger
+                    var notificationDateComponents = DateComponents()
+                    notificationDateComponents.hour = 9
+                    notificationDateComponents.minute = 0
+                    
+                    let notificationTrigger = UNCalendarNotificationTrigger(dateMatching: notificationDateComponents, repeats: true)
+                    
+                    // 03. UNNotificationRequest
+                    let request: UNNotificationRequest = UNNotificationRequest(identifier: "dailyQuoteDev", content: notificationContent, trigger: notificationTrigger)
+                    
+                    // 04. UNUserNotificationCenter
+                    UNUserNotificationCenter.current().add(request, withCompletionHandler: { (_) in
+                        // 기존 알림 확인
+                        UNUserNotificationCenter.current().getPendingNotificationRequests { (notificationRequests) in
+                            print("///// notificationRequests.count- 8923: \n", notificationRequests.count)
+                            print("///// notificationRequests detail- 8923: \n", notificationRequests)
+                        }
+                    })
+                }
             })
             application.registerForRemoteNotifications()
         } else {
-            application.registerUserNotificationSettings(UIUserNotificationSettings(types: [.alert, .sound], categories: nil))
-            // Fallback on earlier versions
+            // iOS 10 미만 알림 미지원
+//            application.registerUserNotificationSettings(UIUserNotificationSettings(types: [.alert, .sound], categories: nil))
         }
         
         // MARK: Firebase Auth 진행 코드
@@ -72,34 +98,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
         
-//        if #available(iOS 10.0, *) {
-//            // 사용자로부터 알림이 허용되어 있는지 체크합니다
-//            let setting = application.currentUserNotificationSettings
-//            guard setting?.types != .none else {
-//                print("Can't Schedule")
-//                return
-//            }
-//            
-//            // 알림 콘텐츠 객체
-//            let nContent = UNMutableNotificationContent()
-//            
-//            nContent.badge = 1
-//            nContent.body = "어서어서 들어오세요!"
-//            nContent.title = "로컬 알림 메시지"
-//            nContent.subtitle = "서브 타이틀"
-//            nContent.sound = UNNotificationSound.default()
-//            
-//            // 알림 발송 조건 객체 (5초뒤 한번만)
-//            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
-//            
-//            // 알림 요청 객체 ("wakeup"은 알림 요청을 취소할 때 사용)
-//            let request = UNNotificationRequest(identifier: "wakeup", content: nContent, trigger: trigger)
-//            
-//            // 노티피케이션 센터에 추가
-//            UNUserNotificationCenter.current().add(request)
-//        } else {
-//            // 구 방식의 로컬 알림(UILocalNotification)
-//        }
         
     }
 

@@ -391,10 +391,10 @@ JS and GS</string>
             </objects>
             <point key="canvasLocation" x="855.20000000000005" y="110.64467766116942"/>
         </scene>
-        <!--setting-->
+        <!--Setting-->
         <scene sceneID="CKO-Su-KTm">
             <objects>
-                <viewController title="setting" id="Q5b-aO-IzD" customClass="SettingViewController" customModule="QuoteDev" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Setting" id="Q5b-aO-IzD" customClass="SettingViewController" customModule="QuoteDev" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="SDL-aO-jD8"/>
                         <viewControllerLayoutGuide type="bottom" id="F01-8M-c5y"/>
