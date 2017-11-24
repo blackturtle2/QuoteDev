@@ -830,6 +830,7 @@ JS and GS</string>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="32" id="20I-EG-EeQ"/>
                                             </constraints>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                             <state key="normal" title="댓글 더 보기"/>
                                             <connections>
                                                 <action selector="buttonHeaderMoreCommentsAction:" destination="xuP-7E-1r0" eventType="touchUpInside" id="LO2-Dd-TxP"/>
@@ -1015,7 +1016,7 @@ JS and GS</string>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pc5-UG-dnY" userLabel="CommentView">
                                 <rect key="frame" x="0.0" y="617" width="375" height="50"/>
                                 <subviews>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="I am your developer." minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Fq2-xT-r09">
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="I Am Your Developer." minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Fq2-xT-r09">
                                         <rect key="frame" x="8" y="10" width="300" height="30"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>

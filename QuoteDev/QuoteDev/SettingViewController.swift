@@ -273,7 +273,8 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
     
     // MARK: tableView - section의 개수
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 4
+//        return 4 // 명언 좋아요 초기화 기능은 다음 구현 기능으로 연기
+        return 3
     }
     
     // MARK: tableView - section의 타이틀
