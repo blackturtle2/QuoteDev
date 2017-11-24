@@ -21,6 +21,7 @@ class SettingViewController: UIViewController {
     @IBOutlet weak var motherViewAlarmTimePicker: UIView!
     @IBOutlet weak var datePickerSetAlarmTime: UIDatePicker!
 
+    
     /*******************************************/
     //MARK:-        LifeCycle                  //
     /*******************************************/
@@ -71,16 +72,12 @@ class SettingViewController: UIViewController {
         mailComposerVC.mailComposeDelegate = self // 메일 보내기 Finish 이후의 액션 정의를 위한 Delegate 초기화.
         
         mailComposerVC.setToRecipients([emailAddress]) // 받는 사람 설정
-        mailComposerVC.setSubject("[QuoteDev] 사용자로부터 도착한 편지") // 메일 제목 설정
-        mailComposerVC.setMessageBody("* iOS Version: \(systemVersion) / App Version: \(appVersion)\n** 고맙습니다. 무엇이 궁금하신가요? :D", isHTML: false) // 메일 내용 설정
+        mailComposerVC.setSubject("[QuoteDev] Letters from users") // 메일 제목 설정
+        mailComposerVC.setMessageBody("* iOS Version: \(systemVersion) / App Version: \(appVersion)\n** Thank you. What can I help you. :D", isHTML: false) // 메일 내용 설정
         
         return mailComposerVC
     }
-    
-    // MARK: [알림] 알림 on/off 세팅 스위치
-    @IBAction func actionSwitchAlarmSetting(_ sender: UISwitch) {
-        
-    }
+
     
     // MARK: [알림] 시간 DatePicker 완료 버튼 액션 정의
     @IBAction func buttonCompleteAlarmTimeSetting(_ sender: UIButton) {
@@ -131,7 +128,6 @@ class SettingViewController: UIViewController {
         if #available(iOS 10.0, *) {
             // 01. UNMutableNotificationContent
             let notificationContent = UNMutableNotificationContent()
-            // notiContent.title = "" // 타이틀은 없습니다.
             notificationContent.body = "오늘의 개발자 명언이 도착했습니다."
             notificationContent.sound = UNNotificationSound.default()
             
@@ -341,8 +337,9 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
         case enumSettingSection.quoteOptions.rawValue:
             switch indexPath.row{
             case 0: //알림 on/off
-                let resultCell = tableView.dequeueReusableCell(withIdentifier: "notificationSetting", for: indexPath)
+                let resultCell = tableView.dequeueReusableCell(withIdentifier: "SettingSwitchDailyQuoteDevOnOffCell", for: indexPath) as! SettingSwitchDailyQuoteDevOnOffCell
                 resultCell.textLabel?.text = "알림 설정"
+                resultCell.delegate = self
                 return resultCell
             case 1: //알림 시간
                 let resultCell = tableView.dequeueReusableCell(withIdentifier: "notificationTime", for: indexPath)
@@ -438,6 +435,26 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
 }
+
+// MARK: extension - SettingSwitchDailyQuoteDevOnOffCellDelegate
+// 알림 설정 on/off 스위치 Delegate
+extension SettingViewController: SettingSwitchDailyQuoteDevOnOffCellDelegate {
+    func switchDailyQuoteDevOnOff(myValue: Bool) {
+        if myValue {
+            print("///// SettingViewController- switchDailyQuoteDevOnOff is ON \n")
+            self.setDailyAlarmNotification()
+        }else {
+            print("///// SettingViewController- switchDailyQuoteDevOnOff is OFF \n")
+            
+            // dailyQuoteDev 제거
+            if #available(iOS 10.0, *) {
+                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["dailyQuoteDev"])
+            }
+            
+        }
+    }
+}
+
 
 // MARK: Extension - MFMailComposeViewControllerDelegate
 extension SettingViewController: MFMailComposeViewControllerDelegate {

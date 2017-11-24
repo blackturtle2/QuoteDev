@@ -427,7 +427,7 @@ JS and GS</string>
                                             <segue destination="tQz-Wj-vX4" kind="show" id="cfR-Bn-wb3"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="notificationSetting" id="6oh-Nv-fBN">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="SettingSwitchDailyQuoteDevOnOffCell" id="6oh-Nv-fBN" customClass="SettingSwitchDailyQuoteDevOnOffCell" customModule="QuoteDev" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="99.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="6oh-Nv-fBN" id="Get-aU-x9f">
@@ -443,7 +443,7 @@ JS and GS</string>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rhb-Xt-Cgo">
                                                     <rect key="frame" x="313" y="6.5" width="51" height="31"/>
                                                     <connections>
-                                                        <action selector="actionSwitchAlarmSetting:" destination="Q5b-aO-IzD" eventType="valueChanged" id="bXU-rD-MkH"/>
+                                                        <action selector="actionSwitchDailyQuoteDevOnOff:" destination="6oh-Nv-fBN" eventType="valueChanged" id="KGJ-3l-P7u"/>
                                                     </connections>
                                                 </switch>
                                             </subviews>
@@ -454,6 +454,9 @@ JS and GS</string>
                                                 <constraint firstItem="AaW-yf-yM8" firstAttribute="centerY" secondItem="Get-aU-x9f" secondAttribute="centerY" id="d1t-T6-wQg"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="switchDailyQuoteDevOnOff" destination="rhb-Xt-Cgo" id="jgu-77-5Bt"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="notificationTime" textLabel="9gs-y0-7M7" detailTextLabel="k2X-nc-cOA" style="IBUITableViewCellStyleValue1" id="KyD-Q6-44v">
                                         <rect key="frame" x="0.0" y="143.5" width="375" height="44"/>

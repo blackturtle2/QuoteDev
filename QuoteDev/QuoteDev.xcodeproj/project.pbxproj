@@ -22,6 +22,7 @@
 		FE67B81C1FC584D500466882 /* BoardDevDetailCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE67B8151FC584D500466882 /* BoardDevDetailCommentCell.swift */; };
 		FE67B81D1FC584D500466882 /* BoardDevDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE67B8161FC584D500466882 /* BoardDevDetailViewController.swift */; };
 		FE67B81E1FC584D500466882 /* BoardDevListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE67B8171FC584D500466882 /* BoardDevListViewController.swift */; };
+		FE67B8201FC8580A00466882 /* SettingSwitchDailyQuoteDevOnOffCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE67B81F1FC8580A00466882 /* SettingSwitchDailyQuoteDevOnOffCell.swift */; };
 		FE685FCD1FB57DCC00731BE3 /* MainQuoteCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE685FCC1FB57DCC00731BE3 /* MainQuoteCommentCell.swift */; };
 		FE7EC3961F6A4E1000696041 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE7EC3951F6A4E1000696041 /* AppDelegate.swift */; };
 		FE7EC3981F6A4E1000696041 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE7EC3971F6A4E1000696041 /* MainViewController.swift */; };
@@ -53,6 +54,7 @@
 		FE67B8151FC584D500466882 /* BoardDevDetailCommentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BoardDevDetailCommentCell.swift; path = BoardDev/BoardDevDetailCommentCell.swift; sourceTree = "<group>"; };
 		FE67B8161FC584D500466882 /* BoardDevDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BoardDevDetailViewController.swift; path = BoardDev/BoardDevDetailViewController.swift; sourceTree = "<group>"; };
 		FE67B8171FC584D500466882 /* BoardDevListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BoardDevListViewController.swift; path = BoardDev/BoardDevListViewController.swift; sourceTree = "<group>"; };
+		FE67B81F1FC8580A00466882 /* SettingSwitchDailyQuoteDevOnOffCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingSwitchDailyQuoteDevOnOffCell.swift; sourceTree = "<group>"; };
 		FE685FCC1FB57DCC00731BE3 /* MainQuoteCommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainQuoteCommentCell.swift; sourceTree = "<group>"; };
 		FE7EC3921F6A4E1000696041 /* QuoteDev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QuoteDev.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE7EC3951F6A4E1000696041 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -128,6 +130,7 @@
 				FE685FCC1FB57DCC00731BE3 /* MainQuoteCommentCell.swift */,
 				FEF7AB5C1F795F290071D2F7 /* SettingViewController.swift */,
 				FEAE97641F8E66DC0055D30E /* SettingHowToSetWidgetViewController.swift */,
+				FE67B81F1FC8580A00466882 /* SettingSwitchDailyQuoteDevOnOffCell.swift */,
 				FE15F6BC1F726F85008E9A42 /* QuoteCommentViewController.swift */,
 				FED92A081FA4892F00B0DFC9 /* QuoteCommentTableViewCell.swift */,
 				FE7EC3AE1F6A555400696041 /* SettingView */,
@@ -323,6 +326,7 @@
 				FEAE97651F8E66DC0055D30E /* SettingHowToSetWidgetViewController.swift in Sources */,
 				FE685FCD1FB57DCC00731BE3 /* MainQuoteCommentCell.swift in Sources */,
 				FE15F6BB1F726A41008E9A42 /* Constants.swift in Sources */,
+				FE67B8201FC8580A00466882 /* SettingSwitchDailyQuoteDevOnOffCell.swift in Sources */,
 				FE67B8191FC584D500466882 /* BoardDevWriteViewController.swift in Sources */,
 				FE67B81A1FC584D500466882 /* BoardDevDataCenter.swift in Sources */,
 				FE67B81B1FC584D500466882 /* BoardDevListTableViewCell.swift in Sources */,
