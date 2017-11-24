@@ -24,7 +24,14 @@ class SettingSwitchDailyQuoteDevOnOffCell: UITableViewCell {
     /*******************************************/
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        
+        // 사용자가 이전에 설정했는지 여부에 따라 스위치 값 on/off 세팅
+        // "Constants.settingAlarmOnOff"의 UserDefaults는 AppDelegate에서 알림 on 할 때에도 함께 설정됩니다.
+        if UserDefaults.standard.bool(forKey: Constants.settingAlarmOnOff) {
+            self.switchDailyQuoteDevOnOff.setOn(true, animated: true)
+        }else {
+            self.switchDailyQuoteDevOnOff.setOn(false, animated: true)
+        }
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

@@ -336,16 +336,16 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
         // MARK: QUOTE OPTIONS
         case enumSettingSection.quoteOptions.rawValue:
             switch indexPath.row{
-            case 0: //알림 on/off
+            case 0: // MARK: QUOTE OPTIONS - 알림 설정 그리기
                 let resultCell = tableView.dequeueReusableCell(withIdentifier: "SettingSwitchDailyQuoteDevOnOffCell", for: indexPath) as! SettingSwitchDailyQuoteDevOnOffCell
                 resultCell.textLabel?.text = "알림 설정"
                 resultCell.delegate = self
                 return resultCell
-            case 1: //알림 시간
+            case 1: // MARK: QUOTE OPTIONS - 알림 시간 그리기
                 let resultCell = tableView.dequeueReusableCell(withIdentifier: "notificationTime", for: indexPath)
                 resultCell.detailTextLabel?.text = UserDefaults.standard.string(forKey: Constants.settingAlarmTime) ?? "9:00 AM"
                 return resultCell
-            case 2: //기본 명언 모드
+            case 2: // MARK: QUOTE OPTIONS - 기본 명언 모드 그리기
                 let resultCell = tableView.dequeueReusableCell(withIdentifier: "defaultQuoteMode", for: indexPath)
                 
                 // 이전 뷰인 메인 뷰에서 userDefaults 값이 없을 경우, 진지 모드로 기본 생성됩니다. ( 앱을 처음 실행했을 때 )
@@ -436,19 +436,22 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
     
 }
 
+
 // MARK: extension - SettingSwitchDailyQuoteDevOnOffCellDelegate
-// 알림 설정 on/off 스위치 Delegate
+// MARK: [알림] 알림 설정 on/off 스위치 Delegate
 extension SettingViewController: SettingSwitchDailyQuoteDevOnOffCellDelegate {
     func switchDailyQuoteDevOnOff(myValue: Bool) {
         if myValue {
             print("///// SettingViewController- switchDailyQuoteDevOnOff is ON \n")
             self.setDailyAlarmNotification()
+            UserDefaults.standard.set(true, forKey: Constants.settingAlarmOnOff)
         }else {
             print("///// SettingViewController- switchDailyQuoteDevOnOff is OFF \n")
             
             // dailyQuoteDev 제거
             if #available(iOS 10.0, *) {
                 UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["dailyQuoteDev"])
+                UserDefaults.standard.set(false, forKey: Constants.settingAlarmOnOff)
             }
             
         }

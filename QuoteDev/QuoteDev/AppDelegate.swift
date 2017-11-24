@@ -52,8 +52,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                             print("///// notificationRequests detail- 8923: \n", notificationRequests)
                         }
                     })
+                    
+                    // UserDefaults 알림 세팅 여부 저장
+                    UserDefaults.standard.set(true, forKey: Constants.settingAlarmOnOff)
+                } else {
+                    // 사용자가 iOS 설정에서 알림을 off 했을 케이스 예외처리입니다.
+                    // 아래의 세팅을 하지 않으면, notification들이 쌓여 있다가, 알림을 on 할 때, 터질 가능성이 있는 케이스의 예외처리입니다.
+                    UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["dailyQuoteDev"])
+                    UserDefaults.standard.set(false, forKey: Constants.settingAlarmOnOff)
                 }
             })
+            
             application.registerForRemoteNotifications()
         } else {
             // iOS 10 미만 알림 미지원

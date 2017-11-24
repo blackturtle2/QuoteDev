@@ -53,6 +53,7 @@ struct Constants {
     static let firebaseAppCurrentVersion:String = "current_version"
     static let firebaseAppForcedUpdateVersion:String = "forced_update_version"
     
+    static let settingAlarmOnOff:String = "settingAlarmOnOff"
     static let settingAlarmTime:String = "settingAlarmTime"
     static let settingAlarmTimeDateFormat:String = "settingAlarmTimeDateFormat"
     static let settingDefaultQuoteMode:String = "settingDefaultQuoteMode"
