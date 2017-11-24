@@ -130,16 +130,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     // 특정 알림에 대해 사용자가 선택한 작업을 앱에 알리기 위해 호출됩니다.
     @available(iOS 10.0, *)
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        print("userNotificatonCenter - didReceive")
+        print("///// userNotificatonCenter- didReceive")
     }
     
     // 포 그라운드 앱에 알림이 전달되면 호출됩니다
     @available(iOS 10.0, *)
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        print("userNotificatonCenter - willPresent")
+        print("///// userNotificatonCenter- willPresent")
+        
         center.getPendingNotificationRequests { (requests) in
             for req in requests {
-                print(req.content.title+"호출됨")
+                print("///// getPendingNotificationRequests- 호출된 request: \n", req.content.title)
                 completionHandler(.alert)
             }
         }
