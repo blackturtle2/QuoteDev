@@ -344,6 +344,17 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
             case 1: // MARK: QUOTE OPTIONS - 알림 시간 그리기
                 let resultCell = tableView.dequeueReusableCell(withIdentifier: "notificationTime", for: indexPath)
                 resultCell.detailTextLabel?.text = UserDefaults.standard.string(forKey: Constants.settingAlarmTime) ?? "9:00 AM"
+                
+                // 사용자가 이전에 설정했는지 여부에 따라 알림 시간 cell 활성화 여부 결정
+                // "Constants.settingAlarmOnOff"의 UserDefaults는 AppDelegate에서 알림 on 할 때에도 함께 설정됩니다.
+                if UserDefaults.standard.bool(forKey: Constants.settingAlarmOnOff) {
+                    resultCell.isUserInteractionEnabled = true
+                    resultCell.contentView.alpha = 1
+                }else {
+                    resultCell.isUserInteractionEnabled = false
+                    resultCell.contentView.alpha = 0.5
+                }
+                
                 return resultCell
             case 2: // MARK: QUOTE OPTIONS - 기본 명언 모드 그리기
                 let resultCell = tableView.dequeueReusableCell(withIdentifier: "defaultQuoteMode", for: indexPath)
@@ -445,6 +456,11 @@ extension SettingViewController: SettingSwitchDailyQuoteDevOnOffCellDelegate {
             print("///// SettingViewController- switchDailyQuoteDevOnOff is ON \n")
             self.setDailyAlarmNotification()
             UserDefaults.standard.set(true, forKey: Constants.settingAlarmOnOff)
+            
+            // UI: 알림 시간 cell, 터치 가능 및 정상적으로 보이도록 업데이트
+            let cell = self.mainTableView.cellForRow(at: IndexPath(row: 1, section: enumSettingSection.quoteOptions.rawValue))
+            cell?.isUserInteractionEnabled = true
+            cell?.contentView.alpha = 1
         }else {
             print("///// SettingViewController- switchDailyQuoteDevOnOff is OFF \n")
             
@@ -452,6 +468,11 @@ extension SettingViewController: SettingSwitchDailyQuoteDevOnOffCellDelegate {
             if #available(iOS 10.0, *) {
                 UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["dailyQuoteDev"])
                 UserDefaults.standard.set(false, forKey: Constants.settingAlarmOnOff)
+                
+                // UI: 알림 시간 cell, 터치 불가 및 흐리게 보이도록 업데이트
+                let cell = self.mainTableView.cellForRow(at: IndexPath(row: 1, section: enumSettingSection.quoteOptions.rawValue))
+                cell?.isUserInteractionEnabled = false
+                cell?.contentView.alpha = 0.5
             }
             
         }
