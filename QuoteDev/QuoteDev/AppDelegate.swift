@@ -55,8 +55,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     
                     // UserDefaults 알림 세팅 여부 저장
                     UserDefaults.standard.set(true, forKey: Constants.settingAlarmOnOff)
-                } else {
-                    // 사용자가 iOS 설정에서 알림을 off 했을 케이스 예외처리입니다.
+                }
+                
+                // 사용자가 직접 iOS 설정에서 알림을 off 하는 케이스 예외처리
+                if !(flag) {
                     // 아래의 세팅을 하지 않으면, notification들이 쌓여 있다가, 알림을 on 할 때, 터질 가능성이 있는 케이스의 예외처리입니다.
                     UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["dailyQuoteDev"])
                     UserDefaults.standard.set(false, forKey: Constants.settingAlarmOnOff)

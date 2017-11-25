@@ -98,6 +98,8 @@ class SettingViewController: UIViewController {
         // 사용자가 세팅한 시간으로 알림 시간 cell의 UI에 표현합니다.
         self.mainTableView.reloadRows(at: [[enumSettingSection.quoteOptions.rawValue,1]], with: UITableViewRowAnimation.automatic)
         self.motherViewAlarmTimePicker.isHidden = true
+        
+        Toast.init(text: "Complete notification settings").show()
     }
     
     // 알림 설정
@@ -455,13 +457,19 @@ extension SettingViewController: SettingSwitchDailyQuoteDevOnOffCellDelegate {
     func switchDailyQuoteDevOnOff(myValue: Bool) {
         if myValue {
             print("///// SettingViewController- switchDailyQuoteDevOnOff is ON \n")
-            self.setDailyAlarmNotification()
-            UserDefaults.standard.set(true, forKey: Constants.settingAlarmOnOff)
+            // dailyQuoteDev 설정
+            DispatchQueue.main.async {
+                // switchDailyQuoteDevOnOff()를 'SettingSwitchDailyQuoteDevOnOffCell'의 Closure 안에서 부르다보니, 안정적인 구동을 위해서는 main queue에 태워야 합니다.
+                self.setDailyAlarmNotification()
+                UserDefaults.standard.set(true, forKey: Constants.settingAlarmOnOff)
+            }
             
             // UI: 알림 시간 cell, 터치 가능 및 정상적으로 보이도록 업데이트
-            let cell = self.mainTableView.cellForRow(at: IndexPath(row: 1, section: enumSettingSection.quoteOptions.rawValue))
-            cell?.isUserInteractionEnabled = true
-            cell?.contentView.alpha = 1
+            DispatchQueue.main.async {
+                let cell = self.mainTableView.cellForRow(at: IndexPath(row: 1, section: enumSettingSection.quoteOptions.rawValue))
+                cell?.isUserInteractionEnabled = true
+                cell?.contentView.alpha = 1
+            }
         }else {
             print("///// SettingViewController- switchDailyQuoteDevOnOff is OFF \n")
             
