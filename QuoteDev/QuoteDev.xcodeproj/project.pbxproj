@@ -12,6 +12,7 @@
 		4C903C731F6A5D17003ECEA4 /* BoardDevMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C903C721F6A5D17003ECEA4 /* BoardDevMainViewController.swift */; };
 		4C903C751F6F9E25003ECEA4 /* SettingDev.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C903C741F6F9E25003ECEA4 /* SettingDev.storyboard */; };
 		4C903C771F6FA35B003ECEA4 /* SettingDevNotiViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C903C761F6FA35B003ECEA4 /* SettingDevNotiViewController.swift */; };
+		C276B873008B0B31B9561F30 /* Pods_QuoteDevWidget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16E3C4E861537E075825C635 /* Pods_QuoteDevWidget.framework */; };
 		FE15F6B91F72602C008E9A42 /* DataCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE15F6B81F72602C008E9A42 /* DataCenter.swift */; };
 		FE15F6BB1F726A41008E9A42 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE15F6BA1F726A41008E9A42 /* Constants.swift */; };
 		FE15F6BD1F726F85008E9A42 /* QuoteCommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE15F6BC1F726F85008E9A42 /* QuoteCommentViewController.swift */; };
@@ -24,6 +25,11 @@
 		FE67B81E1FC584D500466882 /* BoardDevListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE67B8171FC584D500466882 /* BoardDevListViewController.swift */; };
 		FE67B8201FC8580A00466882 /* SettingSwitchDailyQuoteDevOnOffCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE67B81F1FC8580A00466882 /* SettingSwitchDailyQuoteDevOnOffCell.swift */; };
 		FE685FCD1FB57DCC00731BE3 /* MainQuoteCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE685FCC1FB57DCC00731BE3 /* MainQuoteCommentCell.swift */; };
+		FE698A381FCBDD3600521628 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE698A371FCBDD3600521628 /* NotificationCenter.framework */; };
+		FE698A3B1FCBDD3600521628 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE698A3A1FCBDD3600521628 /* TodayViewController.swift */; };
+		FE698A3E1FCBDD3600521628 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FE698A3C1FCBDD3600521628 /* MainInterface.storyboard */; };
+		FE698A421FCBDD3600521628 /* QuoteDevWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = FE698A361FCBDD3600521628 /* QuoteDevWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		FE698A491FCBEFF000521628 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FE698A481FCBEFF000521628 /* GoogleService-Info.plist */; };
 		FE7EC3961F6A4E1000696041 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE7EC3951F6A4E1000696041 /* AppDelegate.swift */; };
 		FE7EC3981F6A4E1000696041 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE7EC3971F6A4E1000696041 /* MainViewController.swift */; };
 		FE7EC39B1F6A4E1000696041 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FE7EC3991F6A4E1000696041 /* Main.storyboard */; };
@@ -36,7 +42,34 @@
 		FEF7AB5D1F795F290071D2F7 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEF7AB5C1F795F290071D2F7 /* SettingViewController.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		FE698A401FCBDD3600521628 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE7EC38A1F6A4E1000696041 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FE698A351FCBDD3600521628;
+			remoteInfo = QuoteDevWidget;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		FE698A461FCBDD3600521628 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				FE698A421FCBDD3600521628 /* QuoteDevWidget.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		16E3C4E861537E075825C635 /* Pods_QuoteDevWidget.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QuoteDevWidget.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		242395E0854F7A1771DE0CAA /* Pods-QuoteDevWidget.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuoteDevWidget.debug.xcconfig"; path = "Pods/Target Support Files/Pods-QuoteDevWidget/Pods-QuoteDevWidget.debug.xcconfig"; sourceTree = "<group>"; };
+		2FD2BA3B019B35A6324FC292 /* Pods-QuoteDevWidget.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuoteDevWidget.release.xcconfig"; path = "Pods/Target Support Files/Pods-QuoteDevWidget/Pods-QuoteDevWidget.release.xcconfig"; sourceTree = "<group>"; };
 		4C903C701F6A5D0D003ECEA4 /* BoardDev.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = BoardDev.storyboard; path = BoardDev/BoardDev.storyboard; sourceTree = "<group>"; };
 		4C903C721F6A5D17003ECEA4 /* BoardDevMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BoardDevMainViewController.swift; path = BoardDev/BoardDevMainViewController.swift; sourceTree = "<group>"; };
 		4C903C741F6F9E25003ECEA4 /* SettingDev.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SettingDev.storyboard; sourceTree = "<group>"; };
@@ -56,6 +89,12 @@
 		FE67B8171FC584D500466882 /* BoardDevListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BoardDevListViewController.swift; path = BoardDev/BoardDevListViewController.swift; sourceTree = "<group>"; };
 		FE67B81F1FC8580A00466882 /* SettingSwitchDailyQuoteDevOnOffCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingSwitchDailyQuoteDevOnOffCell.swift; sourceTree = "<group>"; };
 		FE685FCC1FB57DCC00731BE3 /* MainQuoteCommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainQuoteCommentCell.swift; sourceTree = "<group>"; };
+		FE698A361FCBDD3600521628 /* QuoteDevWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = QuoteDevWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE698A371FCBDD3600521628 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
+		FE698A3A1FCBDD3600521628 /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
+		FE698A3D1FCBDD3600521628 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		FE698A3F1FCBDD3600521628 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FE698A481FCBEFF000521628 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		FE7EC3921F6A4E1000696041 /* QuoteDev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QuoteDev.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE7EC3951F6A4E1000696041 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FE7EC3971F6A4E1000696041 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -71,6 +110,15 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		FE698A331FCBDD3600521628 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE698A381FCBDD3600521628 /* NotificationCenter.framework in Frameworks */,
+				C276B873008B0B31B9561F30 /* Pods_QuoteDevWidget.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FE7EC38F1F6A4E1000696041 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -87,6 +135,8 @@
 			children = (
 				5BFF089C886F6B71AA3380D1 /* Pods-QuoteDev.debug.xcconfig */,
 				5FC370CABF19E04A9D982688 /* Pods-QuoteDev.release.xcconfig */,
+				242395E0854F7A1771DE0CAA /* Pods-QuoteDevWidget.debug.xcconfig */,
+				2FD2BA3B019B35A6324FC292 /* Pods-QuoteDevWidget.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -95,8 +145,21 @@
 			isa = PBXGroup;
 			children = (
 				4CB8A73D6F930854930511EE /* Pods_QuoteDev.framework */,
+				FE698A371FCBDD3600521628 /* NotificationCenter.framework */,
+				16E3C4E861537E075825C635 /* Pods_QuoteDevWidget.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		FE698A391FCBDD3600521628 /* QuoteDevWidget */ = {
+			isa = PBXGroup;
+			children = (
+				FE698A3A1FCBDD3600521628 /* TodayViewController.swift */,
+				FE698A3C1FCBDD3600521628 /* MainInterface.storyboard */,
+				FE698A481FCBEFF000521628 /* GoogleService-Info.plist */,
+				FE698A3F1FCBDD3600521628 /* Info.plist */,
+			);
+			path = QuoteDevWidget;
 			sourceTree = "<group>";
 		};
 		FE7EC3891F6A4E1000696041 = {
@@ -104,6 +167,7 @@
 			children = (
 				FE7EC39C1F6A4E1000696041 /* Assets.xcassets */,
 				FE7EC3941F6A4E1000696041 /* QuoteDev */,
+				FE698A391FCBDD3600521628 /* QuoteDevWidget */,
 				FE7EC3931F6A4E1000696041 /* Products */,
 				3FE2FD421B77A7CF0572926B /* Pods */,
 				599375D61C8185805B24C35E /* Frameworks */,
@@ -114,6 +178,7 @@
 			isa = PBXGroup;
 			children = (
 				FE7EC3921F6A4E1000696041 /* QuoteDev.app */,
+				FE698A361FCBDD3600521628 /* QuoteDevWidget.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -170,6 +235,25 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		FE698A351FCBDD3600521628 /* QuoteDevWidget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FE698A451FCBDD3600521628 /* Build configuration list for PBXNativeTarget "QuoteDevWidget" */;
+			buildPhases = (
+				D7DB25EC3B456FC977DBD970 /* [CP] Check Pods Manifest.lock */,
+				FE698A321FCBDD3600521628 /* Sources */,
+				FE698A331FCBDD3600521628 /* Frameworks */,
+				FE698A341FCBDD3600521628 /* Resources */,
+				B68378EF3280139C67F2DB93 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = QuoteDevWidget;
+			productName = QuoteDevWidget;
+			productReference = FE698A361FCBDD3600521628 /* QuoteDevWidget.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		FE7EC3911F6A4E1000696041 /* QuoteDev */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = FE7EC3A41F6A4E1000696041 /* Build configuration list for PBXNativeTarget "QuoteDev" */;
@@ -180,10 +264,12 @@
 				FE7EC3901F6A4E1000696041 /* Resources */,
 				2C86D8BEEDD3DF664CB72794 /* [CP] Embed Pods Frameworks */,
 				BD5BA6EF614807C3D1B84776 /* [CP] Copy Pods Resources */,
+				FE698A461FCBDD3600521628 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				FE698A411FCBDD3600521628 /* PBXTargetDependency */,
 			);
 			name = QuoteDev;
 			productName = QuoteDev;
@@ -196,10 +282,15 @@
 		FE7EC38A1F6A4E1000696041 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0830;
+				LastSwiftUpdateCheck = 0910;
 				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = leejaesung;
 				TargetAttributes = {
+					FE698A351FCBDD3600521628 = {
+						CreatedOnToolsVersion = 9.1;
+						DevelopmentTeam = 29Q45PKR77;
+						ProvisioningStyle = Automatic;
+					};
 					FE7EC3911F6A4E1000696041 = {
 						CreatedOnToolsVersion = 8.3.3;
 						DevelopmentTeam = 29Q45PKR77;
@@ -221,11 +312,21 @@
 			projectRoot = "";
 			targets = (
 				FE7EC3911F6A4E1000696041 /* QuoteDev */,
+				FE698A351FCBDD3600521628 /* QuoteDevWidget */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		FE698A341FCBDD3600521628 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE698A3E1FCBDD3600521628 /* MainInterface.storyboard in Resources */,
+				FE698A491FCBEFF000521628 /* GoogleService-Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FE7EC3901F6A4E1000696041 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -288,6 +389,21 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-QuoteDev/Pods-QuoteDev-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		B68378EF3280139C67F2DB93 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-QuoteDevWidget/Pods-QuoteDevWidget-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		BD5BA6EF614807C3D1B84776 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -303,9 +419,35 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-QuoteDev/Pods-QuoteDev-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		D7DB25EC3B456FC977DBD970 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-QuoteDevWidget-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		FE698A321FCBDD3600521628 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE698A3B1FCBDD3600521628 /* TodayViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FE7EC38E1F6A4E1000696041 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -335,7 +477,23 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		FE698A411FCBDD3600521628 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FE698A351FCBDD3600521628 /* QuoteDevWidget */;
+			targetProxy = FE698A401FCBDD3600521628 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
+		FE698A3C1FCBDD3600521628 /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FE698A3D1FCBDD3600521628 /* Base */,
+			);
+			name = MainInterface.storyboard;
+			sourceTree = "<group>";
+		};
 		FE7EC3991F6A4E1000696041 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -355,6 +513,60 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		FE698A431FCBDD3600521628 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 242395E0854F7A1771DE0CAA /* Pods-QuoteDevWidget.debug.xcconfig */;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 29Q45PKR77;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = QuoteDevWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = net.blackturtle2.QuoteDev.QuoteDevWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		FE698A441FCBDD3600521628 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2FD2BA3B019B35A6324FC292 /* Pods-QuoteDevWidget.release.xcconfig */;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 29Q45PKR77;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = QuoteDevWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = net.blackturtle2.QuoteDev.QuoteDevWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
 		FE7EC3A21F6A4E1000696041 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -454,7 +666,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5BFF089C886F6B71AA3380D1 /* Pods-QuoteDev.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = 29Q45PKR77;
 				INFOPLIST_FILE = QuoteDev/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -470,7 +684,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5FC370CABF19E04A9D982688 /* Pods-QuoteDev.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = 29Q45PKR77;
 				INFOPLIST_FILE = QuoteDev/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -485,6 +701,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		FE698A451FCBDD3600521628 /* Build configuration list for PBXNativeTarget "QuoteDevWidget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FE698A431FCBDD3600521628 /* Debug */,
+				FE698A441FCBDD3600521628 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		FE7EC38D1F6A4E1000696041 /* Build configuration list for PBXProject "QuoteDev" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
