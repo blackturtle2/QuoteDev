@@ -73,12 +73,12 @@
                                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         </view>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JpR-xn-itO">
-                                            <rect key="frame" x="8" y="139.5" width="359" height="23.5"/>
+                                            <rect key="frame" x="8" y="140" width="359" height="22.5"/>
                                             <attributedString key="attributedText">
                                                 <fragment content="명언 찾는 중..">
                                                     <attributes>
                                                         <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                                        <font key="NSFont" size="19" name="AppleSDGothicNeo-Medium"/>
+                                                        <font key="NSFont" size="18" name="AppleSDGothicNeo-Medium"/>
                                                         <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="8" tighteningFactorForTruncation="0.0"/>
                                                     </attributes>
                                                 </fragment>
@@ -88,12 +88,12 @@
                                             <size key="shadowOffset" width="0.0" height="0.5"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eZ3-F5-42t">
-                                            <rect key="frame" x="8" y="171" width="359" height="18.5"/>
+                                            <rect key="frame" x="8" y="170.5" width="359" height="17.5"/>
                                             <attributedString key="attributedText">
                                                 <fragment content="- 명언 말해주는 개발자 찾는 중.. -">
                                                     <attributes>
                                                         <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                                        <font key="NSFont" size="15" name="AppleSDGothicNeo-UltraLight"/>
+                                                        <font key="NSFont" size="14" name="AppleSDGothicNeo-UltraLight"/>
                                                         <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="4" tighteningFactorForTruncation="0.0"/>
                                                     </attributes>
                                                 </fragment>
