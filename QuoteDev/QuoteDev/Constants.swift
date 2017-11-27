@@ -31,7 +31,7 @@ struct Constants {
     
     static let firebaseQuoteComments:String = "quotes_comments"
     static let firebaseQuoteCommentsPosts:String = "posts"
-    static let firebaseQuoteCommentsCount:String = "comments_count"
+    static let firebaseQuoteCommentsCount:String = "posts_count"
     
     static let userDefaultsCurrentQuoteID:String = "userDefaultsCurrentQuoteID"
     
@@ -40,14 +40,22 @@ struct Constants {
     static let firebaseQuoteCommentsUserNickname:String = "user_nickname"
     static let firebaseQuoteCommentsCommentKeyID:String = "comment_key_id"
     static let firebaseQuoteCommentsCommentCreatedDate:String = "comment_created_date"
-    static let firebaseQuoteCommentsCommentText:String = "comment_Text"
+    static let firebaseQuoteCommentsCommentText:String = "comment_text"
+    static let firebaseQuoteCommentsPostsCount = "posts_count"
+    static let firebaseQuoteCommentsBackupDeletes = "backup_deletes"
+    
+    static let firebaseQuoteCommentsLikes:String = "quotes_comments_likes"
+    static let firebaseQuoteCommentsLikesData:String = "likes_data"
+    static let firebaseQuoteCommentsLikesCount:String = "likes_count"
     
     // setting
     static let firebaseAppVersion:String = "app_version"
     static let firebaseAppCurrentVersion:String = "current_version"
     static let firebaseAppForcedUpdateVersion:String = "forced_update_version"
     
+    static let settingAlarmOnOff:String = "settingAlarmOnOff"
     static let settingAlarmTime:String = "settingAlarmTime"
+    static let settingAlarmTimeDateFormat:String = "settingAlarmTimeDateFormat"
     static let settingDefaultQuoteMode:String = "settingDefaultQuoteMode"
     static let settingQuoteModeSerious:String = "quotes_data_kor_serious"
     static let settingQuoteModeJoyful:String = "quotes_data_kor_joyful"
