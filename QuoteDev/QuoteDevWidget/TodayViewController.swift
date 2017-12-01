@@ -16,6 +16,8 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     @IBOutlet weak var labelQuoteText: UILabel!
     @IBOutlet weak var labelQuoteAuthor: UILabel!
     
+    var userQuoteModeSetting = Constants.settingQuoteModeSerious
+    
     /*******************************************/
     //MARK:-        LifeCycle                  //
     /*******************************************/
@@ -50,11 +52,18 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     // MARK: 데이터 가져오기
     func loadData() {
         // 파이어베이스 초기화
-        if FirebaseApp.app() == nil { // AppDelegate의 configure()가 이미 실행 되었다면, 위젯에서는 별도로 configure()를 실행하지 않습니다.
+        // AppDelegate의 configure()가 이미 실행 되었다면, 위젯에서는 별도로 configure()를 실행하지 않습니다.
+        if FirebaseApp.app() == nil {
             FirebaseApp.configure()
         }
         print("///// firebase app: \n", FirebaseApp.app() ?? "no data")
         
+        // 호스트 앱의 설정에서 사용자가 설정한 기본 명언 모드 불러오기.
+        if let realUserQuoteModeSetting = UserDefaults.init(suiteName: Constants.settingQuoteTodayExtensionAppGroup)?.value(forKey: Constants.settingDefaultQuoteMode) as? String {
+            self.userQuoteModeSetting = realUserQuoteModeSetting
+        }
+        
+        // 먼저 UserDefaults 데이터 검증 후, 위젯 UI에 표시합니다.
         if UserDefaults.standard.object(forKey: "widgetQuoteText") != nil {
             guard let realQuoteText = UserDefaults.standard.object(forKey: "widgetQuoteText") as? String else { return }
             guard let realQuoteAuthor = UserDefaults.standard.object(forKey: "widgetQuoteAuthor") as? String else { return }
@@ -67,8 +76,9 @@ class TodayViewController: UIViewController, NCWidgetProviding {
             if realQuoteAuthor == "" { self.labelQuoteAuthor.text = realQuoteAuthor }
             
         }else {
+            // UserDefaults에 데이터가 없으면, Firebase 통신을 시도합니다.
             // 명언 데이터 가져오고, UI에 표시하기
-            self.getAndShowQuoteData(quoteMode: "quotes_data_kor_serious", quoteKey: "52")
+            self.getAndShowQuoteData(quoteMode: self.userQuoteModeSetting, quoteKey: "52")
         }
         
         // 배경 이미지 표시하기
@@ -76,7 +86,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     }
     
     
-    // MARK: 명언 데이터 가져오고, UI에 표시하는 function
+    // MARK: 명언 데이터 가져오고, UI 표시 function
     func getAndShowQuoteData(quoteMode:String, quoteKey:String) {
 
         // 명언 모드에 따른 데이터 통신
@@ -106,11 +116,6 @@ class TodayViewController: UIViewController, NCWidgetProviding {
                 }
             }
             
-
-            // 전역 변수와 UserDefaults에 현재 보여지는 명언 ID를 저장합니다.
-//            self.currentQuoteID = quoteID
-//            UserDefaults.standard.set(quoteID, forKey: Constants.userDefaultsCurrentQuoteID)
-
         }) { (error) in
             print("///// firebase error- 2341: \n", error)
         }

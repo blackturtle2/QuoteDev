@@ -59,5 +59,6 @@ struct Constants {
     static let settingDefaultQuoteMode:String = "settingDefaultQuoteMode"
     static let settingQuoteModeSerious:String = "quotes_data_kor_serious"
     static let settingQuoteModeJoyful:String = "quotes_data_kor_joyful"
+    static let settingQuoteTodayExtensionAppGroup:String = "group.QuoteDev.TodayExtensionSharingDefaults"
 }
 

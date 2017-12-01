@@ -162,11 +162,16 @@ class SettingViewController: UIViewController {
     
     // MARK: 기본 명언 모드 액션 정의
     func setDefaultQuoteMode() {
-        let alert: UIAlertController = UIAlertController(title: nil, message: "설정 후, 다음 앱 실행 때부터 적용됩니다.", preferredStyle: .actionSheet)
+        let alert: UIAlertController = UIAlertController(title: nil, message: "After setting, it will be applied from next time you run the app.", preferredStyle: .actionSheet)
         
         let seriousModeButton = UIAlertAction(title: "진지 모드", style: .default, handler: {[unowned self] (action) in
             print("seriousModeButton")
+            // 호스트 앱에서만 사용하는 UserDefaults 저장
             UserDefaults.standard.set(Constants.settingQuoteModeSerious, forKey: Constants.settingDefaultQuoteMode)
+            
+            // 위젯에서 사용하는 UserDefaults 저장
+            UserDefaults.init(suiteName: Constants.settingQuoteTodayExtensionAppGroup)?.set(Constants.settingQuoteModeSerious, forKey: Constants.settingDefaultQuoteMode)
+            
             Toast.init(text: "진지 모드로 적용되었습니다.").show()
             self.mainTableView.reloadRows(at: [[enumSettingSection.quoteOptions.rawValue,2]], with: UITableViewRowAnimation.automatic) // 사용자가 설정한 기본 명언 모드의 텍스트가 cell의 UI에 표현됩니다.
         })
@@ -174,6 +179,9 @@ class SettingViewController: UIViewController {
         let joyfulModeButton = UIAlertAction(title: "유쾌 모드", style: .default, handler: {[unowned self] (action) in
             print("joyfulModeButton")
             UserDefaults.standard.set(Constants.settingQuoteModeJoyful, forKey: Constants.settingDefaultQuoteMode)
+            // 위젯에서 사용하는 UserDefaults 저장
+            UserDefaults.init(suiteName: Constants.settingQuoteTodayExtensionAppGroup)?.set(Constants.settingQuoteModeJoyful, forKey: Constants.settingDefaultQuoteMode)
+            
             Toast.init(text: "유쾌 모드로 적용되었습니다.").show()
             self.mainTableView.reloadRows(at: [[enumSettingSection.quoteOptions.rawValue,2]], with: UITableViewRowAnimation.automatic) // 사용자가 설정한 기본 명언 모드의 텍스트가 cell의 UI에 표현됩니다.
         })

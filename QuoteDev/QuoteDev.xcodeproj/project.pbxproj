@@ -16,6 +16,7 @@
 		FE15F6B91F72602C008E9A42 /* DataCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE15F6B81F72602C008E9A42 /* DataCenter.swift */; };
 		FE15F6BB1F726A41008E9A42 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE15F6BA1F726A41008E9A42 /* Constants.swift */; };
 		FE15F6BD1F726F85008E9A42 /* QuoteCommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE15F6BC1F726F85008E9A42 /* QuoteCommentViewController.swift */; };
+		FE30FBD41FCFDF2500EE627F /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE15F6BA1F726A41008E9A42 /* Constants.swift */; };
 		FE67B8181FC584D500466882 /* BoardDevDetailHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE67B8111FC584D500466882 /* BoardDevDetailHeaderView.swift */; };
 		FE67B8191FC584D500466882 /* BoardDevWriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE67B8121FC584D500466882 /* BoardDevWriteViewController.swift */; };
 		FE67B81A1FC584D500466882 /* BoardDevDataCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE67B8131FC584D500466882 /* BoardDevDataCenter.swift */; };
@@ -36,7 +37,6 @@
 		FE7EC39B1F6A4E1000696041 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FE7EC3991F6A4E1000696041 /* Main.storyboard */; };
 		FE7EC39D1F6A4E1000696041 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FE7EC39C1F6A4E1000696041 /* Assets.xcassets */; };
 		FE7EC3A01F6A4E1000696041 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FE7EC39E1F6A4E1000696041 /* LaunchScreen.storyboard */; };
-		FE7EC3A81F6A51BD00696041 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FE7EC3A71F6A51BD00696041 /* GoogleService-Info.plist */; };
 		FE7EC3B01F6A557300696041 /* SettingMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE7EC3AF1F6A557300696041 /* SettingMainViewController.swift */; };
 		FEAE97651F8E66DC0055D30E /* SettingHowToSetWidgetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEAE97641F8E66DC0055D30E /* SettingHowToSetWidgetViewController.swift */; };
 		FED92A091FA4893000B0DFC9 /* QuoteCommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FED92A081FA4892F00B0DFC9 /* QuoteCommentTableViewCell.swift */; };
@@ -81,6 +81,8 @@
 		FE15F6B81F72602C008E9A42 /* DataCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataCenter.swift; sourceTree = "<group>"; };
 		FE15F6BA1F726A41008E9A42 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		FE15F6BC1F726F85008E9A42 /* QuoteCommentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuoteCommentViewController.swift; sourceTree = "<group>"; };
+		FE30FBD21FCE6CE700EE627F /* QuoteDev.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = QuoteDev.entitlements; sourceTree = "<group>"; };
+		FE30FBD31FCFA1F500EE627F /* QuoteDevWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = QuoteDevWidget.entitlements; sourceTree = "<group>"; };
 		FE67B8111FC584D500466882 /* BoardDevDetailHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BoardDevDetailHeaderView.swift; path = BoardDev/BoardDevDetailHeaderView.swift; sourceTree = "<group>"; };
 		FE67B8121FC584D500466882 /* BoardDevWriteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BoardDevWriteViewController.swift; path = BoardDev/BoardDevWriteViewController.swift; sourceTree = "<group>"; };
 		FE67B8131FC584D500466882 /* BoardDevDataCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BoardDevDataCenter.swift; path = BoardDev/BoardDevDataCenter.swift; sourceTree = "<group>"; };
@@ -103,7 +105,6 @@
 		FE7EC39C1F6A4E1000696041 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FE7EC39F1F6A4E1000696041 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FE7EC3A11F6A4E1000696041 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		FE7EC3A71F6A51BD00696041 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		FE7EC3AF1F6A557300696041 /* SettingMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingMainViewController.swift; path = SettingView/SettingMainViewController.swift; sourceTree = "<group>"; };
 		FEAE97641F8E66DC0055D30E /* SettingHowToSetWidgetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingHowToSetWidgetViewController.swift; sourceTree = "<group>"; };
 		FED92A081FA4892F00B0DFC9 /* QuoteCommentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteCommentTableViewCell.swift; sourceTree = "<group>"; };
@@ -155,6 +156,7 @@
 		FE698A391FCBDD3600521628 /* QuoteDevWidget */ = {
 			isa = PBXGroup;
 			children = (
+				FE30FBD31FCFA1F500EE627F /* QuoteDevWidget.entitlements */,
 				FE698A3A1FCBDD3600521628 /* TodayViewController.swift */,
 				FE698A3C1FCBDD3600521628 /* MainInterface.storyboard */,
 				FE698A4C1FCC32AA00521628 /* GoogleService-Info.plist */,
@@ -187,6 +189,7 @@
 		FE7EC3941F6A4E1000696041 /* QuoteDev */ = {
 			isa = PBXGroup;
 			children = (
+				FE30FBD21FCE6CE700EE627F /* QuoteDev.entitlements */,
 				FE7EC39E1F6A4E1000696041 /* LaunchScreen.storyboard */,
 				FE7EC3991F6A4E1000696041 /* Main.storyboard */,
 				FE7EC3951F6A4E1000696041 /* AppDelegate.swift */,
@@ -201,7 +204,6 @@
 				FED92A081FA4892F00B0DFC9 /* QuoteCommentTableViewCell.swift */,
 				FE7EC3AE1F6A555400696041 /* SettingView */,
 				FE7EC3A91F6A536300696041 /* BoardDev */,
-				FE7EC3A71F6A51BD00696041 /* GoogleService-Info.plist */,
 				FE7EC3A11F6A4E1000696041 /* Info.plist */,
 			);
 			path = QuoteDev;
@@ -291,11 +293,21 @@
 						CreatedOnToolsVersion = 9.1;
 						DevelopmentTeam = 29Q45PKR77;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 					FE7EC3911F6A4E1000696041 = {
 						CreatedOnToolsVersion = 8.3.3;
 						DevelopmentTeam = 29Q45PKR77;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -335,7 +347,6 @@
 			files = (
 				FE7EC3A01F6A4E1000696041 /* LaunchScreen.storyboard in Resources */,
 				4C903C711F6A5D0D003ECEA4 /* BoardDev.storyboard in Resources */,
-				FE7EC3A81F6A51BD00696041 /* GoogleService-Info.plist in Resources */,
 				FE7EC39D1F6A4E1000696041 /* Assets.xcassets in Resources */,
 				FE7EC39B1F6A4E1000696041 /* Main.storyboard in Resources */,
 				4C903C751F6F9E25003ECEA4 /* SettingDev.storyboard in Resources */,
@@ -447,6 +458,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FE698A3B1FCBDD3600521628 /* TodayViewController.swift in Sources */,
+				FE30FBD41FCFDF2500EE627F /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -527,6 +539,7 @@
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = QuoteDevWidget/QuoteDevWidget.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 29Q45PKR77;
@@ -554,6 +567,7 @@
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = QuoteDevWidget/QuoteDevWidget.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 29Q45PKR77;
@@ -670,12 +684,13 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = QuoteDev/QuoteDev.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = 29Q45PKR77;
 				INFOPLIST_FILE = QuoteDev/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = net.blackturtle2.QuoteDev;
+				PRODUCT_BUNDLE_IDENTIFIER = net.blackturtle2.QuoteDev.QuoteDevApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -688,12 +703,13 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = QuoteDev/QuoteDev.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = 29Q45PKR77;
 				INFOPLIST_FILE = QuoteDev/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = net.blackturtle2.QuoteDev;
+				PRODUCT_BUNDLE_IDENTIFIER = net.blackturtle2.QuoteDev.QuoteDevApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
