@@ -551,7 +551,7 @@
 				INFOPLIST_FILE = QuoteDevWidget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = net.blackturtle2.QuoteDev.TodayExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = net.blackturtle2.QuoteDev.QuoteDevTodayExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 3.0;
@@ -579,7 +579,7 @@
 				INFOPLIST_FILE = QuoteDevWidget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = net.blackturtle2.QuoteDev.TodayExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = net.blackturtle2.QuoteDev.QuoteDevTodayExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 3.0;
