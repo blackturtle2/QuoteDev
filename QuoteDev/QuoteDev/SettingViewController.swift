@@ -197,7 +197,7 @@ class SettingViewController: UIViewController {
     // MARK: 개발자 소개 액션 정의
     func showAboutDeveloperOf(person:String) {
         if person == "leejaesung" {
-            let alert = UIAlertController(title: "이재성 (PM & iOS Dev)", message: "[ QuoteDev 메인 및 설정 개발 ]\n\n// 공돌이에서 기획자로\n// 기획자에서 다시 개발자로\n\n컴돌이로 졸업 후, 사업 시작.\n3 년 후, 모 카셰어링 기업에서 기획자 근무.\n1 년 후, iOS 개발자가 되겠다고 탈출.\n\nPalm OS, WindowsCE 시절부터 모바일을 좋아했고.\n애플을 좋아하며, 또 애플을 좋아한다.\n온라인에서는 \"까만거북이\"로 활동한다. (a.k.a 까북)", preferredStyle: .actionSheet)
+            let alert = UIAlertController(title: "Lee Jaesung\n이재성", message: "// 공돌이에서 기획자로\n// 기획자에서 다시 개발자로\n\n컴돌이 졸업 후, 사업 시작.\n3년 후, 모 카셰어링 업체 기획자 근무.\n1년 후, iOS 개발자 선언하며 탈출.\n\nPalm OS, WindowsCE 시절부터 모바일을 좋아했고.\nApple을 좋아하며, 또 Apple을 좋아한다.\n온라인에서는 \"까만거북이\"로 활동한다. (a.k.a 까북)", preferredStyle: .actionSheet)
             let blogButton = UIAlertAction(title: "Blog", style: .default, handler: {[unowned self] (action) in
                 self.openSafariViewOf(url: "http://blackturtle2.net")
             })
@@ -207,7 +207,7 @@ class SettingViewController: UIViewController {
             let mailButton = UIAlertAction(title: "E-mail", style: .destructive, handler: {[unowned self] (action) in
                 self.sendEmailTo(emailAddress: "blackturtle2@gmail.com")
             })
-            let cancelButton = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+            let cancelButton = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
             
             alert.addAction(blogButton)
             alert.addAction(githubButton)
@@ -216,21 +216,6 @@ class SettingViewController: UIViewController {
             
             self.present(alert, animated: true, completion: nil)
             
-        }else if person == "hwanggisu" {
-            let alert = UIAlertController(title: "황기수 (iOS Dev)", message: "[ QuoteDev 게시판 개발 ]\n\n", preferredStyle: .actionSheet)
-            let githubButton = UIAlertAction(title: "GitHub", style: .default, handler: {[unowned self] (action) in
-                self.openSafariViewOf(url: "https://github.com/GisuHwang")
-            })
-            let mailButton = UIAlertAction(title: "E-mail", style: .destructive, handler: {[unowned self] (action) in
-                self.sendEmailTo(emailAddress: "kisu9838@gmail.com")
-            })
-            let cancelButton = UIAlertAction(title: "취소", style: .cancel, handler: nil)
-            
-            alert.addAction(githubButton)
-            alert.addAction(mailButton)
-            alert.addAction(cancelButton)
-            
-            self.present(alert, animated: true, completion: nil)
         }
     }
     
@@ -311,7 +296,7 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
         case enumSettingSection.quoteOptions.rawValue:
             return 3 //알림, 알림 시간, 기본 모드
         case enumSettingSection.about.rawValue:
-            return 4 //개발자 소개(이재성), 개발자 소개(황기수), 앱 버전, 앱 문의하기
+            return 3 //개발자 소개(이재성), 앱 버전, 앱 문의하기
         case enumSettingSection.setting.rawValue:
             return 1 // 초기화
         default:
@@ -388,16 +373,12 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
                 let resultCell = tableView.dequeueReusableCell(withIdentifier: "aboutDeveloper", for: indexPath)
                 resultCell.detailTextLabel?.text = "Lee Jaesung"
                 return resultCell
-            case 1: // 개발자 소개 (황기수)
-                let resultCell = tableView.dequeueReusableCell(withIdentifier: "aboutDeveloper", for: indexPath)
-                resultCell.detailTextLabel?.text = "Hwang Gisu"
-                return resultCell
-            case 2: // 버전 정보
+            case 1: // 버전 정보
                 let resultCell = tableView.dequeueReusableCell(withIdentifier: "appVersion", for: indexPath)
                 let userAppVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String // 현재 사용자 앱 버전
                 resultCell.detailTextLabel?.text = userAppVersion
                 return resultCell
-            case 3: // 메일 문의하기
+            case 2: // 메일 문의하기
                 return tableView.dequeueReusableCell(withIdentifier: "askToDeveloper", for: indexPath)
             default:
                 return basicCell
@@ -440,11 +421,9 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
             switch indexPath.row{
             case 0: // 개발자 소개 (이재성)
                 self.showAboutDeveloperOf(person: "leejaesung")
-            case 1: // 개발자 소개 (황기수)
-                self.showAboutDeveloperOf(person: "hwanggisu")
-            case 2: // 앱 버전
+            case 1: // 앱 버전
                 self.checkAppNewVersion()
-            case 3: // 앱 문의하기
+            case 2: // 앱 문의하기
                 // 개발자에게 메일을 보냅니다.
                 self.sendEmailTo(emailAddress: "blackturtle2@gmail.com")
             default:
