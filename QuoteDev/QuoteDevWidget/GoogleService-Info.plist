@@ -7,9 +7,9 @@
 	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
 	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>832428271299-b4icggd7nv5k0fq3gj0pe0no48p0fpnl.apps.googleusercontent.com</string>
+	<string>832428271299-h8fgpm45inv5ckc7sgq8a2omu99rr6fo.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.832428271299-b4icggd7nv5k0fq3gj0pe0no48p0fpnl</string>
+	<string>com.googleusercontent.apps.832428271299-h8fgpm45inv5ckc7sgq8a2omu99rr6fo</string>
 	<key>API_KEY</key>
 	<string>AIzaSyDi7gHxzwOoGIUZVsi9kNYv0yOyfKQB11c</string>
 	<key>GCM_SENDER_ID</key>
@@ -17,7 +17,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>net.blackturtle2.QuoteDev.QuoteDevWidget</string>
+	<string>net.blackturtle2.QuoteDev.TodayExtension</string>
 	<key>PROJECT_ID</key>
 	<string>quotedev-29319</string>
 	<key>STORAGE_BUCKET</key>
@@ -33,7 +33,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:832428271299:ios:5d167688f2256ecb</string>
+	<string>1:832428271299:ios:3979b034e43ffdd4</string>
 	<key>DATABASE_URL</key>
 	<string>https://quotedev-29319.firebaseio.com</string>
 </dict>
