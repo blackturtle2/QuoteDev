@@ -58,11 +58,6 @@ class TodayViewController: UIViewController, NCWidgetProviding {
         }
         print("///// firebase app: \n", FirebaseApp.app() ?? "no data")
         
-        // 호스트 앱의 설정에서 사용자가 설정한 기본 명언 모드 불러오기.
-        if let realUserQuoteModeSetting = UserDefaults.init(suiteName: Constants.settingQuoteTodayExtensionAppGroup)?.value(forKey: Constants.settingDefaultQuoteMode) as? String {
-            self.userQuoteModeSetting = realUserQuoteModeSetting
-        }
-        
         // 먼저 UserDefaults 데이터 검증 후, 위젯 UI에 표시합니다.
         if UserDefaults.standard.object(forKey: "widgetQuoteText") != nil {
             guard let realQuoteText = UserDefaults.standard.object(forKey: "widgetQuoteText") as? String else { return }
@@ -75,14 +70,64 @@ class TodayViewController: UIViewController, NCWidgetProviding {
             if realQuoteText == "" { self.labelQuoteText.text = realQuoteText }
             if realQuoteAuthor == "" { self.labelQuoteAuthor.text = realQuoteAuthor }
             
-        }else {
-            // UserDefaults에 데이터가 없으면, Firebase 통신을 시도합니다.
-            // 명언 데이터 가져오고, UI에 표시하기
-            self.getAndShowQuoteData(quoteMode: self.userQuoteModeSetting, quoteKey: "52")
         }
+        
+        // 호스트 앱의 설정에서 사용자가 설정한 기본 명언 모드 불러오기.
+        if let realUserQuoteModeSetting = UserDefaults.init(suiteName: Constants.settingQuoteTodayExtensionAppGroup)?.value(forKey: Constants.settingDefaultQuoteMode) as? String {
+            self.userQuoteModeSetting = realUserQuoteModeSetting
+        }
+        
+        // 오늘 날짜를 String으로 변환
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMdd" // Firebase의 DB에 오늘 날짜(MMdd)에 맞춰서 오늘자 명언의 Key 값들이 저장되어 있습니다.
+        let strToday = formatter.string(from: Date())
+        
+        // 위젯 앱의 설정과 호스트 앱의 설정이 다를 경우 OR 날짜가 바뀌었을 경우, 통신 시도하기.
+        if UserDefaults.standard.string(forKey: "todayExtenstionSettingDefaultQuoteMode") != self.userQuoteModeSetting || UserDefaults.standard.string(forKey: "todayExtenstionSettingDefaultTodayDate") != strToday {
+            
+            // 오늘자 명언 키 값 가져오고, 명언 데이터 가져와서 UI에 표시하기
+            self.getTodaysQuoteKeyAndShowData(selectedQuoteMode: self.userQuoteModeSetting, todayDate: strToday)
+            
+            UserDefaults.standard.set(self.userQuoteModeSetting, forKey: "settingDefaultQuoteModeOfWidget") // 기본 명언 모드 저장
+            UserDefaults.standard.set(strToday, forKey: "todayExtenstionSettingDefaultTodayDate") // 오늘 날짜 저장
+        }
+        
         
         // 배경 이미지 표시하기
         self.imageQuoteBackground.image = UIImage(named: "temp_quote_background_image")
+    }
+    
+    // MARK: 명언 키 값 가져오기 - 오늘 날짜에 맞는 명언 키 값 가져오고, getAndShowQuoteData() 호출하기
+    func getTodaysQuoteKeyAndShowData(selectedQuoteMode:String, todayDate:String) {
+        // 각 모드에 맞는 key 값 가져오기
+        if selectedQuoteMode == Constants.settingQuoteModeSerious {
+            // 진지 모드
+            Database.database().reference().child(Constants.settingQuoteTodaySerious).child(todayDate).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
+                
+                guard let realQouteSeriousKey = snapshot.value as? Int else { return }
+                print("///// data- 425: \n", realQouteSeriousKey)
+                
+                // 해당 키 값에 맞는 명언 데이터 가져오기
+                self.getAndShowQuoteData(quoteMode: selectedQuoteMode, quoteKey: String(realQouteSeriousKey))
+                
+            }) { (error) in
+                print("///// firebase error- 425: \n", error)
+            }
+            
+        } else if selectedQuoteMode == Constants.settingQuoteModeJoyful {
+            // 유쾌 모드
+            Database.database().reference().child(Constants.settingQuoteTodayJoyful).child(todayDate).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
+                
+                guard let realQouteJoyfulKey = snapshot.value as? Int else { return }
+                print("///// data- 5236: \n", realQouteJoyfulKey)
+                
+                // 해당 키 값에 맞는 명언 데이터 가져오기
+                self.getAndShowQuoteData(quoteMode: selectedQuoteMode, quoteKey: String(realQouteJoyfulKey))
+                
+            }) { (error) in
+                print("///// firebase error- 5236: \n", error)
+            }
+        }
     }
     
     
@@ -93,7 +138,6 @@ class TodayViewController: UIViewController, NCWidgetProviding {
         Database.database().reference().child(quoteMode).child(quoteKey).observeSingleEvent(of: DataEventType.value, with: {[unowned self]  (snapshot) in
             guard let data = snapshot.value as? [String:Any] else { return }
 
-//            let quoteID = data["quotes_id"] as! String
             let quoteText = data["quotes_text"] as! String
             let quoteAuthor = data["quotes_author"] as! String
             

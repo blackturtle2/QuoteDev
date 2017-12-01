@@ -124,7 +124,7 @@ class MainViewController: UIViewController {
         // 각 모드에 맞는 key 값 가져오기
         if selectedQuoteMode == Constants.settingQuoteModeSerious {
             // 진지 모드
-            Database.database().reference().child("quotes_data_today_kor_serious").child(today).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
+            Database.database().reference().child(Constants.settingQuoteTodaySerious).child(today).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
                 
                 guard let realQouteSeriousKey = snapshot.value as? Int else { return }
                 print("///// data- 425: \n", realQouteSeriousKey)
@@ -139,7 +139,7 @@ class MainViewController: UIViewController {
             
         } else if selectedQuoteMode == Constants.settingQuoteModeJoyful {
             // 유쾌 모드
-            Database.database().reference().child("quotes_data_today_kor_joyful").child(today).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
+            Database.database().reference().child(Constants.settingQuoteTodayJoyful).child(today).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
                 
                 guard let realQouteJoyfulKey = snapshot.value as? Int else { return }
                 print("///// data- 5236: \n", realQouteJoyfulKey)

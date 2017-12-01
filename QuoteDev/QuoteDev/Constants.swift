@@ -57,8 +57,13 @@ struct Constants {
     static let settingAlarmTime:String = "settingAlarmTime"
     static let settingAlarmTimeDateFormat:String = "settingAlarmTimeDateFormat"
     static let settingDefaultQuoteMode:String = "settingDefaultQuoteMode"
+    
     static let settingQuoteModeSerious:String = "quotes_data_kor_serious"
     static let settingQuoteModeJoyful:String = "quotes_data_kor_joyful"
+    
+    static let settingQuoteTodaySerious:String = "quotes_data_today_kor_serious"
+    static let settingQuoteTodayJoyful:String = "quotes_data_today_kor_joyful"
+    
     static let settingQuoteTodayExtensionAppGroup:String = "group.QuoteDev.TodayExtensionSharingDefaults"
 }
 
