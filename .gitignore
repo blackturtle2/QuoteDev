@@ -151,4 +151,3 @@ playground.xcworkspace
 # End of https://www.gitignore.io/api/xcode,swift,macos,cocoapods,objective-c
 
 GoogleService-Info.plist
-QuoteDev/QuoteDevWidget/GoogleService-Info.plist
