@@ -41,6 +41,8 @@
 		FED92A091FA4893000B0DFC9 /* QuoteCommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FED92A081FA4892F00B0DFC9 /* QuoteCommentTableViewCell.swift */; };
 		FEE2E0651FD0E8C000AC96E4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FEE2E0641FD0E8BF00AC96E4 /* GoogleService-Info.plist */; };
 		FEE2E0671FD0E90400AC96E4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FEE2E0661FD0E90400AC96E4 /* GoogleService-Info.plist */; };
+		FEE2E0691FD2294D00AC96E4 /* MyLikeCommentListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE2E0681FD2294D00AC96E4 /* MyLikeCommentListViewController.swift */; };
+		FEE2E06B1FD229C800AC96E4 /* MyLikeCommentListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE2E06A1FD229C800AC96E4 /* MyLikeCommentListTableViewCell.swift */; };
 		FEF7AB5D1F795F290071D2F7 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEF7AB5C1F795F290071D2F7 /* SettingViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -110,6 +112,8 @@
 		FED92A081FA4892F00B0DFC9 /* QuoteCommentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteCommentTableViewCell.swift; sourceTree = "<group>"; };
 		FEE2E0641FD0E8BF00AC96E4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		FEE2E0661FD0E90400AC96E4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		FEE2E0681FD2294D00AC96E4 /* MyLikeCommentListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLikeCommentListViewController.swift; sourceTree = "<group>"; };
+		FEE2E06A1FD229C800AC96E4 /* MyLikeCommentListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLikeCommentListTableViewCell.swift; sourceTree = "<group>"; };
 		FEF7AB5C1F795F290071D2F7 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -199,11 +203,13 @@
 				FE15F6B81F72602C008E9A42 /* DataCenter.swift */,
 				FE7EC3971F6A4E1000696041 /* MainViewController.swift */,
 				FE685FCC1FB57DCC00731BE3 /* MainQuoteCommentCell.swift */,
+				FEE2E0681FD2294D00AC96E4 /* MyLikeCommentListViewController.swift */,
+				FEE2E06A1FD229C800AC96E4 /* MyLikeCommentListTableViewCell.swift */,
+				FE15F6BC1F726F85008E9A42 /* QuoteCommentViewController.swift */,
+				FED92A081FA4892F00B0DFC9 /* QuoteCommentTableViewCell.swift */,
 				FEF7AB5C1F795F290071D2F7 /* SettingViewController.swift */,
 				FEAE97641F8E66DC0055D30E /* SettingHowToSetWidgetViewController.swift */,
 				FE67B81F1FC8580A00466882 /* SettingSwitchDailyQuoteDevOnOffCell.swift */,
-				FE15F6BC1F726F85008E9A42 /* QuoteCommentViewController.swift */,
-				FED92A081FA4892F00B0DFC9 /* QuoteCommentTableViewCell.swift */,
 				FE7EC3AE1F6A555400696041 /* SettingView */,
 				FE7EC3A91F6A536300696041 /* BoardDev */,
 				FE7EC3A11F6A4E1000696041 /* Info.plist */,
@@ -478,6 +484,7 @@
 				FE15F6BD1F726F85008E9A42 /* QuoteCommentViewController.swift in Sources */,
 				FE67B81C1FC584D500466882 /* BoardDevDetailCommentCell.swift in Sources */,
 				FE15F6B91F72602C008E9A42 /* DataCenter.swift in Sources */,
+				FEE2E0691FD2294D00AC96E4 /* MyLikeCommentListViewController.swift in Sources */,
 				FED92A091FA4893000B0DFC9 /* QuoteCommentTableViewCell.swift in Sources */,
 				FEF7AB5D1F795F290071D2F7 /* SettingViewController.swift in Sources */,
 				4C903C731F6A5D17003ECEA4 /* BoardDevMainViewController.swift in Sources */,
@@ -490,6 +497,7 @@
 				FE67B8191FC584D500466882 /* BoardDevWriteViewController.swift in Sources */,
 				FE67B81A1FC584D500466882 /* BoardDevDataCenter.swift in Sources */,
 				FE67B81B1FC584D500466882 /* BoardDevListTableViewCell.swift in Sources */,
+				FEE2E06B1FD229C800AC96E4 /* MyLikeCommentListTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

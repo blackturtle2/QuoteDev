@@ -354,6 +354,10 @@ class MainViewController: UIViewController {
                         self.buttonLikeCount.setTitle(String(likeCount), for: .normal) // 좋아요 카운트 버튼 타이틀 업데이트
                         self.buttonLike.isEnabled = true // 좋아요 버튼 연타 방지 예외처리
                     }
+                    // '나의 좋아요 명언' 목록 생성을 위한 데이터 삽입
+                    let dicData:[String:Any] = [realTodayQuoteID:false]
+                    let ref = Database.database().reference().child(Constants.firebaseUsersRoot).child(realUid).child("user_quotes_likes")
+                    ref.updateChildValues(dicData)
                 } else {
                     // 좋아요 추가
                     likeCount += 1
@@ -363,6 +367,10 @@ class MainViewController: UIViewController {
                         self.buttonLikeCount.setTitle(String(likeCount), for: .normal)
                         self.buttonLike.isEnabled = true // 좋아요 버튼 연타 방지 예외처리
                     }
+                    // '나의 좋아요 명언' 목록 생성을 위한 데이터 삽입
+                    let dicData:[String:Any] = [realTodayQuoteID:true]
+                    let ref = Database.database().reference().child(Constants.firebaseUsersRoot).child(realUid).child("user_quotes_likes")
+                    ref.updateChildValues(dicData)
                 }
                 post[Constants.firebaseQuoteLikesData] = likes as AnyObject?
                 post[Constants.firebaseQuoteLikesCount] = likeCount as AnyObject?
@@ -399,7 +407,7 @@ class MainViewController: UIViewController {
             
             // testField 추가
             alertSetUserNickname.addTextField { (textField) in
-                textField.placeholder = "스티브 잡스"
+                textField.placeholder = "스티브잡스"
             }
             
             // OK 버튼 Action 추가

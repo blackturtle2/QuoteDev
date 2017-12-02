@@ -330,6 +330,9 @@ by
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="Byf-0o-IqP" kind="show" id="qu6-5a-c7K"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="myCommentQuoteButton" textLabel="wyv-yf-Ztj" style="IBUITableViewCellStyleDefault" id="TTs-nH-0OB">
                                         <rect key="frame" x="0.0" y="583.5" width="375" height="44"/>
@@ -1094,6 +1097,86 @@ by
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QvH-wy-BxF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1580" y="699"/>
+        </scene>
+        <!--My Like Comment List View Controller-->
+        <scene sceneID="eKo-wJ-QHS">
+            <objects>
+                <viewController id="Byf-0o-IqP" customClass="MyLikeCommentListViewController" customModule="QuoteDev" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="fdm-Pv-C4N"/>
+                        <viewControllerLayoutGuide type="bottom" id="x7y-tE-ttD"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="AOp-m9-JS0">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="IdT-PF-KHV">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="MyLikeCommentListTableViewCell" rowHeight="80" id="DKB-NI-Ulg" customClass="MyLikeCommentListTableViewCell" customModule="QuoteDev" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="55.5" width="375" height="80"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="DKB-NI-Ulg" id="1rY-qk-XYX">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="79.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=". . ." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AQL-CE-u0u">
+                                                    <rect key="frame" x="16" y="16" width="343" height="17"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=". . ." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TKu-OK-KIX">
+                                                    <rect key="frame" x="16" y="41" width="343" height="13.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                                    <color key="textColor" red="0.47450980390000003" green="0.47450980390000003" blue="0.47450980390000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ly1-V8-geb" userLabel="Separated Middle View">
+                                                    <rect key="frame" x="16" y="70.5" width="359" height="1"/>
+                                                    <color key="backgroundColor" red="0.86274509799999999" green="0.85490196080000003" blue="0.85490196080000003" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="1" id="nDx-2i-hBM"/>
+                                                    </constraints>
+                                                </view>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="Ly1-V8-geb" secondAttribute="bottom" constant="8" id="TXX-HR-0d9"/>
+                                                <constraint firstItem="TKu-OK-KIX" firstAttribute="leading" secondItem="1rY-qk-XYX" secondAttribute="leading" constant="16" id="Uaz-Qf-5AS"/>
+                                                <constraint firstAttribute="trailing" secondItem="Ly1-V8-geb" secondAttribute="trailing" id="UhF-da-Ttk"/>
+                                                <constraint firstAttribute="trailing" secondItem="AQL-CE-u0u" secondAttribute="trailing" constant="16" id="VfL-sr-ws6"/>
+                                                <constraint firstItem="TKu-OK-KIX" firstAttribute="top" secondItem="AQL-CE-u0u" secondAttribute="bottom" constant="8" id="YnL-wm-jnU"/>
+                                                <constraint firstItem="Ly1-V8-geb" firstAttribute="leading" secondItem="1rY-qk-XYX" secondAttribute="leading" constant="16" id="Z77-Uz-xfb"/>
+                                                <constraint firstItem="AQL-CE-u0u" firstAttribute="top" secondItem="1rY-qk-XYX" secondAttribute="top" constant="16" id="okl-02-Zvl"/>
+                                                <constraint firstAttribute="trailing" secondItem="TKu-OK-KIX" secondAttribute="trailing" constant="16" id="q51-Pk-TOC"/>
+                                                <constraint firstItem="Ly1-V8-geb" firstAttribute="top" secondItem="TKu-OK-KIX" secondAttribute="bottom" constant="16" id="yEh-xh-J3N"/>
+                                                <constraint firstItem="AQL-CE-u0u" firstAttribute="leading" secondItem="1rY-qk-XYX" secondAttribute="leading" constant="16" id="yn6-uf-aLe"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="labelQuoteAuthor" destination="TKu-OK-KIX" id="170-Jz-1mJ"/>
+                                            <outlet property="labelQuoteText" destination="AQL-CE-u0u" id="rra-7b-wzh"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="IdT-PF-KHV" secondAttribute="bottom" id="GTc-LR-AHm"/>
+                            <constraint firstItem="IdT-PF-KHV" firstAttribute="top" secondItem="fdm-Pv-C4N" secondAttribute="bottom" id="kQK-bH-tLl"/>
+                            <constraint firstItem="IdT-PF-KHV" firstAttribute="leading" secondItem="AOp-m9-JS0" secondAttribute="leading" id="njN-zN-Gtu"/>
+                            <constraint firstAttribute="trailing" secondItem="IdT-PF-KHV" secondAttribute="trailing" id="qiX-4H-gQT"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="mainTableView" destination="IdT-PF-KHV" id="r2F-F0-veE"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="HFl-S2-CGs" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-92" y="985.45727136431788"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="asu-CF-T8p">
