@@ -126,12 +126,12 @@ class MainViewController: UIViewController {
             // 진지 모드
             Database.database().reference().child(Constants.settingQuoteTodaySerious).child(today).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
                 
-                guard let realQouteSeriousKey = snapshot.value as? Int else { return }
+                guard let realQouteSeriousKey = snapshot.value as? String else { return }
                 print("///// data- 425: \n", realQouteSeriousKey)
-                self.quoteSeriousKey = String(realQouteSeriousKey) // 전역 변수에 저장하기
+                self.quoteSeriousKey = realQouteSeriousKey // 전역 변수에 저장하기
                 
                 // 해당 키 값에 맞는 명언 데이터 가져오기
-                self.getAndShowQuoteData(quoteMode: selectedQuoteMode, quoteKey: String(realQouteSeriousKey))
+                self.getAndShowQuoteData(quoteMode: selectedQuoteMode, quoteKey: realQouteSeriousKey)
                 
             }) { (error) in
                 print("///// firebase error- 425: \n", error)
@@ -141,12 +141,12 @@ class MainViewController: UIViewController {
             // 유쾌 모드
             Database.database().reference().child(Constants.settingQuoteTodayJoyful).child(today).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
                 
-                guard let realQouteJoyfulKey = snapshot.value as? Int else { return }
+                guard let realQouteJoyfulKey = snapshot.value as? String else { return }
                 print("///// data- 5236: \n", realQouteJoyfulKey)
-                self.quoteJoyfulKey = String(realQouteJoyfulKey) // 전역 변수에 저장하기
+                self.quoteJoyfulKey = realQouteJoyfulKey // 전역 변수에 저장하기
                 
                 // 해당 키 값에 맞는 명언 데이터 가져오기
-                self.getAndShowQuoteData(quoteMode: selectedQuoteMode, quoteKey: String(realQouteJoyfulKey))
+                self.getAndShowQuoteData(quoteMode: selectedQuoteMode, quoteKey: realQouteJoyfulKey)
                 
             }) { (error) in
                 print("///// firebase error- 5236: \n", error)
