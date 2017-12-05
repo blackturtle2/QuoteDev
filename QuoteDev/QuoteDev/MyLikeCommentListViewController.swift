@@ -26,6 +26,7 @@ class MyLikeCommentListViewController: UIViewController {
         self.mainTableView.delegate = self
         self.mainTableView.dataSource = self
         
+        // 나의 좋아요 명언 목록 가져오기 > 명언 데이터 가져오기
         self.getUserQuotesLikesList()
         
     }
@@ -38,7 +39,7 @@ class MyLikeCommentListViewController: UIViewController {
     /*******************************************/
     //MARK:-         Functions                 //
     /*******************************************/
-    
+    // MARK: 나의 좋아요 명언 목록 가져오기
     func getUserQuotesLikesList() {
         guard let realUid = Auth.auth().currentUser?.uid else { return }
         let ref = Database.database().reference().child(Constants.firebaseUsersRoot).child(realUid).child("user_quotes_likes")
@@ -48,16 +49,21 @@ class MyLikeCommentListViewController: UIViewController {
             var userQuotesLikesKeyList: [String] = []
             
             if snapshot.exists() {
-                for child in snapshot.children {
+                // 좋아요한 키 값들을 순차적으로 변수에 저장하기
+                for child in snapshot.children.allObjects {
+                    print("///// child- 8203: \n", child)
+                    print("///// child key- 8203: \n", (child as AnyObject).key as String)
+                    
                     let key = (child as AnyObject).key as String
                     userQuotesLikesKeyList.append(key)
-
+                    
                     print("///// key- 7923: ", userQuotesLikesKeyList)
                 }
             } else {
                 print("///// snapshot is not exists()- 8203 \n")
             }
             
+            // 실질적인 명언 데이터 가져오기
             self.getQuotesDataOf(keyList: userQuotesLikesKeyList)
             
         }) { (error) in
@@ -65,8 +71,10 @@ class MyLikeCommentListViewController: UIViewController {
         }
     }
     
+    // MARK: 좋아요한 명언 데이터 가져오기
     func getQuotesDataOf(keyList: [String]) {
         for item in keyList {
+            // 진지 모드의 명언 데이터 조회하기
             let ref = Database.database().reference().child("quotes_data_kor_serious").child(item)
             ref.observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
                 if snapshot.exists() {
@@ -82,6 +90,7 @@ class MyLikeCommentListViewController: UIViewController {
                     }
                     
                 } else {
+                    // 진지 모드에 없으면, 유쾌 모드의 데이터 조회하기
                     print("///// serious snapshot is not exists()- 8203 \n")
                     let ref = Database.database().reference().child("quotes_data_kor_joyful").child(item)
                     ref.observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
@@ -101,11 +110,13 @@ class MyLikeCommentListViewController: UIViewController {
                             print("///// joyful snapshot is not exists()- 8273 \n")
                         }
                     }, withCancel: { (error) in
+                        // 유쾌 모드 조회 에러
                         print("///// error- 9378: \n", error)
                     })
                 }
                 
             }, withCancel: { (error) in
+                // 진지 모드 조회 에러
                 print("///// error- 8293: \n", error)
             })
         }
@@ -177,6 +188,25 @@ extension MyLikeCommentListViewController: UITableViewDelegate, UITableViewDataS
         // 터치한 표시를 제거하는 액션
         tableView.deselectRow(at: indexPath, animated: true)
         
+        // 명언 댓글 뷰로 이동
+        switch indexPath.section {
+        case 0:
+            guard let realQuoteText = self.quotesSeriousData[indexPath.row + 1]["quoteText"] else { return }
+            guard let realQuoteAuthor = self.quotesSeriousData[indexPath.row + 1]["quoteAuthor"] else { return }
+            let nextVC = self.storyboard?.instantiateViewController(withIdentifier: Constants.quoteCommentViewController) as! QuoteCommentViewController
+            nextVC.QuoteText = realQuoteText
+            nextVC.QuoteAuthor = realQuoteAuthor
+            self.navigationController?.pushViewController(nextVC, animated: true)
+        case 1:
+            guard let realQuoteText = self.quotesJoyfulData[indexPath.row + 1]["quoteText"] else { return }
+            guard let realQuoteAuthor = self.quotesJoyfulData[indexPath.row + 1]["quoteAuthor"] else { return }
+            let nextVC = self.storyboard?.instantiateViewController(withIdentifier: Constants.quoteCommentViewController) as! QuoteCommentViewController
+            nextVC.QuoteText = realQuoteText
+            nextVC.QuoteAuthor = realQuoteAuthor
+            self.navigationController?.pushViewController(nextVC, animated: true)
+        default: break
+        }
+
     }
     
 }
