@@ -399,52 +399,6 @@ class MainViewController: UIViewController {
     
     // MARK: [댓글] 명언 댓글 뷰 이동 Function ( 명언 댓글 버튼이나 댓글 2개 나오는 테이블 뷰 셀, 댓글 더보기 버튼에서 사용 )
     func moveQuoteCommentViewController() {
-        // UserDefaults에 사용자 닉네임이 없으면, 닉네임을 받습니다.
-        if UserDefaults.standard.string(forKey: Constants.userDefaultsUserNickname) == nil {
-            
-            // UIAlertController 생성
-            let alertSetUserNickname:UIAlertController = UIAlertController(title: "닉네임 설정", message: "닉네임을 설정해주세요.", preferredStyle: .alert)
-            
-            // testField 추가
-            alertSetUserNickname.addTextField { (textField) in
-                textField.placeholder = "스티브잡스"
-            }
-            
-            // OK 버튼 Action 추가
-            alertSetUserNickname.addAction(UIAlertAction(title: "확인", style: .default, handler: { [weak alertSetUserNickname] (_) in
-                
-                // 텍스트필드 호출
-                let textFieldNickname = alertSetUserNickname!.textFields![0] // 위에서 직접 추가한 텍스트필드이므로 옵셔널 바인딩은 스킵.
-                print("///// textField: ", textFieldNickname.text ?? "(no data)")
-                
-                if textFieldNickname.text == "" {
-                    Toast.init(text: "닉네임을 입력해주세요.").show()
-                    return
-                }
-                
-                // UserDefaults 에서 uid 호출 & 사용자가 텍스트필드에 입력한 텍스트 호출
-                guard let uid = UserDefaults.standard.string(forKey: Constants.userDefaultsUserUid) else { return }
-                guard let userNickname = alertSetUserNickname!.textFields?[0].text else { return }
-                
-                let dicUserData:[String:Any] = [Constants.firebaseUserUid:uid, Constants.firebaseUserNickname:userNickname]
-                
-                // Firebase DB & UserDefaults에 저장
-                Database.database().reference().child(Constants.firebaseUsersRoot).child(uid).setValue(dicUserData)
-                UserDefaults.standard.set(userNickname, forKey: Constants.userDefaultsUserNickname)
-                
-                // 명언 댓글 뷰로 이동
-                guard let realQuoteText = self.labelQuoteText.text else { return }
-                guard let realQuoteAuthor = self.labelQuoteAuthor.text else { return }
-                let nextVC = self.storyboard?.instantiateViewController(withIdentifier: Constants.quoteCommentViewController) as! QuoteCommentViewController
-                nextVC.QuoteText = realQuoteText
-                nextVC.QuoteAuthor = realQuoteAuthor
-                self.navigationController?.pushViewController(nextVC, animated: true)
-                
-            }))
-            
-            self.present(alertSetUserNickname, animated: true, completion: nil)
-        }
-        
         guard let realQuoteText = self.labelQuoteText.text else { return }
         guard let realQuoteAuthor = self.labelQuoteAuthor.text else { return }
         let nextVC = self.storyboard?.instantiateViewController(withIdentifier: Constants.quoteCommentViewController) as! QuoteCommentViewController

@@ -86,6 +86,9 @@ class QuoteCommentViewController: UIViewController {
         self.todayQuoteID = UserDefaults.standard.string(forKey: Constants.userDefaultsCurrentQuoteID)
         self.userNickname = UserDefaults.standard.string(forKey: Constants.userDefaultsUserNickname)
         
+        // 사용자에게 닉네임 설정 물어보기
+        self.postUserNickName()
+        
         // Firebase에 댓글 노드가 없는 케이스 예외처리 - 댓글 노드를 만듭니다.
         guard let realTodayQuoteID = self.todayQuoteID else { return }
         Database.database().reference().child(Constants.firebaseQuoteComments).child(realTodayQuoteID).observeSingleEvent(of: DataEventType.value, with: { (snapshot) in
@@ -115,6 +118,53 @@ class QuoteCommentViewController: UIViewController {
     /*******************************************/
     //MARK:-         Functions                 //
     /*******************************************/
+    // MARK: 닉네임 세팅
+    func postUserNickName() {
+        // UserDefaults에 사용자 닉네임이 없으면, 닉네임을 받습니다.
+        if UserDefaults.standard.string(forKey: Constants.userDefaultsUserNickname) == nil {
+            
+            // UIAlertController 생성
+            let alertSetUserNickname:UIAlertController = UIAlertController(title: "닉네임 설정", message: "닉네임을 설정해주세요.", preferredStyle: .alert)
+            
+            // testField 추가
+            alertSetUserNickname.addTextField { (textField) in
+                textField.placeholder = "스티브잡스"
+            }
+            
+            // OK 버튼 Action 추가
+            alertSetUserNickname.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.destructive, handler: { [weak alertSetUserNickname] (_) in
+                
+                // 텍스트필드 호출
+                let textFieldNickname = alertSetUserNickname!.textFields![0] // 위에서 직접 추가한 텍스트필드이므로 옵셔널 바인딩은 스킵.
+                print("///// textField: ", textFieldNickname.text ?? "(no data)")
+                
+                if textFieldNickname.text == "" {
+                    Toast.init(text: "닉네임을 입력해주세요.").show()
+                    self.present(alertSetUserNickname!, animated: true, completion: nil)
+                    return
+                }
+                
+                // UserDefaults 에서 uid 호출 & 사용자가 텍스트필드에 입력한 텍스트 호출
+                guard let uid = UserDefaults.standard.string(forKey: Constants.userDefaultsUserUid) else { return }
+                guard let userNickname = alertSetUserNickname!.textFields?[0].text else { return }
+                
+                let dicUserData:[String:Any] = [Constants.firebaseUserUid:uid, Constants.firebaseUserNickname:userNickname]
+                
+                // Firebase DB & UserDefaults에 저장
+                Database.database().reference().child(Constants.firebaseUsersRoot).child(uid).setValue(dicUserData)
+                UserDefaults.standard.set(userNickname, forKey: Constants.userDefaultsUserNickname)
+                
+                Toast.init(text: "닉네임이 저장되었습니다.").show()
+            }))
+            
+            alertSetUserNickname.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: { (action) in
+                self.navigationController?.popViewController(animated: true)
+            }))
+            
+            self.present(alertSetUserNickname, animated: true, completion: nil)
+        }
+    }
+    
     
     // MARK: 댓글 작성 텍스트필드 터치 시, 키보드 올리기 위한 키보드 노티 옵저버 등록
     func addNotificationObserver() {

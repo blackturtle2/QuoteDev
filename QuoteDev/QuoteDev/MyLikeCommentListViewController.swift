@@ -137,6 +137,7 @@ extension MyLikeCommentListViewController: UITableViewDelegate, UITableViewDataS
         }
     }
     
+    // MARK: tableView - Section의 타이틀
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
         case 0:
@@ -147,6 +148,7 @@ extension MyLikeCommentListViewController: UITableViewDelegate, UITableViewDataS
             return nil
         }
     }
+    
     // MARK: tableView - Cell 그리기
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let resultCell = tableView.dequeueReusableCell(withIdentifier: "MyLikeCommentListTableViewCell", for: indexPath) as! MyLikeCommentListTableViewCell
@@ -167,6 +169,14 @@ extension MyLikeCommentListViewController: UITableViewDelegate, UITableViewDataS
         default:
             return UITableViewCell()
         }
+    }
+    
+    // MARK: tableView - Cell 선택 액션 정의
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        // 터치한 표시를 제거하는 액션
+        tableView.deselectRow(at: indexPath, animated: true)
+        
     }
     
 }
