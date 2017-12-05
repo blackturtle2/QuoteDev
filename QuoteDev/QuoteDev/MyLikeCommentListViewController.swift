@@ -16,6 +16,8 @@ class MyLikeCommentListViewController: UIViewController {
     var quotesSeriousData: [[String:String]] = [[:]]
     var quotesJoyfulData: [[String:String]] = [[:]]
     
+    var isMyLikeView:Bool = true
+    
     
     /*******************************************/
     //MARK:-        LifeCycle                  //
@@ -26,8 +28,13 @@ class MyLikeCommentListViewController: UIViewController {
         self.mainTableView.delegate = self
         self.mainTableView.dataSource = self
         
-        // 나의 좋아요 명언 목록 가져오기 > 명언 데이터 가져오기
-        self.getUserQuotesLikesList()
+        if self.isMyLikeView == true {
+            // 나의 좋아요 명언 목록 가져오기 > 명언 데이터 가져오기
+            self.getMyQuotesLikesList()
+        }else {
+            // 나의 댓글 명언 목록 가져오기 > 명언 데이터 가져오기
+            self.getMyQuotesCommentsList()
+        }
         
     }
     
@@ -40,7 +47,7 @@ class MyLikeCommentListViewController: UIViewController {
     //MARK:-         Functions                 //
     /*******************************************/
     // MARK: 나의 좋아요 명언 목록 가져오기
-    func getUserQuotesLikesList() {
+    func getMyQuotesLikesList() {
         guard let realUid = Auth.auth().currentUser?.uid else { return }
         let ref = Database.database().reference().child(Constants.firebaseUsersRoot).child(realUid).child("user_quotes_likes")
         ref.queryOrderedByKey().observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
@@ -63,6 +70,36 @@ class MyLikeCommentListViewController: UIViewController {
             
             // 실질적인 명언 데이터 가져오기
             self.getQuotesDataOf(keyList: userQuotesLikesKeyList)
+            
+        }) { (error) in
+            print("///// error- 7392: \n", error)
+        }
+    }
+    
+    // MARK: 나의 댓글 명언 목록 가져오기
+    func getMyQuotesCommentsList() {
+        guard let realUid = Auth.auth().currentUser?.uid else { return }
+        let ref = Database.database().reference().child(Constants.firebaseUsersRoot).child(realUid).child("user_quotes_comments")
+        ref.queryOrderedByKey().observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
+            print("///// snapshot.value- 7293: \n", snapshot.value ?? "no data")
+            
+            var userQuotesCommentsKeyList: [String] = []
+            
+            if snapshot.exists() {
+                // 좋아요한 키 값들을 순차적으로 변수에 저장하기
+                guard let data = snapshot.value as? [String:Bool] else { return }
+                for item in data {
+                    if item.value == true { // 좋아요 값이 true인 것만 보여주도록 구현
+                        userQuotesCommentsKeyList.append(item.key)
+                    }
+                }
+                
+            } else {
+                print("///// snapshot is not exists()- 8203 \n")
+            }
+            
+            // 실질적인 명언 데이터 가져오기
+            self.getQuotesDataOf(keyList: userQuotesCommentsKeyList)
             
         }) { (error) in
             print("///// error- 7392: \n", error)

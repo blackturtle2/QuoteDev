@@ -153,6 +153,7 @@ class QuoteCommentViewController: UIViewController {
                 // Firebase DB & UserDefaults에 저장
                 Database.database().reference().child(Constants.firebaseUsersRoot).child(uid).setValue(dicUserData)
                 UserDefaults.standard.set(userNickname, forKey: Constants.userDefaultsUserNickname)
+                self.userNickname = userNickname // 전역 변수 저장
                 
                 Toast.init(text: "닉네임이 저장되었습니다.").show()
             }))
@@ -281,7 +282,8 @@ class QuoteCommentViewController: UIViewController {
         guard let realUserNickname = self.userNickname else { return }
         
         // 댓글 카운트 데이터, 1 올리기
-        Database.database().reference().child(Constants.firebaseQuoteComments).child(realTodayQuoteID).child(Constants.firebaseQuoteCommentsPostsCount).runTransactionBlock({ (currentData) -> TransactionResult in
+        let commentsCountRef = Database.database().reference().child(Constants.firebaseQuoteComments).child(realTodayQuoteID).child(Constants.firebaseQuoteCommentsPostsCount)
+        commentsCountRef.runTransactionBlock({ (currentData) -> TransactionResult in
             guard var postCountData = currentData.value as? Int else { return TransactionResult.success(withValue: currentData) }
             postCountData += 1
             currentData.value = postCountData
@@ -295,15 +297,20 @@ class QuoteCommentViewController: UIViewController {
         }
         
         // 실제 Post 통신 부분
-        let ref = Database.database().reference().child(Constants.firebaseQuoteComments).child(realTodayQuoteID)
-        let key = ref.childByAutoId().key
+        let postRef = Database.database().reference().child(Constants.firebaseQuoteComments).child(realTodayQuoteID)
+        let key = postRef.childByAutoId().key
         let post = [Constants.firebaseQuoteCommentsUserUid: realUid,
                     Constants.firebaseQuoteCommentsUserNickname: realUserNickname,
                     Constants.firebaseQuoteCommentsCommentKeyID: key,
                     Constants.firebaseQuoteCommentsCommentCreatedDate: getDateStringOf(date: Date()),
                     Constants.firebaseQuoteCommentsCommentText: self.textFieldWritingComment.text ?? ""]
         let childUpdates = ["/\(Constants.firebaseQuoteCommentsPosts)/\(key)": post]
-        ref.updateChildValues(childUpdates)
+        postRef.updateChildValues(childUpdates)
+        
+        // '나의 댓글 명언' 목록 생성을 위한 데이터 삽입
+        let userQuotesCommentsdicData:[String:Any] = [realTodayQuoteID:true]
+        let userQuotesCommentsRef = Database.database().reference().child(Constants.firebaseUsersRoot).child(realUid).child("user_quotes_comments")
+        userQuotesCommentsRef.updateChildValues(userQuotesCommentsdicData)
         
         // UI 새로고침
         self.textFieldWritingComment.text = ""

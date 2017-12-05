@@ -330,9 +330,6 @@ by
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="Byf-0o-IqP" kind="show" id="qu6-5a-c7K"/>
-                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="myCommentQuoteButton" textLabel="wyv-yf-Ztj" style="IBUITableViewCellStyleDefault" id="TTs-nH-0OB">
                                         <rect key="frame" x="0.0" y="583.5" width="375" height="44"/>
@@ -1101,7 +1098,7 @@ by
         <!--My Like Comment List View Controller-->
         <scene sceneID="eKo-wJ-QHS">
             <objects>
-                <viewController id="Byf-0o-IqP" customClass="MyLikeCommentListViewController" customModule="QuoteDev" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MyLikeCommentListViewController" id="Byf-0o-IqP" customClass="MyLikeCommentListViewController" customModule="QuoteDev" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="fdm-Pv-C4N"/>
                         <viewControllerLayoutGuide type="bottom" id="x7y-tE-ttD"/>
@@ -1111,7 +1108,7 @@ by
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="IdT-PF-KHV">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="MyLikeCommentListTableViewCell" rowHeight="63" id="DKB-NI-Ulg" customClass="MyLikeCommentListTableViewCell" customModule="QuoteDev" customModuleProvider="target">

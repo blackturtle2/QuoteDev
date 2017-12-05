@@ -561,10 +561,15 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
             }
         case enumMainTableViewSection.archive.rawValue:
             switch indexPath.row{
-            case 0: break // 나의 좋아요 명언
-                // 스토리보드에서 push segue로 연결.
-            case 1: break // 나의 댓글 명언
-                // 스토리보드에서 push segue로 연결.
+            case 0: // 나의 좋아요 명언
+                let nextVC = self.storyboard?.instantiateViewController(withIdentifier: "MyLikeCommentListViewController") as! MyLikeCommentListViewController
+                nextVC.isMyLikeView = true
+                self.navigationController?.pushViewController(nextVC, animated: true)
+                
+            case 1: // 나의 댓글 명언
+                let nextVC = self.storyboard?.instantiateViewController(withIdentifier: "MyLikeCommentListViewController") as! MyLikeCommentListViewController
+                nextVC.isMyLikeView = false
+                self.navigationController?.pushViewController(nextVC, animated: true)
             default: break
             }
         default:
