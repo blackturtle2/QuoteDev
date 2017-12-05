@@ -104,11 +104,11 @@ class TodayViewController: UIViewController, NCWidgetProviding {
             // 진지 모드
             Database.database().reference().child(Constants.settingQuoteTodaySerious).child(todayDate).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
                 
-                guard let realQouteSeriousKey = snapshot.value as? Int else { return }
+                guard let realQouteSeriousKey = snapshot.value as? String else { return }
                 print("///// data- 425: \n", realQouteSeriousKey)
                 
                 // 해당 키 값에 맞는 명언 데이터 가져오기
-                self.getAndShowQuoteData(quoteMode: selectedQuoteMode, quoteKey: String(realQouteSeriousKey))
+                self.getAndShowQuoteData(quoteMode: selectedQuoteMode, quoteKey: realQouteSeriousKey)
                 
             }) { (error) in
                 print("///// firebase error- 425: \n", error)
@@ -118,11 +118,11 @@ class TodayViewController: UIViewController, NCWidgetProviding {
             // 유쾌 모드
             Database.database().reference().child(Constants.settingQuoteTodayJoyful).child(todayDate).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
                 
-                guard let realQouteJoyfulKey = snapshot.value as? Int else { return }
+                guard let realQouteJoyfulKey = snapshot.value as? String else { return }
                 print("///// data- 5236: \n", realQouteJoyfulKey)
                 
                 // 해당 키 값에 맞는 명언 데이터 가져오기
-                self.getAndShowQuoteData(quoteMode: selectedQuoteMode, quoteKey: String(realQouteJoyfulKey))
+                self.getAndShowQuoteData(quoteMode: selectedQuoteMode, quoteKey: realQouteJoyfulKey)
                 
             }) { (error) in
                 print("///// firebase error- 5236: \n", error)
