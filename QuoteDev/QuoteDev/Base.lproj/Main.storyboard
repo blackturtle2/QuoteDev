@@ -1114,11 +1114,11 @@ by
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="MyLikeCommentListTableViewCell" rowHeight="80" id="DKB-NI-Ulg" customClass="MyLikeCommentListTableViewCell" customModule="QuoteDev" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="55.5" width="375" height="80"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="MyLikeCommentListTableViewCell" rowHeight="63" id="DKB-NI-Ulg" customClass="MyLikeCommentListTableViewCell" customModule="QuoteDev" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="55.5" width="375" height="63"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="DKB-NI-Ulg" id="1rY-qk-XYX">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="79.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="62.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=". . ." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AQL-CE-u0u">
@@ -1133,24 +1133,14 @@ by
                                                     <color key="textColor" red="0.47450980390000003" green="0.47450980390000003" blue="0.47450980390000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ly1-V8-geb" userLabel="Separated Middle View">
-                                                    <rect key="frame" x="16" y="70.5" width="359" height="1"/>
-                                                    <color key="backgroundColor" red="0.86274509799999999" green="0.85490196080000003" blue="0.85490196080000003" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="1" id="nDx-2i-hBM"/>
-                                                    </constraints>
-                                                </view>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="bottom" secondItem="Ly1-V8-geb" secondAttribute="bottom" constant="8" id="TXX-HR-0d9"/>
+                                                <constraint firstAttribute="bottom" secondItem="TKu-OK-KIX" secondAttribute="bottom" constant="8" id="7ay-Jx-caA"/>
                                                 <constraint firstItem="TKu-OK-KIX" firstAttribute="leading" secondItem="1rY-qk-XYX" secondAttribute="leading" constant="16" id="Uaz-Qf-5AS"/>
-                                                <constraint firstAttribute="trailing" secondItem="Ly1-V8-geb" secondAttribute="trailing" id="UhF-da-Ttk"/>
                                                 <constraint firstAttribute="trailing" secondItem="AQL-CE-u0u" secondAttribute="trailing" constant="16" id="VfL-sr-ws6"/>
                                                 <constraint firstItem="TKu-OK-KIX" firstAttribute="top" secondItem="AQL-CE-u0u" secondAttribute="bottom" constant="8" id="YnL-wm-jnU"/>
-                                                <constraint firstItem="Ly1-V8-geb" firstAttribute="leading" secondItem="1rY-qk-XYX" secondAttribute="leading" constant="16" id="Z77-Uz-xfb"/>
                                                 <constraint firstItem="AQL-CE-u0u" firstAttribute="top" secondItem="1rY-qk-XYX" secondAttribute="top" constant="16" id="okl-02-Zvl"/>
                                                 <constraint firstAttribute="trailing" secondItem="TKu-OK-KIX" secondAttribute="trailing" constant="16" id="q51-Pk-TOC"/>
-                                                <constraint firstItem="Ly1-V8-geb" firstAttribute="top" secondItem="TKu-OK-KIX" secondAttribute="bottom" constant="16" id="yEh-xh-J3N"/>
                                                 <constraint firstItem="AQL-CE-u0u" firstAttribute="leading" secondItem="1rY-qk-XYX" secondAttribute="leading" constant="16" id="yn6-uf-aLe"/>
                                             </constraints>
                                         </tableViewCellContentView>

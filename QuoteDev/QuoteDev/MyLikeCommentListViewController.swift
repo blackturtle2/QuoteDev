@@ -50,15 +50,13 @@ class MyLikeCommentListViewController: UIViewController {
             
             if snapshot.exists() {
                 // 좋아요한 키 값들을 순차적으로 변수에 저장하기
-                for child in snapshot.children.allObjects {
-                    print("///// child- 8203: \n", child)
-                    print("///// child key- 8203: \n", (child as AnyObject).key as String)
-                    
-                    let key = (child as AnyObject).key as String
-                    userQuotesLikesKeyList.append(key)
-                    
-                    print("///// key- 7923: ", userQuotesLikesKeyList)
+                guard let data = snapshot.value as? [String:Bool] else { return }
+                for item in data {
+                    if item.value == true { // 좋아요 값이 true인 것만 보여주도록 구현
+                        userQuotesLikesKeyList.append(item.key)
+                    }
                 }
+                
             } else {
                 print("///// snapshot is not exists()- 8203 \n")
             }
