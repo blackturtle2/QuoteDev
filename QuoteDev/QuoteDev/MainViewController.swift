@@ -15,6 +15,8 @@ class MainViewController: UIViewController {
     @IBOutlet var mainTableView: UITableView!
     @IBOutlet weak var segmentedControlQuoteMode: UISegmentedControl!
     
+    @IBOutlet weak var viewQuoteTableViewHeader: UIView!
+    
     @IBOutlet var labelQuoteText : UILabel! //명언 텍스트 레이블
     @IBOutlet var labelQuoteAuthor : UILabel! //명언 출처 or 저자 레이블
     
