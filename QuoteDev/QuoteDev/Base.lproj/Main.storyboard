@@ -917,7 +917,7 @@ by
                                                                 <constraint firstAttribute="height" secondItem="Xrg-lh-OVz" secondAttribute="height" id="qDd-R4-WmL"/>
                                                             </constraints>
                                                         </view>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="by . . ." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g1U-Uw-f6G">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" . . ." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g1U-Uw-f6G">
                                                             <rect key="frame" x="0.0" y="25" width="343" height="14.5"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="14.5" id="Abw-Jk-uyJ"/>
@@ -1069,7 +1069,7 @@ by
                         <outlet property="constraintOfViewWritingCommentBox" destination="DcP-Go-vW9" id="HoV-8p-Cys"/>
                         <outlet property="labelHeaderQuoteAuthor" destination="zHV-Lg-JXc" id="6oJ-y2-lyX"/>
                         <outlet property="labelHeaderQuoteText" destination="7hb-Za-4PJ" id="Cvd-gu-aJm"/>
-                        <outlet property="tableViewMain" destination="P8n-ce-F3y" id="z9G-Ed-rCm"/>
+                        <outlet property="mainTableView" destination="P8n-ce-F3y" id="z9G-Ed-rCm"/>
                         <outlet property="tapGestureTableViewMain" destination="NJB-KB-Lre" id="Tkg-ae-KHv"/>
                         <outlet property="textFieldWritingComment" destination="Fq2-xT-r09" id="LMa-Mv-hEO"/>
                         <outlet property="viewMoreCommentsHorizontalLine" destination="Xb8-xA-SL3" id="OA1-49-5wN"/>

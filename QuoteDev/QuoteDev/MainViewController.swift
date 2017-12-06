@@ -256,7 +256,8 @@ class MainViewController: UIViewController {
 
     // MARK: [댓글] 명언 댓글 개수 확인 & UI 적용
     func getAndShowQuoteCommentCountOf(quoteID:String) {
-        Database.database().reference().child(Constants.firebaseQuoteComments).child(quoteID).child(Constants.firebaseQuoteCommentsCount).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
+        let countRef = Database.database().reference().child(Constants.firebaseQuoteComments).child(quoteID)
+        countRef.child(Constants.firebaseQuoteCommentsCount).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
             
             // 댓글이 1개도 없을 때
             guard let data = snapshot.value as? Int else {
