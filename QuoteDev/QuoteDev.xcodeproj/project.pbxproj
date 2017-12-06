@@ -10,8 +10,6 @@
 		0D9613E5ECE9BF130E2281FD /* Pods_QuoteDev.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CB8A73D6F930854930511EE /* Pods_QuoteDev.framework */; };
 		4C903C711F6A5D0D003ECEA4 /* BoardDev.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C903C701F6A5D0D003ECEA4 /* BoardDev.storyboard */; };
 		4C903C731F6A5D17003ECEA4 /* BoardDevMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C903C721F6A5D17003ECEA4 /* BoardDevMainViewController.swift */; };
-		4C903C751F6F9E25003ECEA4 /* SettingDev.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C903C741F6F9E25003ECEA4 /* SettingDev.storyboard */; };
-		4C903C771F6FA35B003ECEA4 /* SettingDevNotiViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C903C761F6FA35B003ECEA4 /* SettingDevNotiViewController.swift */; };
 		C276B873008B0B31B9561F30 /* Pods_QuoteDevWidget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16E3C4E861537E075825C635 /* Pods_QuoteDevWidget.framework */; };
 		FE15F6B91F72602C008E9A42 /* DataCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE15F6B81F72602C008E9A42 /* DataCenter.swift */; };
 		FE15F6BB1F726A41008E9A42 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE15F6BA1F726A41008E9A42 /* Constants.swift */; };
@@ -37,7 +35,6 @@
 		FE7EC39B1F6A4E1000696041 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FE7EC3991F6A4E1000696041 /* Main.storyboard */; };
 		FE7EC39D1F6A4E1000696041 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FE7EC39C1F6A4E1000696041 /* Assets.xcassets */; };
 		FE7EC3A01F6A4E1000696041 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FE7EC39E1F6A4E1000696041 /* LaunchScreen.storyboard */; };
-		FE7EC3B01F6A557300696041 /* SettingMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE7EC3AF1F6A557300696041 /* SettingMainViewController.swift */; };
 		FEAE97651F8E66DC0055D30E /* SettingHowToSetWidgetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEAE97641F8E66DC0055D30E /* SettingHowToSetWidgetViewController.swift */; };
 		FED92A091FA4893000B0DFC9 /* QuoteCommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FED92A081FA4892F00B0DFC9 /* QuoteCommentTableViewCell.swift */; };
 		FEE2E0651FD0E8C000AC96E4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FEE2E0641FD0E8BF00AC96E4 /* GoogleService-Info.plist */; };
@@ -77,8 +74,6 @@
 		2FD2BA3B019B35A6324FC292 /* Pods-QuoteDevWidget.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuoteDevWidget.release.xcconfig"; path = "Pods/Target Support Files/Pods-QuoteDevWidget/Pods-QuoteDevWidget.release.xcconfig"; sourceTree = "<group>"; };
 		4C903C701F6A5D0D003ECEA4 /* BoardDev.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = BoardDev.storyboard; path = BoardDev/BoardDev.storyboard; sourceTree = "<group>"; };
 		4C903C721F6A5D17003ECEA4 /* BoardDevMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BoardDevMainViewController.swift; path = BoardDev/BoardDevMainViewController.swift; sourceTree = "<group>"; };
-		4C903C741F6F9E25003ECEA4 /* SettingDev.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SettingDev.storyboard; sourceTree = "<group>"; };
-		4C903C761F6FA35B003ECEA4 /* SettingDevNotiViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingDevNotiViewController.swift; sourceTree = "<group>"; };
 		4CB8A73D6F930854930511EE /* Pods_QuoteDev.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QuoteDev.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5BFF089C886F6B71AA3380D1 /* Pods-QuoteDev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuoteDev.debug.xcconfig"; path = "Pods/Target Support Files/Pods-QuoteDev/Pods-QuoteDev.debug.xcconfig"; sourceTree = "<group>"; };
 		5FC370CABF19E04A9D982688 /* Pods-QuoteDev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuoteDev.release.xcconfig"; path = "Pods/Target Support Files/Pods-QuoteDev/Pods-QuoteDev.release.xcconfig"; sourceTree = "<group>"; };
@@ -109,7 +104,6 @@
 		FE7EC39C1F6A4E1000696041 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FE7EC39F1F6A4E1000696041 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FE7EC3A11F6A4E1000696041 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		FE7EC3AF1F6A557300696041 /* SettingMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingMainViewController.swift; path = SettingView/SettingMainViewController.swift; sourceTree = "<group>"; };
 		FEAE97641F8E66DC0055D30E /* SettingHowToSetWidgetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingHowToSetWidgetViewController.swift; sourceTree = "<group>"; };
 		FED92A081FA4892F00B0DFC9 /* QuoteCommentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteCommentTableViewCell.swift; sourceTree = "<group>"; };
 		FEE2E0641FD0E8BF00AC96E4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -213,7 +207,6 @@
 				FEF7AB5C1F795F290071D2F7 /* SettingViewController.swift */,
 				FEAE97641F8E66DC0055D30E /* SettingHowToSetWidgetViewController.swift */,
 				FE67B81F1FC8580A00466882 /* SettingSwitchDailyQuoteDevOnOffCell.swift */,
-				FE7EC3AE1F6A555400696041 /* SettingView */,
 				FE7EC3A91F6A536300696041 /* BoardDev */,
 				FE7EC3A11F6A4E1000696041 /* Info.plist */,
 				FEE2E0641FD0E8BF00AC96E4 /* GoogleService-Info.plist */,
@@ -235,16 +228,6 @@
 				4C903C721F6A5D17003ECEA4 /* BoardDevMainViewController.swift */,
 			);
 			name = BoardDev;
-			sourceTree = "<group>";
-		};
-		FE7EC3AE1F6A555400696041 /* SettingView */ = {
-			isa = PBXGroup;
-			children = (
-				FE7EC3AF1F6A557300696041 /* SettingMainViewController.swift */,
-				4C903C741F6F9E25003ECEA4 /* SettingDev.storyboard */,
-				4C903C761F6FA35B003ECEA4 /* SettingDevNotiViewController.swift */,
-			);
-			name = SettingView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -361,7 +344,6 @@
 				4C903C711F6A5D0D003ECEA4 /* BoardDev.storyboard in Resources */,
 				FE7EC39D1F6A4E1000696041 /* Assets.xcassets in Resources */,
 				FE7EC39B1F6A4E1000696041 /* Main.storyboard in Resources */,
-				4C903C751F6F9E25003ECEA4 /* SettingDev.storyboard in Resources */,
 				FEE2E0651FD0E8C000AC96E4 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -481,8 +463,6 @@
 			files = (
 				FE78E4721FD7FB7B00E83887 /* Extension.swift in Sources */,
 				FE67B81D1FC584D500466882 /* BoardDevDetailViewController.swift in Sources */,
-				4C903C771F6FA35B003ECEA4 /* SettingDevNotiViewController.swift in Sources */,
-				FE7EC3B01F6A557300696041 /* SettingMainViewController.swift in Sources */,
 				FE67B8181FC584D500466882 /* BoardDevDetailHeaderView.swift in Sources */,
 				FE7EC3981F6A4E1000696041 /* MainViewController.swift in Sources */,
 				FE15F6BD1F726F85008E9A42 /* QuoteCommentViewController.swift in Sources */,
