@@ -20,7 +20,7 @@ class SettingViewController: UIViewController {
     // 알림 시간 cell 선택으로 나오는 UI 선언
     @IBOutlet weak var motherViewAlarmTimePicker: UIView!
     @IBOutlet weak var datePickerSetAlarmTime: UIDatePicker!
-
+    var viewAlarmPickerCloseSpace: UIView!
     
     /*******************************************/
     //MARK:-        LifeCycle                  //
@@ -31,8 +31,17 @@ class SettingViewController: UIViewController {
         mainTableView.delegate = self
         mainTableView.dataSource = self
 
-        // UI
-        // DatePicker를 사용자가 설정해 놓은 알림 시간으로 설정하거나 기본 세팅으로 설정합니다.
+        // UI: DatePicker에 사용할 여백 UIView를 세팅합니다.
+        let customView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height - 261))
+        customView.backgroundColor = UIColor.black
+        customView.alpha = 0.35
+        customView.isHidden = true
+        customView.isUserInteractionEnabled = true
+        customView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.tapGestureForHideDatePicker(_:))))
+        
+        self.viewAlarmPickerCloseSpace = customView
+        
+        // UI: DatePicker를 사용자가 설정해 놓은 알림 시간으로 설정하거나 기본 세팅으로 설정합니다.
         if UserDefaults.standard.value(forKey: Constants.settingAlarmTimeDateFormat) != nil {
             self.datePickerSetAlarmTime.date = UserDefaults.standard.value(forKey: Constants.settingAlarmTimeDateFormat) as! Date
         }else {
@@ -50,6 +59,12 @@ class SettingViewController: UIViewController {
     /*******************************************/
     //MARK:-         Functions                 //
     /*******************************************/
+    // MARK: 알림 시간 DatePicker 여백 UIView 탭 제스쳐 function 정의
+    func tapGestureForHideDatePicker(_ sender: UITapGestureRecognizer) {
+        self.motherViewAlarmTimePicker.isHidden = true
+        self.viewAlarmPickerCloseSpace.isHidden = true
+        self.view.window?.willRemoveSubview(self.viewAlarmPickerCloseSpace)
+    }
     
     //MARK: [이메일] 앱 문의 email 보내기 function 정의
     // [주의] `MessageUI` import 필요
@@ -98,6 +113,8 @@ class SettingViewController: UIViewController {
         // 사용자가 세팅한 시간으로 알림 시간 cell의 UI에 표현합니다.
         self.mainTableView.reloadRows(at: [[enumSettingSection.quoteOptions.rawValue,1]], with: UITableViewRowAnimation.automatic)
         self.motherViewAlarmTimePicker.isHidden = true
+        self.viewAlarmPickerCloseSpace.isHidden = true
+        self.view.window?.willRemoveSubview(self.viewAlarmPickerCloseSpace)
         
         Toast.init(text: "Complete notification settings").show()
     }
@@ -158,6 +175,9 @@ class SettingViewController: UIViewController {
     // MARK: [알림] 시간 DatePicker 취소 버튼 액션 정의
     @IBAction func buttonCancelAlarmSetting(_ sender: UIButton) {
         self.motherViewAlarmTimePicker.isHidden = true
+        
+        self.viewAlarmPickerCloseSpace.isHidden = true
+        self.view.window?.willRemoveSubview(self.viewAlarmPickerCloseSpace)
     }
     
     // MARK: 기본 명언 모드 액션 정의
@@ -411,6 +431,8 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
             switch indexPath.row {
             case 1: // MARK: QUOTE OPTIONS - 알림 시간 터치 액션
                 self.motherViewAlarmTimePicker.isHidden = false
+                self.viewAlarmPickerCloseSpace.isHidden = false
+                self.view.window?.addSubview(self.viewAlarmPickerCloseSpace)
             case 2: // MARK: QUOTE OPTIONS - 기본 명언 모드 설정
                 self.setDefaultQuoteMode()
             default:
