@@ -176,16 +176,15 @@ class QuoteCommentViewController: UIViewController {
                     return
                 }
                 
-                // UserDefaults 에서 uid 호출 & 사용자가 텍스트필드에 입력한 텍스트 호출
-                guard let uid = UserDefaults.standard.string(forKey: Constants.userDefaultsUserUid) else { return }
-                guard let userNickname = alertSetUserNickname!.textFields?[0].text else { return }
-                
-                let dicUserData:[String:Any] = [Constants.firebaseUserUid:uid, Constants.firebaseUserNickname:userNickname]
+                // 사용자가 텍스트필드에 입력한 텍스트 호출
+                guard let realUid = Auth.auth().currentUser?.uid else { return }
+                guard let realUserNickname = alertSetUserNickname!.textFields?[0].text else { return }
                 
                 // Firebase DB & UserDefaults에 저장
-                Database.database().reference().child(Constants.firebaseUsersRoot).child(uid).setValue(dicUserData)
-                UserDefaults.standard.set(userNickname, forKey: Constants.userDefaultsUserNickname)
-                self.userNickname = userNickname // 전역 변수 저장
+                let userNicknameRef = Database.database().reference().child(Constants.firebaseUsersRoot).child(realUid).child("user_nickname")
+                userNicknameRef.setValue(realUserNickname)
+                UserDefaults.standard.set(realUserNickname, forKey: Constants.userDefaultsUserNickname)
+                self.userNickname = realUserNickname // 전역 변수 저장
                 
                 Toast.init(text: "닉네임이 저장되었습니다.").show()
             }))
