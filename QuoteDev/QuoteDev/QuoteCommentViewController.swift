@@ -159,13 +159,15 @@ class QuoteCommentViewController: UIViewController {
             // testField 추가
             alertSetUserNickname.addTextField { (textField) in
                 textField.placeholder = "스티브잡스"
+                textField.tag = 0
+                textField.delegate = self as UITextFieldDelegate
             }
             
             // OK 버튼 Action 추가
             alertSetUserNickname.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.destructive, handler: { [weak alertSetUserNickname] (_) in
                 
                 // 텍스트필드 호출
-                let textFieldNickname = alertSetUserNickname!.textFields![0] // 위에서 직접 추가한 텍스트필드이므로 옵셔널 바인딩은 스킵.
+                let textFieldNickname = alertSetUserNickname!.textFields![0] // 바로 위에서 직접 추가한 텍스트필드이므로 옵셔널 바인딩은 스킵.
                 print("///// textField: ", textFieldNickname.text ?? "(no data)")
                 
                 if textFieldNickname.text == "" {
@@ -601,5 +603,20 @@ extension QuoteCommentViewController: MFMailComposeViewControllerDelegate {
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
         self.addNotificationObserver()
         controller.dismiss(animated: true, completion: nil)
+    }
+}
+
+// MARK: extension - UITextFieldDelegate
+extension QuoteCommentViewController: UITextFieldDelegate {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        // 닉네임 Alert TextField 예외처리
+        if textField.tag == 0 && string == " " { // 띄어쓰기 금지
+            return false
+        } else if textField.tag == 0 && range.location > 19 { // 20글자 이상 금지
+            return false
+        } else {
+            return true
+        }
     }
 }
