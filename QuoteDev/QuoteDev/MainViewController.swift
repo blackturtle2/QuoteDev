@@ -75,7 +75,7 @@ class MainViewController: UIViewController {
     /*******************************************/
     //MARK:-         Functions                 //
     /*******************************************/
-    // MARK: 명언 새로고침 버튼 액션 정의
+    // MARK: - 명언 새로고침 버튼 액션 정의
     @IBAction func actionRefreshButton(_ sender: Any) {
         // UI
         DispatchQueue.main.async {
@@ -94,7 +94,7 @@ class MainViewController: UIViewController {
         }
     }
     
-    // MARK: 명언 모드 Segmented Control 액션 정의
+    // MARK: - 명언 모드 Segmented Control 액션 정의
     // 오늘의 명언 키 값을 이미 갖고 있느냐 아니냐에 따라 로직이 달라집니다.
     // 전역 변수에 오늘의 명언 키 값이 nil 이면, getTodaysQuoteKeyAndShowData()를 호출하고(viewDidLoad()와 같은 로직), 저장되어 있으면, getAndShowQuoteData()를 실행합니다.
     @IBAction func segmentedControlQuoteModeAction(_ sender: UISegmentedControl) {
@@ -116,7 +116,7 @@ class MainViewController: UIViewController {
         }
     }
     
-    // MARK: 명언 키 값 가져오기 - 오늘 날짜에 맞는 명언 키 값 가져오고, getAndShowQuoteData() 호출하기
+    // MARK: - 명언 키 값 가져오기 - 오늘 날짜에 맞는 명언 키 값 가져오고, getAndShowQuoteData() 호출하기
     func getTodaysQuoteKeyAndShowData(selectedQuoteMode:String, todayDate:Date) {
         let formatter = DateFormatter()
         formatter.dateFormat = "MMdd" // Firebase의 DB에 오늘 날짜(MMdd)에 맞춰서 오늘자 명언의 Key 값들이 저장되어 있습니다.
@@ -156,7 +156,7 @@ class MainViewController: UIViewController {
         }
     }
     
-    // MARK: [메인 플로우] 명언 데이터 가져오기 - 명언 모드와 키 값에 따라 명언 데이터를 가져오고, UI에 표현까지 완료하는 코드 구현
+    // MARK: - 명언 데이터 가져오기 - 명언 모드와 키 값에 따라 명언 데이터를 가져오고, UI에 표현까지 완료하는 코드 구현
     func getAndShowQuoteData(quoteMode:String, quoteKey:String) {
         
         // 명언 모드에 따른 데이터 통신
@@ -203,6 +203,7 @@ class MainViewController: UIViewController {
         }
     }
     
+    // MARK: - // 좋아요 파트
     // MARK: [좋아요] 명언 좋아요 카운트 변경 function 정의
     func getAndShowQuoteLikesCountOf(quoteID:String) {
         Database.database().reference().child(Constants.firebaseQuoteLikes).child(quoteID).child(Constants.firebaseQuoteLikesCount).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
@@ -255,7 +256,85 @@ class MainViewController: UIViewController {
             print("///// error- 8473: \n", error.localizedDescription)
         }
     }
-
+    
+    // MARK: [좋아요] 명언 좋아요 버튼 액션
+    @IBAction func buttonLikeAction(_ sender: UIButton) {
+        guard let realTodayQuoteID = self.currentQuoteID else { return }
+        sender.isEnabled = false // 좋아요 버튼 연타 방지 예외처리
+        
+        // 오늘의 명언에 대해 최초로 좋아요를 눌렀을 케이스 예외처리입니다.
+        Database.database().reference().child(Constants.firebaseQuoteLikes).child(realTodayQuoteID).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
+            
+            // 오늘의 명언에 대해 좋아요 데이터가 있는지 조회합니다.
+            if snapshot.exists() { // snapshot이 있을 경우, 바로 좋아요 기능 작동.
+                self.postShowLikeQuoteDB()
+            }else {
+                let dicInitialLikeData:[String:Any] = [Constants.firebaseQuoteLikesCount:0] // snapshot이 없을 경우, 좋아요 카운트 데이터 생성.
+                Database.database().reference().child(Constants.firebaseQuoteLikes).child(realTodayQuoteID).setValue(dicInitialLikeData) // realTodayQuoteID의 노드 생성.
+                self.postShowLikeQuoteDB() // 좋아요 기능 작동.
+            }
+            
+        }) { (error) in
+            print("///// error- 3130: \n", error.localizedDescription)
+        }
+        
+    }
+    
+    // 좋아요 추가/취소 구현 부분입니다.
+    // realTodayQuoteID 노드가 있다는 전제로 좋아요 기능이 작동됩니다.
+    func postShowLikeQuoteDB() {
+        guard let realUid = Auth.auth().currentUser?.uid else { return }
+        guard let realTodayQuoteID = self.currentQuoteID else { return }
+        Database.database().reference().child(Constants.firebaseQuoteLikes).child(realTodayQuoteID).runTransactionBlock({[unowned self] (currentData) -> TransactionResult in
+            print("///// try runTransactionBlock- 6839")
+            
+            if var post = currentData.value as? [String : AnyObject] {
+                var likes = post[Constants.firebaseQuoteLikesData] as? [String : Bool] ?? [:]
+                var likeCount = post[Constants.firebaseQuoteLikesCount] as? Int ?? 0
+                
+                if let _ = likes[realUid] {
+                    // 좋아요 취소
+                    likeCount -= 1
+                    likes.removeValue(forKey: realUid)
+                    DispatchQueue.main.async {
+                        self.buttonLike.setImage(#imageLiteral(resourceName: "icon_button_like"), for: .normal) // 좋아요 버튼 이미지 업데이트
+                        self.buttonLikeCount.setTitle(String(likeCount), for: .normal) // 좋아요 카운트 버튼 타이틀 업데이트
+                        self.buttonLike.isEnabled = true // 좋아요 버튼 연타 방지 예외처리
+                    }
+                    // '나의 좋아요 명언' 목록 생성을 위한 데이터 삽입
+                    let dicData:[String:Any] = [realTodayQuoteID:false]
+                    let ref = Database.database().reference().child(Constants.firebaseUsersRoot).child(realUid).child("user_quotes_likes")
+                    ref.updateChildValues(dicData)
+                } else {
+                    // 좋아요 추가
+                    likeCount += 1
+                    likes[realUid] = true
+                    DispatchQueue.main.async {
+                        self.buttonLike.setImage(#imageLiteral(resourceName: "icon_button_like_black"), for: .normal)
+                        self.buttonLikeCount.setTitle(String(likeCount), for: .normal)
+                        self.buttonLike.isEnabled = true // 좋아요 버튼 연타 방지 예외처리
+                    }
+                    // '나의 좋아요 명언' 목록 생성을 위한 데이터 삽입
+                    let dicData:[String:Any] = [realTodayQuoteID:true]
+                    let ref = Database.database().reference().child(Constants.firebaseUsersRoot).child(realUid).child("user_quotes_likes")
+                    ref.updateChildValues(dicData)
+                }
+                post[Constants.firebaseQuoteLikesData] = likes as AnyObject?
+                post[Constants.firebaseQuoteLikesCount] = likeCount as AnyObject?
+                
+                currentData.value = post
+                return TransactionResult.success(withValue: currentData)
+            }
+            
+            return TransactionResult.success(withValue: currentData)
+        }) { (error, committed, snapshot) in
+            if let error = error {
+                print("///// error 4632: \n", error.localizedDescription)
+            }
+        }
+    }
+    
+    // MARK: - // 댓글
     // MARK: [댓글] 명언 댓글 개수 확인 & UI 적용
     func getAndShowQuoteCommentCountOf(quoteID:String) {
         let countRef = Database.database().reference().child(Constants.firebaseQuoteComments).child(quoteID)
@@ -313,83 +392,6 @@ class MainViewController: UIViewController {
         
     }
     
-    // MARK: [좋아요] 명언 좋아요 버튼 액션
-    @IBAction func buttonLikeAction(_ sender: UIButton) {
-        guard let realTodayQuoteID = self.currentQuoteID else { return }
-        sender.isEnabled = false // 좋아요 버튼 연타 방지 예외처리
-        
-        // 오늘의 명언에 대해 최초로 좋아요를 눌렀을 케이스 예외처리입니다.
-        Database.database().reference().child(Constants.firebaseQuoteLikes).child(realTodayQuoteID).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
-            
-            // 오늘의 명언에 대해 좋아요 데이터가 있는지 조회합니다.
-            if snapshot.exists() { // snapshot이 있을 경우, 바로 좋아요 기능 작동.
-                self.postShowLikeQuoteDB()
-            }else {
-                let dicInitialLikeData:[String:Any] = [Constants.firebaseQuoteLikesCount:0] // snapshot이 없을 경우, 좋아요 카운트 데이터 생성.
-                Database.database().reference().child(Constants.firebaseQuoteLikes).child(realTodayQuoteID).setValue(dicInitialLikeData) // realTodayQuoteID의 노드 생성.
-                self.postShowLikeQuoteDB() // 좋아요 기능 작동.
-            }
-            
-        }) { (error) in
-            print("///// error- 3130: \n", error.localizedDescription)
-        }
-
-    }
-    
-    // 좋아요 추가/취소 구현 부분입니다.
-    // realTodayQuoteID 노드가 있다는 전제로 좋아요 기능이 작동됩니다.
-    func postShowLikeQuoteDB() {
-        guard let realUid = Auth.auth().currentUser?.uid else { return }
-        guard let realTodayQuoteID = self.currentQuoteID else { return }
-        Database.database().reference().child(Constants.firebaseQuoteLikes).child(realTodayQuoteID).runTransactionBlock({[unowned self] (currentData) -> TransactionResult in
-            print("///// try runTransactionBlock- 6839")
-            
-            if var post = currentData.value as? [String : AnyObject] {
-                var likes = post[Constants.firebaseQuoteLikesData] as? [String : Bool] ?? [:]
-                var likeCount = post[Constants.firebaseQuoteLikesCount] as? Int ?? 0
-                
-                if let _ = likes[realUid] {
-                    // 좋아요 취소
-                    likeCount -= 1
-                    likes.removeValue(forKey: realUid)
-                    DispatchQueue.main.async {
-                        self.buttonLike.setImage(#imageLiteral(resourceName: "icon_button_like"), for: .normal) // 좋아요 버튼 이미지 업데이트
-                        self.buttonLikeCount.setTitle(String(likeCount), for: .normal) // 좋아요 카운트 버튼 타이틀 업데이트
-                        self.buttonLike.isEnabled = true // 좋아요 버튼 연타 방지 예외처리
-                    }
-                    // '나의 좋아요 명언' 목록 생성을 위한 데이터 삽입
-                    let dicData:[String:Any] = [realTodayQuoteID:false]
-                    let ref = Database.database().reference().child(Constants.firebaseUsersRoot).child(realUid).child("user_quotes_likes")
-                    ref.updateChildValues(dicData)
-                } else {
-                    // 좋아요 추가
-                    likeCount += 1
-                    likes[realUid] = true
-                    DispatchQueue.main.async {
-                        self.buttonLike.setImage(#imageLiteral(resourceName: "icon_button_like_black"), for: .normal)
-                        self.buttonLikeCount.setTitle(String(likeCount), for: .normal)
-                        self.buttonLike.isEnabled = true // 좋아요 버튼 연타 방지 예외처리
-                    }
-                    // '나의 좋아요 명언' 목록 생성을 위한 데이터 삽입
-                    let dicData:[String:Any] = [realTodayQuoteID:true]
-                    let ref = Database.database().reference().child(Constants.firebaseUsersRoot).child(realUid).child("user_quotes_likes")
-                    ref.updateChildValues(dicData)
-                }
-                post[Constants.firebaseQuoteLikesData] = likes as AnyObject?
-                post[Constants.firebaseQuoteLikesCount] = likeCount as AnyObject?
-                
-                currentData.value = post
-                return TransactionResult.success(withValue: currentData)
-            }
-            
-            return TransactionResult.success(withValue: currentData)
-        }) { (error, committed, snapshot) in
-            if let error = error {
-                print("///// error 4632: \n", error.localizedDescription)
-            }
-        }
-    }
-    
     // MARK: [댓글] 명언 댓글 버튼 액션
     @IBAction func buttonCommentAction(_ sender: UIButton) {
         self.moveQuoteCommentViewController()
@@ -410,6 +412,7 @@ class MainViewController: UIViewController {
         self.navigationController?.pushViewController(nextVC, animated: true)
     }
     
+    // MARK: - // 공유 파트
     // MARK: [공유] 명언 공유 버튼 액션 정의
     @IBAction func buttonShareAction(_ sender: UIButton) {
         guard let quoteText = self.labelQuoteText.text else { return }
@@ -426,6 +429,20 @@ class MainViewController: UIViewController {
         activityVC.excludedActivityTypes = [ UIActivityType.airDrop, UIActivityType.addToReadingList, UIActivityType.saveToCameraRoll ] // 제외 타입 설정: 에어드롭, 읽기목록, 카메라롤 저장
         
         self.present(activityVC, animated: true, completion: nil)
+    }
+    
+    // MARK: - // 이미지 저장 파트
+    // MARK: 사진으로 저장 function 정의
+    func saveImage(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
+        if let error = error {
+            let ac = UIAlertController(title: "Save error", message: error.localizedDescription + "\n Please, Allow photo access.", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            present(ac, animated: true)
+        } else {
+            let ac = UIAlertController(title: "Saved!", message: "QuoteDev saved the quote image to your photo library.", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            present(ac, animated: true)
+        }
     }
     
 }
@@ -556,11 +573,11 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         case enumMainTableViewSection.save.rawValue:
             switch indexPath.row{
             case 0: // 사진으로 저장
-                Toast.init(text: "준비중입니다.").show()
+                let img = UIImage.init(view: self.viewQuoteTableViewHeader)
+                UIImageWriteToSavedPhotosAlbum(img, self, #selector(saveImage(_:didFinishSavingWithError:contextInfo:)), nil);
             case 1: // 배경화면으로 저장
                 Toast.init(text: "준비중입니다.").show()
-            default:
-                Toast.init(text: "준비중입니다.").show()
+            default: break
             }
         case enumMainTableViewSection.archive.rawValue:
             switch indexPath.row{
