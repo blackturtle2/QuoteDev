@@ -118,6 +118,9 @@ class MainViewController: UIViewController {
     
     // MARK: - 명언 키 값 가져오기 - 오늘 날짜에 맞는 명언 키 값 가져오고, getAndShowQuoteData() 호출하기
     func getTodaysQuoteKeyAndShowData(selectedQuoteMode:String, todayDate:Date) {
+        // 네트워크 인디케이터
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        
         let formatter = DateFormatter()
         formatter.dateFormat = "MMdd" // Firebase의 DB에 오늘 날짜(MMdd)에 맞춰서 오늘자 명언의 Key 값들이 저장되어 있습니다.
         
@@ -127,6 +130,8 @@ class MainViewController: UIViewController {
         if selectedQuoteMode == Constants.settingQuoteModeSerious {
             // 진지 모드
             Database.database().reference().child(Constants.settingQuoteTodaySerious).child(today).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
+                // 네트워크 인디케이터
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 
                 guard let realQouteSeriousKey = snapshot.value as? String else { return }
                 print("///// data- 425: \n", realQouteSeriousKey)
@@ -142,6 +147,8 @@ class MainViewController: UIViewController {
         } else if selectedQuoteMode == Constants.settingQuoteModeJoyful {
             // 유쾌 모드
             Database.database().reference().child(Constants.settingQuoteTodayJoyful).child(today).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
+                // 네트워크 인디케이터
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 
                 guard let realQouteJoyfulKey = snapshot.value as? String else { return }
                 print("///// data- 5236: \n", realQouteJoyfulKey)
@@ -158,9 +165,14 @@ class MainViewController: UIViewController {
     
     // MARK: - 명언 데이터 가져오기 - 명언 모드와 키 값에 따라 명언 데이터를 가져오고, UI에 표현까지 완료하는 코드 구현
     func getAndShowQuoteData(quoteMode:String, quoteKey:String) {
+        // 네트워크 인디케이터
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
         
         // 명언 모드에 따른 데이터 통신
         Database.database().reference().child(quoteMode).child(quoteKey).observeSingleEvent(of: DataEventType.value, with: {[unowned self]  (snapshot) in
+            // 네트워크 인디케이터
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            
             guard let data = snapshot.value as? [String:Any] else { return }
             
             let quoteID = data[Constants.firebaseQuoteID] as! String
@@ -206,7 +218,11 @@ class MainViewController: UIViewController {
     // MARK: - // 좋아요 파트
     // MARK: [좋아요] 명언 좋아요 카운트 변경 function 정의
     func getAndShowQuoteLikesCountOf(quoteID:String) {
+        // 네트워크 인디케이터
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
         Database.database().reference().child(Constants.firebaseQuoteLikes).child(quoteID).child(Constants.firebaseQuoteLikesCount).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
+            // 네트워크 인디케이터
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
             
             guard let data = snapshot.value as? Int else {
                 DispatchQueue.main.async {
@@ -259,11 +275,16 @@ class MainViewController: UIViewController {
     
     // MARK: [좋아요] 명언 좋아요 버튼 액션
     @IBAction func buttonLikeAction(_ sender: UIButton) {
+        // 네트워크 인디케이터
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        
         guard let realTodayQuoteID = self.currentQuoteID else { return }
         sender.isEnabled = false // 좋아요 버튼 연타 방지 예외처리
         
         // 오늘의 명언에 대해 최초로 좋아요를 눌렀을 케이스 예외처리입니다.
         Database.database().reference().child(Constants.firebaseQuoteLikes).child(realTodayQuoteID).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
+            // 네트워크 인디케이터
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
             
             // 오늘의 명언에 대해 좋아요 데이터가 있는지 조회합니다.
             if snapshot.exists() { // snapshot이 있을 경우, 바로 좋아요 기능 작동.
@@ -283,6 +304,9 @@ class MainViewController: UIViewController {
     // 좋아요 추가/취소 구현 부분입니다.
     // realTodayQuoteID 노드가 있다는 전제로 좋아요 기능이 작동됩니다.
     func postShowLikeQuoteDB() {
+        // 네트워크 인디케이터
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        
         guard let realUid = Auth.auth().currentUser?.uid else { return }
         guard let realTodayQuoteID = self.currentQuoteID else { return }
         Database.database().reference().child(Constants.firebaseQuoteLikes).child(realTodayQuoteID).runTransactionBlock({[unowned self] (currentData) -> TransactionResult in
@@ -322,8 +346,18 @@ class MainViewController: UIViewController {
                 post[Constants.firebaseQuoteLikesData] = likes as AnyObject?
                 post[Constants.firebaseQuoteLikesCount] = likeCount as AnyObject?
                 
+                DispatchQueue.main.async {
+                    // 네트워크 인디케이터
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                }
+                
                 currentData.value = post
                 return TransactionResult.success(withValue: currentData)
+            }
+            
+            DispatchQueue.main.async {
+                // 네트워크 인디케이터
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
             }
             
             return TransactionResult.success(withValue: currentData)
@@ -337,8 +371,13 @@ class MainViewController: UIViewController {
     // MARK: - // 댓글
     // MARK: [댓글] 명언 댓글 개수 확인 & UI 적용
     func getAndShowQuoteCommentCountOf(quoteID:String) {
+        // 네트워크 인디케이터
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        
         let countRef = Database.database().reference().child(Constants.firebaseQuoteComments).child(quoteID)
         countRef.child(Constants.firebaseQuoteCommentsCount).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
+            // 네트워크 인디케이터
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
             
             // 댓글이 1개도 없을 때
             guard let data = snapshot.value as? Int else {
@@ -362,8 +401,13 @@ class MainViewController: UIViewController {
     
     // MARK: [댓글] 최신 댓글 n개 데이터 가져오고, UI 새로고침
     func getAndShowCommentDataToLastOf(itemsCount: UInt) {
+        // 네트워크 인디케이터
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        
         guard let realCurrentQuoteID = self.currentQuoteID else { return }
         Database.database().reference().child(Constants.firebaseQuoteComments).child(realCurrentQuoteID).child(Constants.firebaseQuoteCommentsPosts).queryLimited(toLast: itemsCount).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
+            // 네트워크 인디케이터
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
             
             self.commentsList = [] // 댓글 전역 변수 데이터 초기화
             

@@ -94,7 +94,6 @@ class QuoteCommentViewController: UIViewController {
         self.postUserNickName()
         
         // 댓글 더 보기 버튼 숨기기
-//        self.buttonMoreComments.isEnabled = false
         self.getCommentsCountAndShowEnableMoreCommentsButton()
         
         // Firebase에 댓글 노드가 없는 케이스 예외처리 - 댓글 노드를 만듭니다.
@@ -128,9 +127,15 @@ class QuoteCommentViewController: UIViewController {
     /*******************************************/
     // MARK: 댓글 개수 가져오고, 댓글 더 보기 버튼 활성화 여부 결정
     func getCommentsCountAndShowEnableMoreCommentsButton() {
+        // 네트워크 인디케이터
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        
         guard let realTodayQuoteID = self.todayQuoteID else { return }
         let countRef = Database.database().reference().child(Constants.firebaseQuoteComments).child(realTodayQuoteID)
         countRef.child(Constants.firebaseQuoteCommentsCount).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
+            // 네트워크 인디케이터
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            
             print("///// snapshot.exists()- 3924: ", snapshot)
             
             guard let data = snapshot.value as? Int else { return }
@@ -154,6 +159,8 @@ class QuoteCommentViewController: UIViewController {
     func postUserNickName() {
         // UserDefaults에 사용자 닉네임이 없으면, 닉네임을 받습니다.
         if UserDefaults.standard.string(forKey: Constants.userDefaultsUserNickname) == nil {
+            // 네트워크 인디케이터
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
             
             // 이미 사용중인 닉네임 리스트 저장 변수
             var savedNicknameList:[String] = []
@@ -161,6 +168,9 @@ class QuoteCommentViewController: UIViewController {
             // 이미 사용중인 닉네임 리스트 가져오기
             let getSavedNicknameListRef = Database.database().reference().child("users_nicknames")
             getSavedNicknameListRef.observe(DataEventType.value, with: { (snapshot) in
+                // 네트워크 인디케이터
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                
                 guard let data = snapshot.value as? [String:String] else { return }
                 savedNicknameList = []
                 for item in data {
@@ -282,6 +292,9 @@ class QuoteCommentViewController: UIViewController {
     
     // MARK: 댓글 데이터 불러오기
     func findCommentDataToLastOf(isAllLoad: Bool, lastCount: Int, moveToLast: Bool) {
+        // 네트워크 인디케이터
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        
         guard let realTodayQuoteID = self.todayQuoteID else { return }
         let ref = Database.database().reference().child(Constants.firebaseQuoteComments).child(realTodayQuoteID).child(Constants.firebaseQuoteCommentsPosts)
         var query: DatabaseQuery?
@@ -294,6 +307,9 @@ class QuoteCommentViewController: UIViewController {
         
         guard let realQuery = query else { return }
         realQuery.observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
+            // 네트워크 인디케이터
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            
             print("///// snapshot- 9843: \n", snapshot.value ?? "(no data)")
             
             // snapshot.value는 시간순으로 데이터가 오는데, guard-let을 통과하면서 정렬이 깨집니다.
@@ -331,10 +347,16 @@ class QuoteCommentViewController: UIViewController {
     
     // MARK: 댓글 좋아요 개수 불러오기
     func findShowCommentsLike() {
+        // 네트워크 인디케이터
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        
         guard let realTodayQuoteID = self.todayQuoteID else { return }
         
         // 댓글 좋아요 카운트는 Firebase에서 별도의 노드를 타고 있어서, 댓글 데이터와는 다른 로직을 타게 됩니다.
         Database.database().reference().child(Constants.firebaseQuoteCommentsLikes).child(realTodayQuoteID).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
+            // 네트워크 인디케이터
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            
             guard let realCommentsLikesData = snapshot.value as? [String:Any] else { return } // 해당 명언의 댓글 좋아요 개수 전체 데이터 가져오기.
             
             for item in realCommentsLikesData {
@@ -391,6 +413,9 @@ class QuoteCommentViewController: UIViewController {
     
     // MARK: 댓글 Post Function 정의
     func postCommentData() {
+        // 네트워크 인디케이터
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        
         guard let realUid = Auth.auth().currentUser?.uid else { return }
         guard let realTodayQuoteID = self.todayQuoteID else { return }
         guard let realUserNickname = self.userNickname else { return }
@@ -425,6 +450,9 @@ class QuoteCommentViewController: UIViewController {
         let userQuotesCommentsdicData:[String:Any] = [realTodayQuoteID:true]
         let userQuotesCommentsRef = Database.database().reference().child(Constants.firebaseUsersRoot).child(realUid).child("user_quotes_comments")
         userQuotesCommentsRef.updateChildValues(userQuotesCommentsdicData)
+        
+        // 네트워크 인디케이터
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
         
         // Refresh - Data
         self.currentLastCommentCount = 0
@@ -520,6 +548,9 @@ class QuoteCommentViewController: UIViewController {
     
     // MARK: 댓글 삭제 function
     func deleteCommentData(commentKeyID: String) {
+        // 네트워크 인디케이터
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        
         guard let realTodayQuoteID = self.todayQuoteID else { return }
         
         // 댓글 카운트 데이터, 1 내리기
@@ -549,6 +580,9 @@ class QuoteCommentViewController: UIViewController {
             // 원본 데이터 삭제
             let actuallyDeleteRef = Database.database().reference().child(Constants.firebaseQuoteComments).child(realTodayQuoteID)
             actuallyDeleteRef.child(Constants.firebaseQuoteCommentsPosts).child(commentKeyID).removeValue()
+            
+            // 네트워크 인디케이터
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
             
         }) { (error) in
             print("///// error- 7832: \n", error.localizedDescription)

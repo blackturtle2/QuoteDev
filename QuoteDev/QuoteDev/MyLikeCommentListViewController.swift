@@ -48,9 +48,15 @@ class MyLikeCommentListViewController: UIViewController {
     /*******************************************/
     // MARK: 나의 좋아요 명언 목록 가져오기
     func getMyQuotesLikesList() {
+        // 네트워크 인디케이터
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        
         guard let realUid = Auth.auth().currentUser?.uid else { return }
         let ref = Database.database().reference().child(Constants.firebaseUsersRoot).child(realUid).child("user_quotes_likes")
         ref.queryOrderedByKey().observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
+            // 네트워크 인디케이터
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            
             print("///// snapshot.value- 7293: \n", snapshot.value ?? "no data")
             
             var userQuotesLikesKeyList: [String] = []
@@ -78,9 +84,15 @@ class MyLikeCommentListViewController: UIViewController {
     
     // MARK: 나의 댓글 명언 목록 가져오기
     func getMyQuotesCommentsList() {
+        // 네트워크 인디케이터
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        
         guard let realUid = Auth.auth().currentUser?.uid else { return }
         let ref = Database.database().reference().child(Constants.firebaseUsersRoot).child(realUid).child("user_quotes_comments")
         ref.queryOrderedByKey().observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
+            // 네트워크 인디케이터
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            
             print("///// snapshot.value- 7293: \n", snapshot.value ?? "no data")
             
             var userQuotesCommentsKeyList: [String] = []
@@ -108,10 +120,16 @@ class MyLikeCommentListViewController: UIViewController {
     
     // MARK: 좋아요한 명언 데이터 가져오기
     func getQuotesDataOf(keyList: [String]) {
+        // 네트워크 인디케이터
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        
         for item in keyList {
             // 진지 모드의 명언 데이터 조회하기
             let ref = Database.database().reference().child("quotes_data_kor_serious").child(item)
             ref.observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
+                // 네트워크 인디케이터
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                
                 if snapshot.exists() {
                     guard let data = snapshot.value as? [String:Any] else { return }
                     
@@ -126,9 +144,15 @@ class MyLikeCommentListViewController: UIViewController {
                     
                 } else {
                     // 진지 모드에 없으면, 유쾌 모드의 데이터 조회하기
+                    // 네트워크 인디케이터
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = true
+                    
                     print("///// serious snapshot is not exists()- 8203 \n")
                     let ref = Database.database().reference().child("quotes_data_kor_joyful").child(item)
                     ref.observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
+                        // 네트워크 인디케이터
+                        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                        
                         if snapshot.exists() {
                             guard let data = snapshot.value as? [String:Any] else { return }
                             
