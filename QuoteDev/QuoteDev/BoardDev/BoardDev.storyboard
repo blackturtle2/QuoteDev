@@ -108,14 +108,6 @@
                                             <action selector="photoBtnTouched:" destination="wYJ-zD-gCg" eventType="touchUpInside" id="WuP-QJ-As8"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kIW-w7-YvC">
-                                        <rect key="frame" x="261" y="8" width="95" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" title="설정테스트 버튼"/>
-                                        <connections>
-                                            <segue destination="H98-mk-gc8" kind="presentation" id="4nS-Ni-PCB"/>
-                                        </connections>
-                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -775,14 +767,6 @@
                 </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1188" y="-300"/>
-        </scene>
-        <!--SettingDev-->
-        <scene sceneID="aSN-00-JuG">
-            <objects>
-                <viewControllerPlaceholder storyboardName="SettingDev" id="H98-mk-gc8" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Fpf-hn-Ek2" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2842" y="213"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="sd3-HO-glI">

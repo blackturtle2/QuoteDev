@@ -581,8 +581,10 @@ class QuoteCommentViewController: UIViewController {
             let actuallyDeleteRef = Database.database().reference().child(Constants.firebaseQuoteComments).child(realTodayQuoteID)
             actuallyDeleteRef.child(Constants.firebaseQuoteCommentsPosts).child(commentKeyID).removeValue()
             
-            // 네트워크 인디케이터
-            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            DispatchQueue.main.async {
+                // 네트워크 인디케이터
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            }
             
         }) { (error) in
             print("///// error- 7832: \n", error.localizedDescription)
