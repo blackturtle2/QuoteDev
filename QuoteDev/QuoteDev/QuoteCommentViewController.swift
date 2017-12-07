@@ -166,21 +166,31 @@ class QuoteCommentViewController: UIViewController {
             // OK 버튼 Action 추가
             alertSetUserNickname.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.destructive, handler: { [weak alertSetUserNickname] (_) in
                 
-                // 텍스트필드 호출
+                // 텍스트 필드 호출
                 let textFieldNickname = alertSetUserNickname!.textFields![0] // 바로 위에서 직접 추가한 텍스트필드이므로 옵셔널 바인딩은 스킵.
                 print("///// textField: ", textFieldNickname.text ?? "(no data)")
                 
+                // 예외처리: 텍스트 필드가 비어 있는 케이스
+                guard let realUserNickname = textFieldNickname.text else { return }
                 if textFieldNickname.text == "" {
                     Toast.init(text: "닉네임을 입력해주세요.").show()
                     self.present(alertSetUserNickname!, animated: true, completion: nil)
                     return
                 }
                 
-                // 사용자가 텍스트필드에 입력한 텍스트 호출
-                guard let realUid = Auth.auth().currentUser?.uid else { return }
-                guard let realUserNickname = alertSetUserNickname!.textFields?[0].text else { return }
+                // 예외처리: 닉네임 허용 불가 케이스
+                let doNotAllowNicknameList = ["이재성", "leejaesung", "까만거북이", "까북", "blackturtle2", "kabook", "개발자명언", "quotedev", "관리자", "운영자", "admin", "administrator", "supervisor", "manager", "아이폰", "아이패드", "iOS", "iPhone", "iPad", "애플", "Apple"]
+                for item in doNotAllowNicknameList {
+                    if realUserNickname.containsIgnoringCase(find: item) {
+                        Toast.init(text: "'\(item)'이(가) 포함된 해당 닉네임을 사용할 수 없습니다.\n다른 닉네임을 입력해주세요.").show()
+                        self.present(alertSetUserNickname!, animated: true, completion: nil)
+                        return
+                    }
+                }
+                
                 
                 // Firebase DB & UserDefaults에 저장
+                guard let realUid = Auth.auth().currentUser?.uid else { return }
                 let userNicknameRef = Database.database().reference().child(Constants.firebaseUsersRoot).child(realUid).child("user_nickname")
                 userNicknameRef.setValue(realUserNickname)
                 UserDefaults.standard.set(realUserNickname, forKey: Constants.userDefaultsUserNickname)
