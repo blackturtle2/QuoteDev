@@ -40,6 +40,8 @@ class QuoteCommentViewController: UIViewController {
     
     var currentLastCommentCount = 0
     
+    var keyboardHeight:CGFloat = 250 // Toast 높이 조절을 변수 ( 키보드 notification을 받아서 수정합니다. )
+    
     
     
     /*******************************************/
@@ -153,6 +155,22 @@ class QuoteCommentViewController: UIViewController {
         // UserDefaults에 사용자 닉네임이 없으면, 닉네임을 받습니다.
         if UserDefaults.standard.string(forKey: Constants.userDefaultsUserNickname) == nil {
             
+            // 이미 사용중인 닉네임 리스트 저장 변수
+            var savedNicknameList:[String] = []
+            
+            // 이미 사용중인 닉네임 리스트 가져오기
+            let getSavedNicknameListRef = Database.database().reference().child("users_nicknames")
+            getSavedNicknameListRef.observe(DataEventType.value, with: { (snapshot) in
+                guard let data = snapshot.value as? [String:String] else { return }
+                savedNicknameList = []
+                for item in data {
+                    savedNicknameList.append(item.value)
+                    print("///// item.value- 6948:", item.value)
+                }
+            }, withCancel: { (error) in
+                print("///// error- 6948:", error)
+            })
+            
             // UIAlertController 생성
             let alertSetUserNickname:UIAlertController = UIAlertController(title: "닉네임 설정", message: "닉네임을 설정해주세요.", preferredStyle: .alert)
             
@@ -173,7 +191,12 @@ class QuoteCommentViewController: UIViewController {
                 // 예외처리: 텍스트 필드가 비어 있는 케이스
                 guard let realUserNickname = textFieldNickname.text else { return }
                 if textFieldNickname.text == "" {
-                    Toast.init(text: "닉네임을 입력해주세요.").show()
+                    let customToast = Toast.init(text: "닉네임을 입력해주세요.")
+                    customToast.view.bottomOffsetPortrait = self.keyboardHeight // 키보드가 올라온 상태에서 토스트를 표시할 때의 높이 커스텀
+                    customToast.show()
+                    
+                    // 닉네임 리스트 옵저버 해제
+                    getSavedNicknameListRef.removeAllObservers()
                     self.present(alertSetUserNickname!, animated: true, completion: nil)
                     return
                 }
@@ -182,27 +205,61 @@ class QuoteCommentViewController: UIViewController {
                 let doNotAllowNicknameList = ["이재성", "leejaesung", "까만거북이", "까북", "blackturtle2", "kabook", "개발자명언", "quotedev", "관리자", "운영자", "admin", "administrator", "supervisor", "manager", "아이폰", "아이패드", "iOS", "iPhone", "iPad", "애플", "Apple"]
                 for item in doNotAllowNicknameList {
                     if realUserNickname.containsIgnoringCase(find: item) {
-                        Toast.init(text: "'\(item)'이(가) 포함된 해당 닉네임을 사용할 수 없습니다.\n다른 닉네임을 입력해주세요.").show()
+                        let customToast = Toast.init(text: "'\(item)': 포함된 해당 닉네임을 사용할 수 없습니다.")
+                        customToast.view.bottomOffsetPortrait = self.keyboardHeight // 키보드가 올라온 상태에서 토스트를 표시할 때의 높이 커스텀
+                        customToast.show()
+                        
+                        // 닉네임 리스트 옵저버 해제
+                        getSavedNicknameListRef.removeAllObservers()
                         self.present(alertSetUserNickname!, animated: true, completion: nil)
                         return
                     }
                 }
                 
+                // 예외처리: 사용중인 닉네임 허용 불가 케이스
+                for item in savedNicknameList {
+                    if realUserNickname == item {
+                        let customToast = Toast.init(text: "이미 사용중인 닉네임입니다.")
+                        customToast.view.bottomOffsetPortrait = self.keyboardHeight // 키보드가 올라온 상태에서 토스트를 표시할 때의 높이 커스텀
+                        customToast.show()
+                        
+                        // 닉네임 리스트 옵저버 해제
+                        getSavedNicknameListRef.removeAllObservers()
+                        self.present(alertSetUserNickname!, animated: true, completion: nil)
+                        return
+                    }
+                }
                 
                 // Firebase DB & UserDefaults에 저장
                 guard let realUid = Auth.auth().currentUser?.uid else { return }
+                
+                // 사용자 정보에 닉네임 저장
                 let userNicknameRef = Database.database().reference().child(Constants.firebaseUsersRoot).child(realUid).child("user_nickname")
                 userNicknameRef.setValue(realUserNickname)
+                
+                // 닉네임 리스트에 닉네임 저장
+                let nicknameListRef = Database.database().reference().child("users_nicknames").child(realUid)
+                nicknameListRef.setValue(realUserNickname)
+                
+                // 닉네임 리스트 옵저버 해제
+                getSavedNicknameListRef.removeAllObservers()
+                
                 UserDefaults.standard.set(realUserNickname, forKey: Constants.userDefaultsUserNickname)
                 self.userNickname = realUserNickname // 전역 변수 저장
                 
                 Toast.init(text: "닉네임이 저장되었습니다.").show()
             }))
             
+            // Cancel 버튼 Action 추가
             alertSetUserNickname.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: { (action) in
+                // 닉네임 리스트 옵저버 해제
+                getSavedNicknameListRef.removeAllObservers()
+                
+                // 이전 뷰로 이동
                 self.navigationController?.popViewController(animated: true)
             }))
             
+            // UIAlertController 띄우기
             self.present(alertSetUserNickname, animated: true, completion: nil)
         }
     }
@@ -411,6 +468,7 @@ class QuoteCommentViewController: UIViewController {
         let animationDuration: TimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as! NSNumber).doubleValue
         let animationCurve = UIViewAnimationOptions(rawValue: (userInfo[UIKeyboardAnimationCurveUserInfoKey] as! NSNumber).uintValue << 16)
         let frameEnd = (userInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        self.keyboardHeight = frameEnd.height + 10 // Toast 높이 조절을 위한 전역변수 저장.
         
         UIView.animate(
             withDuration: animationDuration,
