@@ -147,7 +147,7 @@ class SettingViewController: UIViewController {
         if #available(iOS 10.0, *) {
             // 01. UNMutableNotificationContent
             let notificationContent = UNMutableNotificationContent()
-            notificationContent.body = "오늘의 개발자 명언이 도착했습니다."
+            notificationContent.body = "오늘의 QuoteDev가 도착했습니다."
             notificationContent.sound = UNNotificationSound.default()
             
             // 02. UNTimeIntervalNotificationTrigger
@@ -328,9 +328,9 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         switch section {
         case enumSettingSection.quoteOptions.rawValue:
-            return "매일 하루 1개의 명언이 새로고침 되고, 설정한 기본 모드의 명언이 위젯에 표시됩니다."
+            return "매일 하루 1개의 QuoteDev가 새로고침 되고, 설정한 기본 모드의 QuoteDev가 위젯에 표시됩니다."
         case enumSettingSection.setting.rawValue:
-            return "좋아요 명언 목록이 초기화됩니다."
+            return "나의 좋아요 목록이 초기화됩니다."
         default:
             return nil
         }
@@ -354,7 +354,7 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
             switch indexPath.row{
             case 0: // MARK: QUOTE OPTIONS - 알림 설정 그리기
                 let resultCell = tableView.dequeueReusableCell(withIdentifier: "SettingSwitchDailyQuoteDevOnOffCell", for: indexPath) as! SettingSwitchDailyQuoteDevOnOffCell
-                resultCell.textLabel?.text = "알림 설정"
+                resultCell.textLabel?.text = "알림 설정" // 스토리보드의 Label은 스토리보드에서 UI를 확인하기 위함입니다.
                 resultCell.delegate = self
                 return resultCell
             case 1: // MARK: QUOTE OPTIONS - 알림 시간 그리기
