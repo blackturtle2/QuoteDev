@@ -448,9 +448,12 @@ class MainViewController: UIViewController {
     
     // MARK: [댓글] 명언 댓글 뷰 이동 Function ( 명언 댓글 버튼이나 댓글 2개 나오는 테이블 뷰 셀, 댓글 더보기 버튼에서 사용 )
     func moveQuoteCommentViewController() {
+        guard let realQuoteID = self.currentQuoteID else { return }
         guard let realQuoteText = self.labelQuoteText.text else { return }
         guard let realQuoteAuthor = self.labelQuoteAuthor.text else { return }
         let nextVC = self.storyboard?.instantiateViewController(withIdentifier: Constants.quoteCommentViewController) as! QuoteCommentViewController
+        
+        nextVC.todayQuoteID = realQuoteID
         nextVC.QuoteText = realQuoteText
         nextVC.QuoteAuthor = realQuoteAuthor
         self.navigationController?.pushViewController(nextVC, animated: true)

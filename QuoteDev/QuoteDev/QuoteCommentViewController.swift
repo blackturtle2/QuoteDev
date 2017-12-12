@@ -87,7 +87,7 @@ class QuoteCommentViewController: UIViewController {
         self.navigationItem.title = formatter.string(from: Date())
         
         // 전역 변수의 QuoteID에 현재 CurrentQuoteID 저장
-        self.todayQuoteID = UserDefaults.standard.string(forKey: Constants.userDefaultsCurrentQuoteID)
+//        self.todayQuoteID = UserDefaults.standard.string(forKey: Constants.userDefaultsCurrentQuoteID)
         self.userNickname = UserDefaults.standard.string(forKey: Constants.userDefaultsUserNickname)
         
         // 사용자에게 닉네임 설정 물어보기

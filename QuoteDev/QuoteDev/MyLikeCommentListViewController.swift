@@ -250,18 +250,26 @@ extension MyLikeCommentListViewController: UITableViewDelegate, UITableViewDataS
         // 명언 댓글 뷰로 이동
         switch indexPath.section {
         case 0:
+            guard let realQuoteID = self.quotesSeriousData[indexPath.row + 1]["quoteID"] else { return }
             guard let realQuoteText = self.quotesSeriousData[indexPath.row + 1]["quoteText"] else { return }
             guard let realQuoteAuthor = self.quotesSeriousData[indexPath.row + 1]["quoteAuthor"] else { return }
             let nextVC = self.storyboard?.instantiateViewController(withIdentifier: Constants.quoteCommentViewController) as! QuoteCommentViewController
+            
+            nextVC.todayQuoteID = realQuoteID
             nextVC.QuoteText = realQuoteText
             nextVC.QuoteAuthor = realQuoteAuthor
+            
             self.navigationController?.pushViewController(nextVC, animated: true)
         case 1:
+            guard let realQuoteID = self.quotesSeriousData[indexPath.row + 1]["quoteID"] else { return }
             guard let realQuoteText = self.quotesJoyfulData[indexPath.row + 1]["quoteText"] else { return }
             guard let realQuoteAuthor = self.quotesJoyfulData[indexPath.row + 1]["quoteAuthor"] else { return }
             let nextVC = self.storyboard?.instantiateViewController(withIdentifier: Constants.quoteCommentViewController) as! QuoteCommentViewController
+            
+            nextVC.todayQuoteID = realQuoteID
             nextVC.QuoteText = realQuoteText
             nextVC.QuoteAuthor = realQuoteAuthor
+            
             self.navigationController?.pushViewController(nextVC, animated: true)
         default: break
         }
