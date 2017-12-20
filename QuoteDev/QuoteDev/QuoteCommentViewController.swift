@@ -19,8 +19,6 @@ class QuoteCommentViewController: UIViewController {
     @IBOutlet weak var labelHeaderQuoteText: UILabel! // 명언 텍스트 레이블
     @IBOutlet weak var labelHeaderQuoteAuthor: UILabel! // 명언 저자 레이블
     @IBOutlet weak var viewMoreCommentsHorizontalLine: UIView! // 댓글 더보기 버튼 위 가로줄
-    @IBOutlet weak var buttonMoreComments: UIButton! // 댓글 더보기 버튼
-    @IBOutlet weak var constraintButtonMoreCommentsHeight: NSLayoutConstraint! // 댓글 더보기 버튼 높이 Constraints
     
     @IBOutlet weak var mainTableView: UITableView! // 메인 테이블 뷰
     
@@ -35,8 +33,8 @@ class QuoteCommentViewController: UIViewController {
     var userNickname: String?
     
     var commentsList: [QuoteComment] = [] // 댓글 데이터
-    var commentsLikeData: [String:Int] = [:] // 댓글 좋아요 데이터  ( ex. CommentKeyID : 1 ) // findShowCommentsLike() 참고
-    var commentsMyLikeOrNot: [String:Bool] = [:] // 현재 사용자 누른 댓글 좋아요 여부 확인 데이터 ( ex. CommentKeyID : true ) // findShowCommentsLike() 참고
+    var commentsLikeData: [String:Int] = [:] // 댓글 좋아요 데이터  ( ex. CommentKeyID : 1 ) // getCommentsLikeData() 참고
+    var commentsMyLikeOrNot: [String:Bool] = [:] // 현재 사용자 누른 댓글 좋아요 여부 확인 데이터 ( ex. CommentKeyID : true ) // getCommentsLikeData() 참고
     
     var currentLastCommentCount = 0
     
@@ -86,23 +84,21 @@ class QuoteCommentViewController: UIViewController {
         formatter.dateFormat = "yyyy.MM.dd"
         self.navigationItem.title = formatter.string(from: Date())
         
-        // 전역 변수의 QuoteID에 현재 CurrentQuoteID 저장
-//        self.todayQuoteID = UserDefaults.standard.string(forKey: Constants.userDefaultsCurrentQuoteID)
         self.userNickname = UserDefaults.standard.string(forKey: Constants.userDefaultsUserNickname)
         
         // 사용자에게 닉네임 설정 물어보기
         self.postUserNickName()
-        
-        // 댓글 더 보기 버튼 숨기기
-        self.getCommentsCountAndShowEnableMoreCommentsButton()
         
         // Firebase에 댓글 노드가 없는 케이스 예외처리 - 댓글 노드를 만듭니다.
         guard let realTodayQuoteID = self.todayQuoteID else { return }
         Database.database().reference().child(Constants.firebaseQuoteComments).child(realTodayQuoteID).observeSingleEvent(of: DataEventType.value, with: { (snapshot) in
             
             if snapshot.exists() {
-                self.findCommentDataToLastOf(isAllLoad: false, lastCount: 10, moveToLast: false)
-                self.findShowCommentsLike()
+                if let realTodayQuoteID = self.todayQuoteID {
+                    // 댓글 데이터 가져오기
+                    self.getAllCommentsOf(quoteID: realTodayQuoteID, isMoveToLast: false)
+                }
+                self.getCommentsLikeData()
             }else {
                 // snapshot이 없을 경우, use 데이터 생성.
                 // use는 DB 사용 여부 체크 목적 무의미한 데이터 / posts_count는 댓글 총 개수 카운트
@@ -113,8 +109,6 @@ class QuoteCommentViewController: UIViewController {
         }) { (error) in
             print("///// error- 3130: \n", error.localizedDescription)
         }
-        
-        
     }
 
     override func didReceiveMemoryWarning() {
@@ -125,36 +119,6 @@ class QuoteCommentViewController: UIViewController {
     /*******************************************/
     //MARK:-         Functions                 //
     /*******************************************/
-    // MARK: 댓글 개수 가져오고, 댓글 더 보기 버튼 활성화 여부 결정
-    func getCommentsCountAndShowEnableMoreCommentsButton() {
-        // 네트워크 인디케이터
-        UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        
-        guard let realTodayQuoteID = self.todayQuoteID else { return }
-        let countRef = Database.database().reference().child(Constants.firebaseQuoteComments).child(realTodayQuoteID)
-        countRef.child(Constants.firebaseQuoteCommentsCount).observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
-            // 네트워크 인디케이터
-            UIApplication.shared.isNetworkActivityIndicatorVisible = false
-            
-            print("///// snapshot.exists()- 3924: ", snapshot)
-            
-            guard let data = snapshot.value as? Int else { return }
-            if data > 10 { // 댓글이 10개 이상이면, 더 보기 버튼 활성화
-                DispatchQueue.main.async {
-                    self.buttonMoreComments.isEnabled = true
-                    self.buttonMoreComments.setTitle("댓글 더 보기" + " (" + String(data - 10) + ")", for: .normal)
-                }
-            } else {
-                DispatchQueue.main.async {
-                    self.buttonMoreComments.isEnabled = false
-                }
-            }
-            
-        }) { (error) in
-            print("///// error- 6234: \n", error.localizedDescription)
-        }
-    }
-    
     // MARK: 닉네임 세팅
     func postUserNickName() {
         // UserDefaults에 사용자 닉네임이 없으면, 닉네임을 받습니다.
@@ -290,23 +254,14 @@ class QuoteCommentViewController: UIViewController {
             object: nil)
     }
     
-    // MARK: 댓글 데이터 불러오기
-    func findCommentDataToLastOf(isAllLoad: Bool, lastCount: Int, moveToLast: Bool) {
+    // MARK: 댓글 데이터 모두 가져오기
+    func getAllCommentsOf(quoteID myQuoteID: String, isMoveToLast: Bool) {
         // 네트워크 인디케이터
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         
-        guard let realTodayQuoteID = self.todayQuoteID else { return }
-        let ref = Database.database().reference().child(Constants.firebaseQuoteComments).child(realTodayQuoteID).child(Constants.firebaseQuoteCommentsPosts)
-        var query: DatabaseQuery?
-        
-        if lastCount > 100 || isAllLoad == true { // Firebase에서 100개 이상은 지원하지 않으므로, 댓글 전체를 불러옵니다.
-            query = ref.queryOrderedByValue()
-        }else {
-            query = ref.queryLimited(toLast: UInt(lastCount))
-        }
-        
-        guard let realQuery = query else { return }
-        realQuery.observeSingleEvent(of: DataEventType.value, with: {[unowned self] (snapshot) in
+        let ref = Database.database().reference()
+        let childRef = ref.child(Constants.firebaseQuoteComments).child(myQuoteID).child(Constants.firebaseQuoteCommentsPosts)
+        childRef.observeSingleEvent(of: DataEventType.value, with: { (snapshot) in
             // 네트워크 인디케이터
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             
@@ -315,16 +270,11 @@ class QuoteCommentViewController: UIViewController {
             // snapshot.value는 시간순으로 데이터가 오는데, guard-let을 통과하면서 정렬이 깨집니다.
             // 따라서 sorted()를 이용해, 시간순으로 정렬합니다. - Firebase의 AutoID key 값은 자동으로 시간순 정렬입니다.
             guard let realCommentsList = snapshot.value as? [String:Any] else { return }
-            let sortedRealCommentsList = realCommentsList.sorted(by: {$0.key > $1.key} ) // 역시간순(최신순) 정렬 후, 아래 array에서 insert로 아이템 추가.
+            let sortedRealCommentsList = realCommentsList.sorted(by: {$0.key < $1.key} ) // 역시간순(최신순) 정렬.
             
-            // 전역 변수에 댓글 데이터를 저장합니다.
-            for item in sortedRealCommentsList {
-                let oneCommentData = QuoteComment(dicData: item.value as! [String : Any])
-                self.commentsList.insert(oneCommentData, at: 0)
-                print("///// item(QuoteComment)- 9843: \n", oneCommentData)
-            }
-            self.commentsList.removeLast(self.currentLastCommentCount)
-            self.currentLastCommentCount += Int(lastCount)
+            self.commentsList = sortedRealCommentsList.map({ (item) -> QuoteComment in
+                return QuoteComment(dicData: item.value as! [String : Any])
+            })
             
             print("///// self.commentsList- 9843: \n", self.commentsList)
             
@@ -333,20 +283,19 @@ class QuoteCommentViewController: UIViewController {
                 self.mainTableView.reloadData()
                 
                 // 댓글을 작성하면, 테이블 뷰 맨 아래로 이동합니다.
-                if moveToLast {
+                if isMoveToLast {
                     let lastIndexPath = IndexPath(row: self.commentsList.count-1, section: 0)
                     self.mainTableView.scrollToRow(at: lastIndexPath, at: UITableViewScrollPosition.bottom, animated: true)
                 }
             }
-            
         }) { (error) in
-            print("///// error- 9843: \n", error)
+            print("///// error- 8302: ", error)
         }
-        
     }
     
+    
     // MARK: 댓글 좋아요 개수 불러오기
-    func findShowCommentsLike() {
+    func getCommentsLikeData() {
         // 네트워크 인디케이터
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         
@@ -381,14 +330,6 @@ class QuoteCommentViewController: UIViewController {
             }
             
         })
-    }
-    
-    // MARK: 댓글 더 보기 버튼 액션 정의
-    @IBAction func buttonHeaderMoreCommentsAction(_ sender: UIButton) {
-        // 댓글 더 보기 버튼으로 추가 데이터 10개씩을 더 가져오는 로직을 구현하려고 했으나, 댓글 전체(isAllLoad)를 가져오도록 기획을 수정하였습니다. 추후에 10개씩 가져오는 것으로 구현해보기.
-        print("///// buttonHeaderMoreCommentsAction- 9723")
-        self.findCommentDataToLastOf(isAllLoad: true, lastCount: 0, moveToLast: false)
-        sender.isEnabled = false
     }
     
     // MARK: 댓글 작성 완료 버튼(Push) 액션 정의
@@ -454,15 +395,14 @@ class QuoteCommentViewController: UIViewController {
         // 네트워크 인디케이터
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
         
-        // Refresh - Data
-        self.currentLastCommentCount = 0
-        self.commentsList = []
-        
         // Refresh - UI
         self.textFieldWritingComment.text = ""
-        self.findCommentDataToLastOf(isAllLoad: false, lastCount: 10, moveToLast: true) // 댓글 데이터 가져오기
-        self.findShowCommentsLike() // 댓글 좋아요 데이터 가져오기
-        self.getCommentsCountAndShowEnableMoreCommentsButton()
+        if let realTodayQuoteID = self.todayQuoteID {
+            // 댓글 데이터 가져오기
+            self.getAllCommentsOf(quoteID: realTodayQuoteID, isMoveToLast: true)
+        }
+        self.getCommentsLikeData() // 댓글 좋아요 데이터 가져오기
+        
     }
     
     // MARK: Date 데이터를 입력하면, DateFormatter()를 거쳐서 String으로 반환하는 function
@@ -639,14 +579,14 @@ extension QuoteCommentViewController: UITableViewDelegate, UITableViewDataSource
         cell.commentKeyID = commentData.commentKeyID
         cell.uid = commentData.userUid
         
-        // 댓글 좋아요 카운트 표시 - 댓글 좋아요 카운트의 데이터가 없으면, 0으로 표시합니다. // findShowCommentsLike() 참고
+        // 댓글 좋아요 카운트 표시 - 댓글 좋아요 카운트의 데이터가 없으면, 0으로 표시합니다. // getCommentsLikeData() 참고
         // Firebase에서 댓글 좋아요 데이터가 다른 노드를 타고 있어서 별도의 function과 로직을 타게 됩니다.
         guard let realCommentLikeCount = self.commentsLikeData[commentData.commentKeyID] else {
             cell.buttonCommentLikeCount.setTitle("0", for: .normal)
             return cell
         }
         
-        // 나의 댓글 좋아요 카운트를 별도로 표시 // findShowCommentsLike() 참고
+        // 나의 댓글 좋아요 카운트를 별도로 표시 // getCommentsLikeData() 참고
         if let _ = self.commentsMyLikeOrNot[commentData.commentKeyID] {
             cell.buttonCommentLikeCount.setTitle(String(realCommentLikeCount) + " *", for: .normal)
         }else {
