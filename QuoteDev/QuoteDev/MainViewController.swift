@@ -82,7 +82,7 @@ class MainViewController: UIViewController {
             // Segmented Control 보이지 않게 하기
             self.mainTableView.contentOffset = CGPoint(x: 0, y: 50)
         }
-        
+        // PM Boot Camp 강의 수정사항 반영
         switch self.segmentedControlQuoteMode.selectedSegmentIndex {
         case 0: // 진지 모드
             self.getTodaysQuoteKeyAndShowData(selectedQuoteMode: Constants.settingQuoteModeSerious, todayDate: Date())
