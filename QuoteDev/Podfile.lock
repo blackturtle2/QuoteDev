@@ -14,14 +14,14 @@ PODS:
   - FirebaseAnalytics (4.0.5):
     - FirebaseCore (~> 4.0)
     - FirebaseInstanceID (~> 2.0)
-    - GoogleToolboxForMac/NSData+zlib (~> 2.1)
+    - "GoogleToolboxForMac/NSData+zlib (~> 2.1)"
     - nanopb (~> 0.3)
   - FirebaseAuth (4.3.2):
     - FirebaseAnalytics (~> 4.0)
-    - GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)
+    - "GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)"
     - GTMSessionFetcher/Core (~> 1.1)
   - FirebaseCore (4.0.11):
-    - GoogleToolboxForMac/NSData+zlib (~> 2.1)
+    - "GoogleToolboxForMac/NSData+zlib (~> 2.1)"
   - FirebaseDatabase (4.1.1):
     - FirebaseAnalytics (~> 4.0)
     - FirebaseCore (~> 4.0)
@@ -34,13 +34,13 @@ PODS:
   - GoogleToolboxForMac/DebugUtils (2.1.3):
     - GoogleToolboxForMac/Defines (= 2.1.3)
   - GoogleToolboxForMac/Defines (2.1.3)
-  - GoogleToolboxForMac/NSData+zlib (2.1.3):
+  - "GoogleToolboxForMac/NSData+zlib (2.1.3)":
     - GoogleToolboxForMac/Defines (= 2.1.3)
-  - GoogleToolboxForMac/NSDictionary+URLArguments (2.1.3):
+  - "GoogleToolboxForMac/NSDictionary+URLArguments (2.1.3)":
     - GoogleToolboxForMac/DebugUtils (= 2.1.3)
     - GoogleToolboxForMac/Defines (= 2.1.3)
-    - GoogleToolboxForMac/NSString+URLArguments (= 2.1.3)
-  - GoogleToolboxForMac/NSString+URLArguments (2.1.3)
+    - "GoogleToolboxForMac/NSString+URLArguments (= 2.1.3)"
+  - "GoogleToolboxForMac/NSString+URLArguments (2.1.3)"
   - GTMSessionFetcher/Core (1.1.12)
   - Kingfisher (4.3.1)
   - leveldb-library (1.20)
@@ -59,6 +59,22 @@ DEPENDENCIES:
   - Kingfisher (~> 4.0)
   - Toaster
 
+SPEC REPOS:
+  trunk:
+    - Firebase
+    - FirebaseAnalytics
+    - FirebaseAuth
+    - FirebaseCore
+    - FirebaseDatabase
+    - FirebaseInstanceID
+    - FirebaseStorage
+    - GoogleToolboxForMac
+    - GTMSessionFetcher
+    - Kingfisher
+    - leveldb-library
+    - nanopb
+    - Toaster
+
 SPEC CHECKSUMS:
   Firebase: 27321a925aa85520618255a7c630859e0502ccbd
   FirebaseAnalytics: 5b02a63ead2c3f0259cfc7f15e053e440587ecf8
@@ -70,10 +86,10 @@ SPEC CHECKSUMS:
   GoogleToolboxForMac: 2501e2ad72a52eb3dfe7bd9aee7dad11b858bd20
   GTMSessionFetcher: ebaa1f79a5366922c1735f1566901f50beba23b7
   Kingfisher: 75541c4b62f02e1fde6f9772303de3d9ebe8f5b3
-  leveldb-library: 4f9eedf84ab46b4fa3b7893bf30714b2a1a74022
+  leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   Toaster: a6c9532de1ded8105e77376f7dffeb2e12b46dbb
 
 PODFILE CHECKSUM: f01afd126bd886b12b5d00bf86ba94c37083122d
 
-COCOAPODS: 1.3.1
+COCOAPODS: 1.9.1

@@ -241,7 +241,6 @@
 				FE698A321FCBDD3600521628 /* Sources */,
 				FE698A331FCBDD3600521628 /* Frameworks */,
 				FE698A341FCBDD3600521628 /* Resources */,
-				B68378EF3280139C67F2DB93 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -261,7 +260,6 @@
 				FE7EC38F1F6A4E1000696041 /* Frameworks */,
 				FE7EC3901F6A4E1000696041 /* Resources */,
 				2C86D8BEEDD3DF664CB72794 /* [CP] Embed Pods Frameworks */,
-				BD5BA6EF614807C3D1B84776 /* [CP] Copy Pods Resources */,
 				FE698A461FCBDD3600521628 /* Embed App Extensions */,
 			);
 			buildRules = (
@@ -378,7 +376,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-QuoteDev/Pods-QuoteDev-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-QuoteDev/Pods-QuoteDev-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
@@ -397,37 +395,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-QuoteDev/Pods-QuoteDev-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		B68378EF3280139C67F2DB93 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-QuoteDevWidget/Pods-QuoteDevWidget-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		BD5BA6EF614807C3D1B84776 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-QuoteDev/Pods-QuoteDev-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-QuoteDev/Pods-QuoteDev-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		D7DB25EC3B456FC977DBD970 /* [CP] Check Pods Manifest.lock */ = {
